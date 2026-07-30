@@ -1,3 +1,5 @@
+% J. Choi, July 29, 2026
+%
 function out = Ex_11_solve_case(report_weights, P, ord)
 %EX_11_SOLVE_CASE Solve one paternity-analysis instance from Example 11.
 % This helper is called repeatedly by Ex_11.m. Do not run it directly;

@@ -1,3 +1,5 @@
+% J. Choi, July 29, 2026
+%
 function data = Ex_12_iv_generate_dataset(sample_size, seed)
 %EX_12_IV_GENERATE_DATASET Generate the fixed non-saturated LCM dataset.
 % This helper is called by Ex_12_iv.m and should not be run directly.

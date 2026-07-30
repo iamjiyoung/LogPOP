@@ -1,3 +1,5 @@
+% J. Choi, July 29, 2026
+%
 function out = Table_5_6_solve_log_relaxation(instance, use_lme, ord)
 %TABLE_5_6_SOLVE_LOG_RELAXATION Solve a standard or LME log relaxation.
 % This helper is called by Table_5.m and Table_6.m. Do not run it

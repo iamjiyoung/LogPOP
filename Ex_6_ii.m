@@ -1,3 +1,5 @@
+% J. Choi, July 29, 2026
+%
 % five coefficient instances in Example 6(ii).
 
 clear

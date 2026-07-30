@@ -1,3 +1,5 @@
+% J. Choi, July 29, 2026
+%
 function out = Ex_7_solve_case(use_lme, ord)
 %EX_7_SOLVE_CASE Solve one relaxation used in Example 7.
 % Ex_7.m calls this helper once for the standard relaxation and once for

@@ -1,3 +1,5 @@
+% J. Choi, July 29, 2026
+%
 function out = Ex_12_iv_solve_moment(report_weights)
 %EX_12_IV_SOLVE_MOMENT Solve the moment relaxation for Example 12(iv).
 % This helper is called by Ex_12_iv.m and should not be run directly.

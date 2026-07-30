@@ -1,3 +1,5 @@
+% J. Choi, July 29, 2026
+%
 function out = Table_5_6_solve_polynomial_relaxation(x, objective_poly, Ktheta, ord, flat_max)
 %TABLE_5_6_SOLVE_POLYNOMIAL_RELAXATION Solve one polynomial Moment-SOS relaxation.
 % This lower-level helper is called by Table_5_6_solve_direct_product.m,

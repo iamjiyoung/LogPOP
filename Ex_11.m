@@ -1,3 +1,5 @@
+% J. Choi, July 29, 2026
+%
 % paternity-analysis results in Example 11.
 
 clear

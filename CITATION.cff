@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use these codes, please cite the associated paper."
+title: "Log-Polynomial Optimization: Numerical Codes"
+type: software
+authors:
+  - family-names: "Choi"
+    given-names: "Jiyoung"
+  - family-names: "Nie"
+    given-names: "Jiawang"
+  - family-names: "Tang"
+    given-names: "Xindong"
+  - family-names: "Zhong"
+    given-names: "Suhan"
+repository-code: "https://github.com/iamjiyoung/LogPOP"
+url: "https://arxiv.org/abs/2601.02797"
+date-released: 2026-07-29
+preferred-citation:
+  type: article
+  title: "Log-Polynomial Optimization"
+  authors:
+    - family-names: "Choi"
+      given-names: "Jiyoung"
+    - family-names: "Nie"
+      given-names: "Jiawang"
+    - family-names: "Tang"
+      given-names: "Xindong"
+    - family-names: "Zhong"
+      given-names: "Suhan"
+  doi: "10.48550/arXiv.2601.02797"
+  year: 2026
+  url: "https://arxiv.org/abs/2601.02797"

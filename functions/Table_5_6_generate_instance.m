@@ -1,3 +1,5 @@
+% J. Choi, July 29, 2026
+%
 function instance = Table_5_6_generate_instance(n, m, seed, epsilon)
 %TABLE_5_6_GENERATE_INSTANCE Generate a fixed quadratic test instance.
 % This helper is called by Table_5.m and Table_6.m. Do not run it
