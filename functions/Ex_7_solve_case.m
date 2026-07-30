@@ -1,10 +1,10 @@
-% J. Choi, July 29, 2026
-%
 function out = Ex_7_solve_case(use_lme, ord)
 %EX_7_SOLVE_CASE Solve one relaxation used in Example 7.
 % Ex_7.m calls this helper once for the standard relaxation and once for
 % the LME relaxation. Do not run this file directly. The output contains
 % the bound, runtime, optimal moment matrix, flat order, rank, and atoms.
+%
+% J. Choi, July 29, 2026
 mset clear
 mset('verbose', true)
 mpol('x', 1)

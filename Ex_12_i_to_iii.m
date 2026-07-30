@@ -1,6 +1,6 @@
-% J. Choi, July 29, 2026
-%
 % latent-class-model results in Example 12(i)-(iii).
+%
+% J. Choi, July 29, 2026
 
 clear
 clc

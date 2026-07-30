@@ -1,10 +1,10 @@
-% J. Choi, July 29, 2026
-%
 function out = Ex_11_solve_case(report_weights, P, ord)
 %EX_11_SOLVE_CASE Solve one paternity-analysis instance from Example 11.
 % This helper is called repeatedly by Ex_11.m. Do not run it directly;
 % Ex_11.m defines the data and reports the manuscript quantities. The
 % output contains the LME bound, runtime, flat-truncation data, and atoms.
+%
+% J. Choi, July 29, 2026
 mset clear
 mset('verbose', true)
 nred = size(P,2)-1;

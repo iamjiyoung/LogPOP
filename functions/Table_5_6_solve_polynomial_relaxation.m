@@ -1,11 +1,11 @@
-% J. Choi, July 29, 2026
-%
 function out = Table_5_6_solve_polynomial_relaxation(x, objective_poly, Ktheta, ord, flat_max)
 %TABLE_5_6_SOLVE_POLYNOMIAL_RELAXATION Solve one polynomial Moment-SOS relaxation.
 % This lower-level helper is called by Table_5_6_solve_direct_product.m,
 % not by a user-facing script. It returns the polynomial bound, runtime,
 % moment-matrix ranks, flat-truncation order, and extracted atoms.
 % Solve a polynomial moment relaxation with a linear moment objective.
+%
+% J. Choi, July 29, 2026
 
 if nargin < 5
     flat_max = 0;

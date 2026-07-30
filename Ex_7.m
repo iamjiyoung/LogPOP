@@ -1,6 +1,6 @@
-% J. Choi, July 29, 2026
-%
 % the rank-two LME relaxation in Example 7.
+%
+% J. Choi, July 29, 2026
 
 clear
 clc

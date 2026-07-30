@@ -1,11 +1,11 @@
-% J. Choi, July 29, 2026
-%
 function data = Ex_12_iv_generate_dataset(sample_size, seed)
 %EX_12_IV_GENERATE_DATASET Generate the fixed non-saturated LCM dataset.
 % This helper is called by Ex_12_iv.m and should not be run directly.
 % It returns the binary response patterns, fixed counts, generating
 % parameters, and associated cell probabilities.
 % Generate a fixed weak-separation binary LCM data set with d=4 and K=2.
+%
+% J. Choi, July 29, 2026
 
 if nargin < 1
     sample_size = 2000;

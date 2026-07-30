@@ -1,11 +1,11 @@
-% J. Choi, July 29, 2026
-%
 function out = Ex_12_iv_fit_lcm_em(patterns, counts, num_starts, seed, options)
 %EX_12_IV_FIT_LCM_EM Run the multistart EM calculation for Example 12(iv).
 % This helper is called by Ex_12_iv.m and should not be run directly.
 % It returns the best log-likelihood, fitted parameters, runtime, and
 % diagnostics for all EM starts.
 % Fit a two-class binary latent class model by deterministic multistart EM.
+%
+% J. Choi, July 29, 2026
 
 if nargin < 3
     num_starts = 100;

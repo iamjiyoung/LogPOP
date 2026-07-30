@@ -1,5 +1,3 @@
-% J. Choi, July 29, 2026
-%
 function out = Common_solve_log_moment_relaxation( ...
         x, p, solve_weights, report_weights, Ktheta, ord, ...
         flat_max, flat_min, flat_degree)
@@ -9,6 +7,8 @@ function out = Common_solve_log_moment_relaxation( ...
 % should not be run directly. The output structure contains the bound,
 % runtime, moment matrix, flat-truncation data, and extracted atoms.
 % Solve one log-polynomial moment relaxation and collect reproducible outputs.
+%
+% J. Choi, July 29, 2026
 
 if nargin < 7
     flat_max = 0;

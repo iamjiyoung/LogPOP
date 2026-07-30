@@ -1,10 +1,10 @@
-% J. Choi, July 29, 2026
-%
 function out = Ex_12_i_to_iii_solve_case(instance, report_weights)
 %EX_12_I_TO_III_SOLVE_CASE Solve one saturated LCM instance.
 % This helper is called by Ex_12_i_to_iii.m for cases (i), (ii), and (iii).
 % Do not run it directly. The output contains the moment upper bound,
 % runtime, logarithm arguments, and first moments.
+%
+% J. Choi, July 29, 2026
 mset clear
 mset('verbose', true)
 

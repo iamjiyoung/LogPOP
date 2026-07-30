@@ -1,6 +1,6 @@
-% J. Choi, July 29, 2026
-%
 % Example 8(i).
+%
+% J. Choi, July 29, 2026
 
 clear all, 
 clc

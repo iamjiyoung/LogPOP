@@ -1,11 +1,11 @@
-% J. Choi, July 29, 2026
-%
 function out = Ex_6_ii_solve_case(weights, use_lme, ord)
 %EX_6_II_SOLVE_CASE Solve one coefficient instance from Example 6(ii).
 % This helper is called by Ex_6_ii.m for either the standard or the LME
 % moment relaxation. Do not run it directly; open and run Ex_6_ii.m.
 % The output contains the relaxation value, runtime, flat-truncation data,
 % extracted atoms, and the observed atom-to-bound gap.
+%
+% J. Choi, July 29, 2026
 mset clear
 mset('verbose', true)
 mpol('x', 3)

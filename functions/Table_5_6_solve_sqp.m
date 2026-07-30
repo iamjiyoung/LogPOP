@@ -1,11 +1,11 @@
-% J. Choi, July 29, 2026
-%
 function out = Table_5_6_solve_sqp(instance, num_starts)
 %TABLE_5_6_SOLVE_SQP Compute the best feasible value by multistart SQP.
 % This helper is called by Table_5.m and Table_6.m and should not be run
 % directly. It solves the original nonlinear problem from deterministic
 % starts and returns the best feasible value, point, runtime, and status.
 % Find a reproducible feasible lower bound by multistart local optimization.
+%
+% J. Choi, July 29, 2026
 
 if nargin < 2
     num_starts = 20;

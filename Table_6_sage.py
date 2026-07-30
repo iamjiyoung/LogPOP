@@ -1,11 +1,10 @@
-# J. Choi, July 29, 2026
-
 """Run the level-zero conditional SAGE calculations reported in Table 6.
 
 This is a standalone Python entry script. It contains the fixed seed-3
 instance used in the manuscript, prints all reported quantities to the
 terminal, and does not read or write CSV or MAT files.
 """
+# J. Choi, July 29, 2026
 
 from __future__ import annotations
 

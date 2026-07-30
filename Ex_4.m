@@ -1,6 +1,6 @@
-% J. Choi, July 29, 2026
-%
 % Example 4: ABO blood-group likelihood.
+%
+% J. Choi, July 29, 2026
 
 clear
 clc

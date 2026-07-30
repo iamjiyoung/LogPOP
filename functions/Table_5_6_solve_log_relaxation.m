@@ -1,11 +1,11 @@
-% J. Choi, July 29, 2026
-%
 function out = Table_5_6_solve_log_relaxation(instance, use_lme, ord)
 %TABLE_5_6_SOLVE_LOG_RELAXATION Solve a standard or LME log relaxation.
 % This helper is called by Table_5.m and Table_6.m. Do not run it
 % directly. It constructs the selected relaxation and delegates the
 % moment-SDP calculation to Common_solve_log_moment_relaxation.m.
 % Solve the standard or LME log-moment relaxation for a generated instance.
+%
+% J. Choi, July 29, 2026
 
 mset clear
 mset('verbose', false)

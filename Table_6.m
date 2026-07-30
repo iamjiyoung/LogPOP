@@ -1,7 +1,7 @@
-% J. Choi, July 29, 2026
-%
 % Reproduce the MATLAB results reported in Table 6.
 % Run this script directly.
+%
+% J. Choi, July 29, 2026
 
 clear
 clc

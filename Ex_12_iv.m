@@ -1,6 +1,6 @@
-% J. Choi, July 29, 2026
-%
 % non-saturated latent-class-model results in Example 12(iv).
+%
+% J. Choi, July 29, 2026
 
 clear
 clc
