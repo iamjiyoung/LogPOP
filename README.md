@@ -58,3 +58,15 @@ python Table_6_sage.py --profile small_integer
 
 The codes print their results to the MATLAB Command Window or Python
 terminal and do not create separate result files.
+
+## Citation
+
+If you use these codes, please cite
+[Log-Polynomial Optimization](https://doi.org/10.48550/arXiv.2601.02797).
+Citation metadata are provided in `CITATION.cff`.
+
+## Copyright
+
+Copyright (c) 2026 Jiyoung Choi and contributors. This notice applies to
+the project-specific codes and excludes the third-party routines in
+`functions/extraction`. See `NOTICE.md` for details.
