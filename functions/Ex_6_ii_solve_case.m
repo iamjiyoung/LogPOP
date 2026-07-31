@@ -3,9 +3,9 @@ function out = Ex_6_ii_solve_case(weights, use_lme, ord)
 % This helper is called by Ex_6_ii.m for either the standard or the LME
 % moment relaxation. Do not run it directly; open and run Ex_6_ii.m.
 % The output contains the relaxation value, runtime, flat-truncation data,
-% extracted atoms, and the observed atom-to-bound gap.
+% and extracted atoms.
 %
-% J. Choi, July 29, 2026
+% J. Choi, July 30, 2026
 mset clear
 mset('verbose', true)
 mpol('x', 3)
@@ -17,13 +17,9 @@ p{4} = x(2)^3 + 3*x(2)^2*x(3);
 p{5} = 3*x(2)*x(3)^2;
 p{6} = x(3)^3;
 
-log_floor = 1e-5;
 Ktheta = [x'*x <= 1; 1-sum(x) >= 0];
 for i = 1:length(x)
     Ktheta = [Ktheta; x(i) >= 0]; %#ok<AGROW>
-end
-for i = 1:length(p)
-    Ktheta = [Ktheta; p{i} >= log_floor]; %#ok<AGROW>
 end
 
 flat_degree = 2;
@@ -52,7 +48,6 @@ end
 
 out = raw_log_moment_relaxation(x, p, weights, weights, Ktheta, ...
     ord, ord, flat_degree, flat_degree);
-out.gap = NaN;
 out.atom_values = NaN(1, numel(out.atoms));
 for i = 1:numel(out.atoms)
     value_i = 0;
@@ -60,9 +55,6 @@ for i = 1:numel(out.atoms)
         value_i = value_i + weights(j)*log(double(subs(p{j}, x, out.atoms{i})));
     end
     out.atom_values(i) = value_i;
-end
-if ~isempty(out.atom_values)
-    out.gap = min(out.bound-out.atom_values);
 end
 end
 
