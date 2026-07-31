@@ -1,0 +1,3449 @@
+%Version 3.1 December 2024
+% See section 11 of the User Manual for version history
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                 %%
+%% Please do not use \input{...} to include other tex files.       %%
+%% Submit your LaTeX manuscript as one .tex document.              %%
+%%                                                                 %%
+%% All additional figures and files should be attached             %%
+%% separately and not embedded in the \TeX\ document itself.       %%
+%%                                                                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%\documentclass[referee,sn-basic]{sn-jnl}% referee option is meant for double line spacing
+
+%%=======================================================%%
+%% to print line numbers in the margin use lineno option %%
+%%=======================================================%%
+
+%%\documentclass[lineno,pdflatex,sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+
+%%=========================================================================================%%
+%% the documentclass is set to pdflatex as default. You can delete it if not appropriate.  %%
+%%=========================================================================================%%
+
+%%\documentclass[sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+
+%%Note: the following reference styles support Namedate and Numbered referencing. By default the style follows the most common style. To switch between the options you can add or remove Numbered in the optional parenthesis. 
+%%The option is available for: sn-basic.bst, sn-chicago.bst%  
+ 
+%%\documentclass[pdflatex,sn-nature]{sn-jnl}% Style for submissions to Nature Portfolio journals
+%%\documentclass[pdflatex,sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}% Math and Physical Sciences Numbered Reference Style
+%%\documentclass[pdflatex,sn-mathphys-ay]{sn-jnl}% Math and Physical Sciences Author Year Reference Style
+%%\documentclass[pdflatex,sn-aps]{sn-jnl}% American Physical Society (APS) Reference Style
+%%\documentclass[pdflatex,sn-vancouver-num]{sn-jnl}% Vancouver Numbered Reference Style
+%%\documentclass[pdflatex,sn-vancouver-ay]{sn-jnl}% Vancouver Author Year Reference Style
+%%\documentclass[pdflatex,sn-apa]{sn-jnl}% APA Reference Style
+%%\documentclass[pdflatex,sn-chicago]{sn-jnl}% Chicago-based Humanities Reference Style
+
+%%%% Standard Packages
+%%<additional latex packages if required can be included here>
+
+\usepackage{graphicx}%
+\usepackage{multirow}%
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage{amsthm}%
+\usepackage{mathrsfs}%
+\usepackage[title]{appendix}%
+\usepackage{xcolor}%
+\usepackage{textcomp}%
+\usepackage{manyfoot}%
+\usepackage{booktabs}%
+\usepackage{algorithm}%
+\usepackage{algorithmicx}%
+\usepackage{algpseudocode}%
+\usepackage{listings}%
+\usepackage{placeins}%
+%%%%
+
+\usepackage{mathtools} 
+
+% Commands carried over from the former INFORMS manuscript
+\newcommand{\re}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\lmd}{\lambda}
+\DeclareMathOperator{\rank}{rank}
+\newcommand{\reff}[1]{(\ref{#1})}
+\newcommand{\rd}[1]{{\color{red}#1}} 
+\newcommand{\bl}[1]{{\color{blue}#1}}
+\newcommand{\rdurl}[1]{\href{#1}{\textcolor{red}{\nolinkurl{#1}}}}
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\mat}[1]{\boldsymbol{#1}}
+\newcommand{\supp}[1]{\operatorname{supp}(#1)}
+\newcommand{\st}{\mathrm{s.t.}}
+\newcommand{\ddd}{,\ldots,}
+
+%%%%%=============================================================================%%%%
+%%%%  Remarks: This template is provided to aid authors with the preparation
+%%%%  of original research articles intended for submission to journals published 
+%%%%  by Springer Nature. The guidance has been prepared in partnership with 
+%%%%  production teams to conform to Springer Nature technical requirements. 
+%%%%  Editorial and presentation requirements differ among journal portfolios and 
+%%%%  research disciplines. You may find sections in this template are irrelevant 
+%%%%  to your work and are empowered to omit any such section if allowed by the 
+%%%%  journal you intend to submit to. The submission guidelines and policies 
+%%%%  of the journal take precedence. A detailed User Manual is available in the 
+%%%%  template package for technical guidance.
+%%%%%=============================================================================%%%%
+
+%% as per the requirement new theorem styles can be included as shown below
+\theoremstyle{thmstyleone}%
+\newtheorem{theorem}{Theorem}%  meant for continuous numbers
+%%\newtheorem{theorem}{Theorem}[section]% meant for sectionwise numbers
+%% optional argument [theorem] produces theorem numbering sequence instead of independent numbers for Proposition
+\newtheorem{proposition}[theorem]{Proposition}% 
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{assumption}{Assumption}
+%%\newtheorem{proposition}{Proposition}% to get separate numbers for theorem and proposition etc.
+
+\theoremstyle{thmstyletwo}%
+\newtheorem{example}{Example}%
+\newtheorem{remark}{Remark}%
+
+\theoremstyle{thmstylethree}%
+\newtheorem{definition}{Definition}%
+
+\raggedbottom
+%%\unnumbered% uncomment this for unnumbered level heads
+
+\begin{document}
+
+\title[Log-Polynomial Optimization]{Log-Polynomial Optimization}
+
+%%=============================================================%%
+%% GivenName	-> \fnm{Joergen W.}
+%% Particle	-> \spfx{van der} -> surname prefix
+%% FamilyName	-> \sur{Ploeg}
+%% Suffix	-> \sfx{IV}
+%% \author*[1,2]{\fnm{Joergen W.} \spfx{van der} \sur{Ploeg} 
+%%  \sfx{IV}}\email{iauthor@gmail.com}
+%%=============================================================%%
+
+\author[1]{\fnm{Jiyoung} \sur{Choi}}
+\email{jichoi@ksu.edu}
+\equalcont{These authors contributed equally to this work.}
+
+\author[2]{\fnm{Jiawang} \sur{Nie}}
+\email{njw@math.ucsd.edu}
+\equalcont{These authors contributed equally to this work.}
+
+\author[3]{\fnm{Xindong} \sur{Tang}}
+\email{xdtang@hkbu.edu.hk}
+\equalcont{These authors contributed equally to this work.}
+
+\author*[4]{\fnm{Suhan} \sur{Zhong}}
+\email{suzhong@sjtu.edu.cn}
+\equalcont{These authors contributed equally to this work.}
+
+\affil[1]{\orgdiv{Department of Mathematics},
+    \orgname{Kansas State University},
+    \orgaddress{\city{Manhattan}, \state{KS} \postcode{66506}, \country{USA}}}
+
+\affil[2]{\orgdiv{Department of Mathematics},
+    \orgname{University of California San Diego},
+\orgaddress{\street{9500 Gilman Drive}, \city{La Jolla}, \state{CA} \postcode{92093}, \country{USA}}}
+
+\affil[3]{\orgdiv{Department of Mathematics},
+    \orgname{Hong Kong Baptist University},
+    \orgaddress{\city{Kowloon Tong}, \country{Hong Kong}}}
+
+\affil*[4]{\orgdiv{School of Mathematical Sciences},
+    \orgname{Shanghai Jiao Tong University},
+    \orgaddress{\city{Shanghai}, \country{China}}}
+
+%%==================================%%
+%% Sample for unstructured abstract %%
+%%==================================%%
+
+\abstract{We study a class of optimization problems in which the objective is
+given as a \rd{weighted sum of logarithms of polynomial functions}.
+Motivating applications include maximum likelihood estimation,
+cross-entropy, and Kullback--Leibler divergence
+when the target distribution is fixed and the predicted
+probabilities are polynomial in the decision variables.
+We propose a hierarchy of moment relaxations based on
+truncated $K$-moment problems for log-polynomial optimization.
+\rd{By preserving the logarithmic structure, the relaxation order is
+independent of the positive weights.}
+We distinguish the convexification gap from the
+moment-truncation gap and establish asymptotic convergence to the
+convexified moment relaxation under the Archimedean condition.
+\rd{We provide sufficient conditions for tightness of the hierarchy.
+We also give conditions under which global optimizers can be extracted
+from optimal moment sequences.}
+We further strengthen the relaxations using
+Lagrange multiplier expressions.
+Applications and numerical experiments
+quantify both the practical scope and the limitations of the method
+\rd{across representative problem classes and parameter regimes}.}
+
+%%================================%%
+%% Sample for structured abstract %%
+%%================================%%
+
+% \abstract{\textbf{Purpose:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
+% 
+% \textbf{Methods:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
+% 
+% \textbf{Results:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
+% 
+% \textbf{Conclusion:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.}
+
+\keywords{Log-polynomial optimization, Polynomial optimization,
+Truncated $K$-moment problem, Moment relaxations,
+Semidefinite programming, Lagrange multiplier expressions}
+
+%%\pacs[JEL Classification]{D8, H51}
+
+%%\pacs[MSC Classification]{35A01, 65L10, 65L12, 65L20, 65L70}
+
+\maketitle
+\section{Introduction}\label{sec:Intro}
+
+
+Consider the following log-polynomial optimization problem:
+\begin{equation}\label{eq:problem}
+	\left\{\begin{array}{cl}
+		\max\limits_{\vect{x}\in\re^n} &
+		f(\vect{x}) = \sum\limits_{i=1}^m a_i\log p_i(\vect{x})  \\
+		\st & c_j(\vect{x}) = 0 \,\, (j \in \mathcal{E}),\\
+		& c_j(\vect{x}) \geq 0 \,\, (j \in \mathcal{I}),
+	\end{array}\right.
+\end{equation}
+where $a_1,\ldots, a_m$ are positive scalars, 
+$\mathcal{E}$ and $\mathcal{I}$ are two finite disjoint index sets
+and $p_1,\ldots,p_m$ are polynomials, while each $c_j$ is a polynomial for $j\in \mathcal{E}\cup\mathcal{I}$.
+Denote $\vect{c}_{\mathcal{E}} = (c_j)_{j\in\mathcal{E}}$ and $\vect{c}_{\mathcal{I}} = (c_j)_{j\in\mathcal{I}}$.
+The feasible set of \eqref{eq:problem} can be written as
+\begin{equation}\label{eq:K}
+	K  \coloneqq  \{ \vect{x}\in\re^n : \vect{c}_{\mathcal{E}}(\vect{x}) = 0,\, \vect{c}_{\mathcal{I}}(\vect{x}) \ge  0\}.
+\end{equation}
+\begin{assumption}\label{ass:positivity}
+\rd{For every $i\in[m]$, $p_i$ is nonnegative on $K$. Moreover, there
+exists $\vect{x}^{\circ}\in K$ such that $p_i(\vect{x}^{\circ})>0$ for every $i\in[m]$.}
+\end{assumption}
+\rd{We impose Assumption~\ref{ass:positivity} throughout this paper.}
+We use the extended-value convention $\log 0=-\infty$.
+For convenience, denote
+\begin{equation}\label{eq:weighted_product}
+p^{\vect{a}}(\vect{x}) \coloneqq p_1(\vect{x})^{a_1}\cdots p_m(\vect{x})^{a_m}
+= \exp(f(\vect{x})).
+\end{equation}
+The log-polynomial optimization \eqref{eq:problem}
+is typically nonconvex.
+If all $a_i$ are positive integers, 
+then $p^{\vect{a}}$ is a polynomial.
+In this case, the problem \eqref{eq:problem} 
+is equivalent to maximizing $p^{\vect{a}}$ over $K$.
+The resulting polynomial optimization problem can be addressed
+using the standard moment--sum-of-squares (Moment--SOS) hierarchy
+\cite{lasserre2001,MPO}. However, its computational cost can increase
+significantly when the integer exponents are large. If some $a_i$ are
+noninteger, $p^{\vect{a}}$ is generally not a polynomial, so this
+direct polynomial-product reformulation is unavailable.
+Consequently, when the coefficients are general positive scalars,
+it can be difficult to compute a useful upper bound
+or certify global optimality for \eqref{eq:problem}.
+
+
+
+Log-polynomials have many applications.
+In combinatorial optimization, 
+log-concave polynomials serve as an important tool 
+to study counting problems \cite{Anari24}. 
+In statistical learning, many common objectives and loss functions,
+such as log-likelihood and cross-entropy,
+are defined with logarithmic terms.
+These functions are widely used in density estimation
+\cite{Carpenter2018,Dempster1977,Fisher1922,Vinayak2019,Silverman1986}
+and classification tasks
+\cite{Bishop2006,Goodfellow2016,Goodfellow2014,Mannor2005,Mao2023,Zhang2018},
+where learning often incorporates structural requirements such as non-negativity and normalization constraints, physics-informed or conservation-law constraints \cite{Gusmao2024,Hansen2024,Rayas2022},
+domain-knowledge constraints \cite{Karanam2025}, total-positivity restrictions \cite{Lauritzen2019}, or sparsity-inducing regularization
+\cite{Banerjee2008,Srivastava2024}.
+Suppose \rd{the selected model probabilities are polynomial functions
+of $\vect{x}$, the coefficients multiplying the logarithms are fixed
+scalars, and the structural constraints define a semialgebraic feasible
+set $K$}.
+Then this subclass of the learning problem reduces to solving
+log-polynomial optimization.
+We illustrate this framework via the following motivating applications.
+
+
+{\it Maximum likelihood estimation (MLE)} is a core problem in statistics.
+\rd{Consider a data set $\mathcal{D}$ generated from a polynomial
+probability model $p(\xi; \vect{x})$, where $p(\xi;\vect{x})$ is
+polynomial in $\vect{x}$ and the feasible set $K$ restricts
+$\vect{x}$ so that $p(\cdot;\vect{x})$ is a valid probability mass
+function.}
+\rd{Let $S = \{\xi^{(1)}, \ldots, \xi^{(m)}\}$
+denote the set of distinct observations in $\mathcal{D}$.}
+We use $a_i$ to count the number of samples in $\mathcal{D}$ that equal $\xi^{(i)}$
+for $i=1,\ldots, m$.
+The {\em likelihood function} associated with $\mathcal{D}$ 
+and the corresponding {\em log-likelihood function} are respectively 
+defined as
+\[
+L(\mathcal{D};\vect{x}) \coloneqq \prod\limits_{i=1}^m p(\xi^{(i)};\vect{x})^{a_i},
+\quad 
+\log L(\mathcal{D}; \vect{x}) = \sum\limits_{i=1}^m a_i\log p(\xi^{(i)};\vect{x}).
+\]
+The MLE aims to find parameter values that maximize the likelihood function,
+which is equivalent to maximizing the log-likelihood.
+
+{\it Cross-entropy} and {\it Kullback--Leibler (KL) divergence}
+are commonly used in statistical learning and probabilistic modeling.
+Consider the discrete random variable $\xi$ supported on 
+$S = \{\xi^{(1)}, \ldots, \xi^{(m)}\}$, 
+whose true distribution $P$ has $p(\xi)$ as its {\em probability mass function} (PMF).
+Let $Q(\vect{x})$ be the predicted distribution with a polynomial PMF $q(\xi; \vect{x})$.
+The {\em cross-entropy} between $P$ and $Q(\vect{x})$ is
+\[
+H(P,Q(\vect{x})) \coloneqq -\sum\limits_{i=1}^m p(\xi^{(i)})\log q(\xi^{(i)}; \vect{x}).
+\]
+The KL divergence from $P$ to $Q(\vect{x})$ is 
+\[
+D_{\operatorname{KL}}(P\,\|\,Q(\vect{x})) \coloneqq 
+\sum\limits_{i=1}^m p(\xi^{(i)})
+\big(\log p(\xi^{(i)})-\log q(\xi^{(i)};\vect{x})\big).
+\] 
+In a learning process, the goal is to determine an optimal parameter
+$\vect{x}\in K$ such that $H(P, Q(\vect{x}))$ or $D_{\operatorname{KL}}(P\,\|\,Q(\vect{x}))$
+is minimized.
+Since $P$ is fixed and $S$ is its support, the values
+$p(\xi^{(i)})$ are positive fixed scalars. Hence, minimizing either
+cross-entropy or KL divergence is equivalent to \eqref{eq:problem}
+with $a_i=p(\xi^{(i)})$ and
+$p_i(\vect{x})=q(\xi^{(i)};\vect{x})$.
+By contrast, the entropy
+$-\sum_i q(\xi^{(i)};\vect{x})\log q(\xi^{(i)};\vect{x})$ has
+decision-dependent coefficients and therefore lies outside the scope of
+\eqref{eq:problem}.
+
+\rd{Bach~\cite{Bach2025} develops sum-of-squares relaxations
+for estimating $f$-divergences from moment
+information, computing normalizing integrals, and performing
+variational inference.
+By contrast, the present work studies the global optimization of
+logarithms of polynomial functions with fixed scalar weights over
+semialgebraic sets. Our hierarchy yields upper bounds on the global
+optimum; we also provide sufficient conditions for finite-order
+exactness, procedures for extracting global optimizers under
+appropriate flat-truncation conditions, and strengthened relaxations
+based on Lagrange multiplier expressions.}
+
+
+
+\subsection{Contributions}
+In this paper, we propose a hierarchy of moment relaxations 
+for log-polynomial optimization.
+\rd{When all $a_i$ are positive integers, one can apply the standard
+Moment--SOS hierarchy to the polynomial $p^{\vect{a}}$ defined in
+\eqref{eq:weighted_product}. However, the degree of this polynomial
+grows with the integer exponents, and this direct polynomial-product
+reformulation is generally unavailable when some $a_i$ are
+noninteger.}
+\rd{Our formulation retains the individual polynomials $p_i$ and has
+a relaxation order that does not depend on the weights $a_i$.}
+\rd{We construct a moment relaxation hierarchy for
+\eqref{eq:problem}, where each relaxation problem has an objective
+consisting of logarithms of linear functions of the moment variables
+and has semidefinite constraints.}
+\rd{We distinguish the convexification gap
+$f_{\operatorname{mom}}-f_{\max}$ from the moment-truncation gap $f_{\operatorname{mom},k}-f_{\operatorname{mom}}$.}
+\rd{We study the properties of these relaxations and provide
+sufficient conditions under which
+$f_{\operatorname{mom},k}=f_{\max}$ at a finite relaxation order.}
+\rd{Under an appropriate flat-truncation condition, we provide
+procedures for extracting global optimizers.}
+\rd{In particular, we analyze a class in which the objective
+polynomials and inequality-constraint polynomials are SOS-concave and
+the equality constraints are linear.}
+
+
+
+This paper is organized as follows.
+Section~\ref{sec:Pre} introduces the notation and some preliminaries.
+Section~\ref{sec:rel} presents the proposed moment relaxation 
+approach based on the truncated $K$-moment problems.
+In Section~\ref{sec:tight}, we provide theoretical guarantees for 
+the relaxation's tightness and discuss conditions under 
+which the global optimizers can be extracted.
+In Section~\ref{sec:LME}, we introduce Lagrange multiplier expressions (LMEs)
+to obtain strengthened moment relaxations.
+Numerical experiments and applications are presented in Section~\ref{sec:exp}.
+Section~\ref{sec:con} concludes the paper with a discussion of the
+results and limitations.
+
+
+
+\section{Preliminaries}\label{sec:Pre}
+
+
+\subsection{Notation}
+The symbol $\mathbb{N}$ (resp., $\mathbb{R}$) represents the set of 
+nonnegative integers (resp., real numbers).
+For a positive integer $n$, $[n]\coloneqq \{1,\ldots, n\}$ and 
+$\mathbb{R}^n$ denotes the $n$-dimensional real Euclidean space.
+
+For a set $S\subseteq\mathbb{R}^n$, $\operatorname{conv}(S)$ denotes
+the convex hull of $S$.
+
+For a vector $\vect{u} \in \mathbb{R}^n$, $\|\vect{u}\|$ denotes the standard 
+Euclidean norm and $\delta_{\vect{u}}$ denotes the Dirac measure supported at $\vect{u}$.
+The vectors $\mathbf{1}_n,\mathbf{0}_n\in\mathbb{R}^n$
+denote the all-ones and all-zeros vectors, respectively.
+Their subscripts may be omitted when the dimension is clear.
+For a real symmetric matrix $\mat{A}$, the notation $\mat{A}\succeq0$
+means that $\mat{A}$ is positive semidefinite (PSD).
+Let $\vect{x} \coloneqq (x_1, \ldots, x_n)$ be a vector of variables.
+We use $\mathbb{R}[\vect{x}]$ to denote the ring of polynomials 
+with real coefficients in $\vect{x}$,
+and $\mathbb{R}[\vect{x}]_d$ its subset of polynomials
+of degree at most $d$.
+For a function $f(\vect{x})$, $\nabla f(\vect{x})$ denotes its full gradient
+and $\frac{\partial f}{\partial x_i}(\vect{x})$ denotes its partial
+derivative with respect to $x_i$.
+For $\vect{\alpha} \coloneqq (\alpha_1, \ldots, \alpha_n)\in \mathbb{N}^n$,
+denote $\vect{x}^{\vect{\alpha}} \coloneqq x_1^{\alpha_1} \cdots x_n^{\alpha_n}$,
+whose degree is counted by $|\vect{\alpha}| \coloneqq \alpha_1 + \cdots + \alpha_n$.
+Given a degree $d$, we denote the multi-index set
+\[
+\mathbb{N}_d^n \coloneqq \{\vect{\alpha} \in \mathbb{N}^n : |\vect{\alpha}| \leq d \} .
+\]
+The column vector of all monomials in $\vect{x}$ with degrees up to $d$ is denoted as
+\begin{equation}\label{eq:xvec}
+	[\vect{x}]_d \coloneqq \begin{bmatrix}
+		1 & x_1 & \ldots & x_n & x_1^2 & x_1x_2 & \ldots & x_n^d
+	\end{bmatrix}^T.
+\end{equation}
+
+
+
+\subsection{Nonnegative polynomials}
+
+For a polynomial $p\in\mathbb{R}[\vect{x}]$ and subsets
+$I,J\subseteq\mathbb{R}[\vect{x}]$, define
+\begin{equation*}
+	p \cdot I \coloneqq \{pq : q \in I\} 
+	\quad \text{and} \quad 
+	I+J \coloneqq \{a+b : a \in I, b \in J\}.
+\end{equation*}
+A nonempty subset $I \subseteq \mathbb{R}[\vect{x}]$ is an \textit{ideal}
+of $\mathbb{R}[\vect{x}]$ if $I+I \subseteq I$ and $\mathbb{R}[\vect{x}] \cdot I \subseteq I$.
+A polynomial $\sigma \in \mathbb{R}[\vect{x}]$ is a \textit{sum of squares (SOS)} 
+if $\sigma = q_1^2 + \cdots + q_k^2$ for some polynomials $q_i \in \mathbb{R}[\vect{x}]$. 
+The set of all SOS polynomials is denoted by $\Sigma[\vect{x}]$.
+
+Let $\vect{h} = (h_1, \ldots, h_{\nu})$ and
+$\vect{g}=(g_1,\ldots,g_{\rho})$
+be two polynomial tuples. 
+The real zero set of $\vect{h}$ is the set 
+$Z(\vect{h}) \coloneqq \{\vect{x} \in \mathbb{R}^n:
+h_1(\vect{x}) = \cdots = h_{\nu}(\vect{x}) = 0\}$.
+The ideal generated by $\vect{h}$ is
+\begin{equation*}
+	\operatorname{Ideal}[\vect{h}]\, \coloneqq \,
+	h_1 \cdot \mathbb{R}[\vect{x}] + \cdots
+	+ h_{\nu} \cdot \mathbb{R}[\vect{x}] .
+\end{equation*}
+It is clear that every $p\in
+\operatorname{Ideal}[\vect{h}]$ vanishes on $Z(\vect{h})$.
+Consider the semialgebraic set determined by $\vect{g}$:
+\begin{equation*}
+	S(\vect{g}) \coloneqq \{\vect{x} \in \mathbb{R}^n :
+	g_1(\vect{x}) \geq 0, \ldots,
+	g_{\rho}(\vect{x}) \geq 0\}.
+\end{equation*}
+If a polynomial $f$ admits a decomposition
+\begin{equation}\label{eq:fsos}
+	f = \sigma_0 + \sigma_1 g_1 + \cdots
+	+ \sigma_{\rho}g_{\rho},
+\end{equation}
+for $\sigma_0,\ldots,\sigma_{\rho}\in\Sigma[\vect{x}]$,
+then $f$ is non-negative on $S(\vect{g})$.
+The \textit{quadratic module} generated by $\vect{g}$ consists of all polynomials
+in form of \eqref{eq:fsos}, which reads
+\begin{equation*}
+	\operatorname{QM}[\vect{g}] \coloneqq
+	\Sigma[\vect{x}] + g_1 \cdot \Sigma[\vect{x}]
+	+ \cdots + g_{\rho} \cdot \Sigma[\vect{x}].
+\end{equation*}
+If $p\in \operatorname{Ideal}[\vect{h}] + \operatorname{QM}[\vect{g}]$,
+then $p(\vect{x})\ge 0$ for all $\vect{x}\in Z(\vect{h}) \cap S(\vect{g})$.
+But the converse is not always true.
+The set $\operatorname{Ideal}[\vect{h}] + \operatorname{QM}[\vect{g}]$ 
+is said to be \textit{Archimedean} if it contains a polynomial $q$ 
+such that $\{\vect{x} \in \mathbb{R}^n : q(\vect{x}) \ge 0\}$ is a compact set.
+Under this condition, if a polynomial $f$ is strictly 
+positive on $Z(\vect{h})\cap S(\vect{g})$, 
+then it must belong to $\operatorname{Ideal}[\vect{h}]+\operatorname{QM}[\vect{g}]$.
+This result is called \textit{Putinar's Positivstellensatz} \cite{Putinar}.
+
+
+\subsection{Moment and localizing matrices}
+\label{ssc:momloc}
+
+The space of real vectors indexed by $\vect{\alpha} \in \mathbb{N}_{2k}^n$ 
+is denoted by $\mathbb{R}^{\mathbb{N}_{2k}^n}$. 
+A vector $\vect{y} = (y_{\vect{\alpha}})_{\vect{\alpha} \in \mathbb{N}_{2k}^n}$ 
+in this space is called a \textit{truncated multi-sequence} of degree $2k$.
+For an integer $s$ with $0\le s\le k$, 
+the $s$-th order \textit{moment matrix} generated by $\vect{y}$ is defined as
+\begin{equation*}
+	\mat{M}_{s}[\vect{y}] \coloneqq
+	[y_{\vect{\alpha}+\vect{\beta}}]_{\vect{\alpha},\vect{\beta}\in\mathbb{N}_{s}^n}.
+\end{equation*}
+The rows and columns of $\mat{M}_k[\vect{y}]$ are indexed by multi-indices 
+from $\mathbb{N}_{k}^n$, typically arranged in graded lexicographic order.
+For example, when $n = 2$ and $k = 2$, the matrix $\mat{M}_2[\vect{y}]$ is given by
+\begin{equation*}
+	\mat{M}_2[\vect{y}] = \begin{bmatrix}
+		y_{00} & y_{10} & y_{01} & y_{20} & y_{11} & y_{02} \\
+		y_{10} & y_{20} & y_{11} & y_{30} & y_{21} & y_{12} \\
+		y_{01} & y_{11} & y_{02} & y_{21} & y_{12} & y_{03} \\
+		y_{20} & y_{30} & y_{21} & y_{40} & y_{31} & y_{22} \\
+		y_{11} & y_{21} & y_{12} & y_{31} & y_{22} & y_{13} \\
+		y_{02} & y_{12} & y_{03} & y_{22} & y_{13} & y_{04}
+	\end{bmatrix}.
+\end{equation*}
+Every polynomial $f\in\re[\vect{x}]_{2k}$ can be identified with its coefficient vector
+$\operatorname{vec}(f) \coloneqq
+(f_{\vect{\alpha}})_{\vect{\alpha}\in \mathbb{N}_{2k}^n}$,
+i.e., $f(\vect{x}) =  \operatorname{vec}(f)^T[\vect{x}]_{2k}$. 
+Thus, a truncated multi-sequence $\vect{y} \in \mathbb{R}^{\mathbb{N}_{2k}^n}$ defines a 
+linear functional on $\mathbb{R}[\vect{x}]_{2k}$ as
+\begin{equation}\label{eq:bilinear}
+	\langle f, \vect{y} \rangle \coloneqq 
+	\sum_{\vect{\alpha} \in \mathbb{N}_{2k}^n}
+	f_{\vect{\alpha}}y_{\vect{\alpha}}
+	= \operatorname{vec}(f)^T \vect{y}.
+\end{equation}
+For a polynomial $q \in \mathbb{R}[\vect{x}]_{2k}$, 
+let $s \coloneqq k - \lceil \deg(q)/2 \rceil$.
+The product $q(\vect{x}) [\vect{x}]_s [\vect{x}]_s^T$ is a $\binom{n+s}{s}$-by-$\binom{n+s}{s}$
+symmetric polynomial matrix. 
+Its expansion can be written as
+\begin{equation*}
+	q(\vect{x}) [\vect{x}]_s [\vect{x}]_s^T
+	= \sum_{\vect{\alpha} \in \mathbb{N}_{2k}^n}
+	\vect{x}^{\vect{\alpha}}\mat{Q}_{\vect{\alpha}}
+\end{equation*}
+for some constant symmetric matrices $\mat{Q}_{\vect{\alpha}}$. 
+The $k$-th order \textit{localizing matrix} associated with 
+the polynomial $q$ and the truncated multi-sequence $\vect{y} \in \mathbb{R}^{\mathbb{N}_{2k}^n}$ is defined as
+\begin{equation*}
+	\mat{L}^{(k)}_q [\vect{y}] \coloneqq
+	\sum_{\vect{\alpha} \in \mathbb{N}_{2k}^n}
+	y_{\vect{\alpha}}\mat{Q}_{\vect{\alpha}}.
+\end{equation*}
+In the special case $q=1$ (the constant unit polynomial),
+this definition recovers the moment matrix, i.e., $\mat{L}^{(k)}_1 [\vect{y}] = \mat{M}_k[\vect{y}]$.
+
+
+
+\subsection{Truncated \texorpdfstring{$K$}{K}-moment problems}
+
+A truncated multi-sequence
+$\vect{y} = (y_{\vect{\alpha}})_{\vect{\alpha} \in \mathbb{N}^n_{2k}}$
+is said to
+\textit{admit} a Borel measure $\mu$ on $K$ if
+\begin{equation} \label{eq:y_admits_meas}
+	y_{\vect{\alpha}} = \int_K \vect{x}^{\vect{\alpha}} d \mu
+	\quad \text{for all} \quad
+	\vect{\alpha} \in \mathbb{N}^n_{2k}.
+\end{equation}
+Such a measure $\mu$ is called a \textit{representing measure} of $\vect{y}$.
+The support of $\mu$, denoted by $\supp{\mu}$,
+is the smallest closed set $T \subseteq \mathbb{R}^n$ 
+such that $\mu(\mathbb{R}^n \setminus T) = 0$.
+A measure is called \textit{finitely atomic} if its support is a finite set.
+Specifically, if $\supp{\mu}$ $= \{\vect{v}_1, \ldots, \vect{v}_r\}$,
+then the measure $\mu$ is called $r$-atomic and can be written as
+\[
+\mu = \sum_{i=1}^r \lambda_i \delta_{\vect{v}_i} \quad 
+\text{for some positive weights } \lambda_1, \dots, \lambda_r > 0.
+\]
+Suppose that $\deg(c_j)\leq 2k$ for every
+$j\in\mathcal{E}\cup\mathcal{I}$.
+For a truncated multi-sequence $\vect{y} \in \mathbb{R}^{\mathbb{N}_{2k}^n}$ to admit a representing measure
+$\mu$ on $K$ as in \eqref{eq:y_admits_meas}, 
+it is necessary that the following matrix conditions hold (see \cite{MPO}):
+\begin{equation} \label{eq:loc_mom}
+	\mat{M}_k[\vect{y}] \succeq 0, \quad \mat{L}_{c_j}^{(k)}[\vect{y}] \succeq 0 \,(j \in \mathcal{I}), \quad
+	\mat{L}_{c_j}^{(k)}[\vect{y}] = 0 \, (j \in \mathcal{E}).
+\end{equation}
+
+
+
+\section{A semidefinite relaxation hierarchy}
+\label{sec:rel}
+
+
+
+In this section, we propose a moment-relaxation approach for
+solving the log-polynomial optimization problem
+\eqref{eq:problem}.
+
+\subsection{A convex relaxation}
+To begin with, we introduce a natural convex relaxation of the 
+log-polynomial optimization \eqref{eq:problem}.
+Define the degree
+\begin{equation}\label{eq:d0d}
+	d  \coloneqq  \max\,\Big\{ 
+	\max_{i\in[m]}\left\lceil \frac{\deg(p_i)}{2}\right\rceil, 
+	\, \max_{j\in\mathcal{E}}\left\lceil\frac{\deg(c_j)}{2}\right\rceil,
+	\, \max_{j\in\mathcal{I}}\left\lceil\frac{\deg(c_j)}{2}\right\rceil \Big\}.
+\end{equation}
+Each polynomial in \eqref{eq:problem} belongs to the polynomial ring $\re[\vect{x}]_{2k}$ for all $k\ge d$.
+By replacing each monomial $\vect{x}^{\vect{\alpha}}$ appearing
+in the problem with an auxiliary moment variable
+$y_{\vect{\alpha}}$,
+we obtain the following equivalent moment reformulation of \eqref{eq:problem}:
+\begin{equation}\label{eq:momequiv}
+	\left\{\begin{array}{rl}
+		f_{\max}\coloneqq \max\limits_{\vect{z}} & \sum\limits_{i=1}^m a_i \log \langle p_i, \vect{z}\rangle\\
+		\st & \vect{z} = [\vect{x}]_{2d}\mbox{ for some $\vect{x}\in K$}.
+	\end{array}
+	\right.
+\end{equation}
+Here $\langle \cdot , \cdot \rangle$ is the bilinear operation 
+defined in \eqref{eq:bilinear}, 
+$[\vect{x}]_{2d}$ is the vector of monomials of degree at most
+$2d$ as in \eqref{eq:xvec},
+and $K$ is the feasible set given in \eqref{eq:K}.
+\rd{To clarify the geometry of this reformulation, define the polynomial map
+\[
+\mathcal{P}:\mathbb{R}^n\to\mathbb{R}^m,\qquad
+\mathcal{P}(\vect{x})\coloneqq(p_1(\vect{x}),\ldots,p_m(\vect{x})),
+\]
+and its linear lift to the moment space
+\[
+\widetilde{\mathcal{P}}:
+\mathbb{R}^{\mathbb{N}_{2d}^n}\to\mathbb{R}^m,\qquad
+\widetilde{\mathcal{P}}(\vect{z})
+\coloneqq
+\big(\langle p_1,\vect{z}\rangle,\ldots,\langle p_m,\vect{z}\rangle\big).
+\]
+Also, define
+\[
+\phi(\vect{u})\coloneqq\sum_{i=1}^m a_i\log u_i,
+\qquad u_i>0\quad(i\in[m]).
+\]
+Then the objective function in \eqref{eq:momequiv} is
+$\phi(\widetilde{\mathcal{P}}(\vect{z}))$.
+Although $\phi$ is strictly concave on its domain,
+$\phi\circ\widetilde{\mathcal{P}}$ need not be strictly concave
+on the lifted feasible set, since distinct moment vectors may have
+the same image under $\widetilde{\mathcal{P}}$.}
+To obtain a convex feasible set in the lifted moment space, we
+define the conic hull generated by the feasible set of
+\eqref{eq:momequiv}:
+\begin{equation}  \label{Rd(K)}
+	\mathscr{R}_d(K) \coloneqq \Big\{ \vect{z} = \sum\limits_{j=1}^l \lambda_j [\vect{v}_j]_{2d} :
+	\lambda_j \ge  0, \,\, \vect{v}_j \in K,\,\, l \in \mathbb{N} \Big\}.
+\end{equation}
+It follows that $\mathscr{R}_d(K)\cap \{z_0=1\}$ is the convex hull 
+of the set $\{[\vect{x}]_{2d}: \vect{x}\in K\}$.
+{\color{red}
+The image of $K$ under $\mathcal{P}$ is
+\[
+\mathcal{P}(K) \coloneqq
+\{\mathcal{P}(\vect{x}):\vect{x}\in K\}.
+\]
+Since $\widetilde{\mathcal{P}}$ is linear and $\widetilde{\mathcal{P}}([\vect{x}]_{2d})=\mathcal{P}(\vect{x})$, we have
+\[
+\widetilde{\mathcal{P}}
+\big(\mathscr{R}_d(K)\cap\{z_0=1\}\big)
+= \operatorname{conv}\big(\mathcal{P}(K)\big).
+\]
+Thus, passing from $\{[\vect{x}]_{2d}:\vect{x}\in K\}$ to its convex hull corresponds to replacing the generally nonconvex image $\mathcal{P}(K)$ by $\operatorname{conv}(\mathcal{P}(K))$.
+}
+\rd{For every $\vect{z}\in\mathscr{R}_d(K)\cap\{z_0=1\}$, each quantity $\langle p_i,\vect{z}\rangle$ is nonnegative. 
+The logarithmic objective is evaluated only at points for which all these quantities are positive.}
+This is because any $\vect{z}\in \mathscr{R}_d(K)\cap \{z_0=1\}$ 
+can be decomposed as $\vect{z} = \sum_{j=1}^l \lambda_j[\vect{v}_j]_{2d}$ 
+for some $l\in \N$ with all $\vect{v}_j\in K$ and 
+$\lambda_j\ge 0,\,\lambda_1+\cdots+\lambda_l=1$.
+\rd{By Assumption~\ref{ass:positivity},
+$p_i(\vect{v}_j)\geq0$ for every $i\in[m]$ and $j\in[l]$.} Hence,
+\[
+\langle p_i, \vect{z}\rangle 
+= \Big\langle p_i,\sum\limits_{j=1}^l \lambda_j[\vect{v}_j]_{2d}\Big\rangle 
+=  \sum\limits_{j=1}^l \lambda_j \langle p_i, [\vect{v}_j]_{2d}\rangle 
+= \sum\limits_{j=1}^{l} \lambda_j p_i(\vect{v}_j) \ge 0.
+\]
+This leads to a natural convex relaxation of \eqref{eq:momequiv}:
+\begin{equation}  \label{eq:relax_meas}
+	\left\{\begin{array}{rl}
+		f_{\operatorname{mom}} \coloneqq \max\limits_{\vect{z}} 
+		&  \sum\limits_{i=1}^m a_i \log \langle p_i,\vect{z}\rangle   \\
+		\st & z_0 = 1,\, \vect{z}  \in  \mathscr{R}_d(K) .
+	\end{array}\right.
+\end{equation}
+Equivalently, the optimal values of \eqref{eq:problem} and
+\eqref{eq:relax_meas} can be written in image space as
+\begin{equation}\label{eq:image_formulations}
+f_{\max}
+=\max_{\vect{u}\in\mathcal{P}(K)}\phi(\vect{u}),
+\qquad
+f_{\operatorname{mom}}
+=\max_{\vect{u}\in\operatorname{conv}(\mathcal{P}(K))}\phi(\vect{u})
+\end{equation}
+where the maximization is restricted to the domain on which the
+logarithms are well defined.
+It is clear that $f_{\max}\le f_{\operatorname{mom}}$.
+In particular, when $f_{\max}=f_{\operatorname{mom}}$,
+the optimization problem \eqref{eq:relax_meas} is said to
+be a {\it tight} relaxation of \eqref{eq:problem}.
+
+
+Assume that both maxima in \eqref{eq:image_formulations} are attained.
+Since $\phi$ is strictly concave, the second maximization in
+\eqref{eq:image_formulations} has a unique optimizer $\vect{u}^*$. Therefore,
+\[
+f_{\max}=f_{\operatorname{mom}}
+\quad\Longleftrightarrow\quad
+\vect{u}^*\in\mathcal{P}(K).
+\]
+Thus, the convex relaxation \eqref{eq:relax_meas} is tight for
+\eqref{eq:problem} if and only if the unique optimizer of
+the second maximization in \eqref{eq:image_formulations}
+belongs to $\mathcal{P}(K)$. We call
+$f_{\operatorname{mom}}-f_{\max}$ the convexification gap.
+
+
+For a polynomial objective, moment lifting renders the objective
+linear in the moment variables, and maximizing a linear function over
+a set or over its convex hull gives the same optimal value. In the
+present setting, however, the lifted objective is nonlinear and
+concave, so maximizing it over the convex hull may yield a strictly
+larger optimal value.
+
+{\color{red}
+\begin{remark}
+The passage from the first image-space problem to the second in
+\eqref{eq:image_formulations}, which replaces $\mathcal{P}(K)$ by
+$\operatorname{conv}(\mathcal{P}(K))$, is not specific to logarithmic
+objectives. More generally, consider an objective of the form $\psi(H(\vect{x}))$, where $H:\mathbb{R}^n\to\mathbb{R}^r$ is a polynomial map and $\psi$ is concave on a convex set containing $\operatorname{conv}(H(K))$.
+The corresponding convexification replaces $H(K)$ by $\operatorname{conv}(H(K))$.
+Assuming that both optima are attained, tightness holds if and only if the convexified problem has an optimizer belonging to $H(K)$.
+When $\psi$ is strictly concave, its optimal point in the image space is unique.
+
+Within this general framework, the logarithmic structure provides two
+features specific to the present paper. First, the identity in
+\eqref{eq:weighted_product} allows the optimization of a high-degree
+polynomial product, when the $a_i$ are positive integers, to be
+reformulated using the individual low-degree polynomials.
+Second, the resulting relaxation order is independent of the magnitudes of the exponents $a_i$, and the formulation remains available when some exponents are noninteger.
+
+Despite these advantages, replacing the polynomial image by its convex
+hull may introduce an arbitrarily large convexification gap
+$f_{\operatorname{mom}}-f_{\max}$. This phenomenon is illustrated in
+the following example.
+\end{remark}
+}
+
+\begin{example}\label{ex:gap}
+	Consider the univariate log-polynomial optimization problem
+	\begin{equation}\label{eq:ex_gap}
+		\left\{\begin{array}{cl}
+			\max\limits_{x\in\re} & 0.5\log(1+\epsilon-x)+0.5\log(1+\epsilon+x)\\
+			\st & 1-x^2 = 0,
+		\end{array}
+		\right.
+	\end{equation}
+	where $\epsilon>0$ is a small positive parameter. 
+	Since the feasible set $K = \{1,-1\}$ only contains two points, 
+	we can express the normalized slice
+	$\mathscr{R}_1(K)\cap\{z_0=1\}$ explicitly,
+	thus obtain the convex relaxation of \eqref{eq:ex_gap}:
+	\[
+	\left\{\begin{array}{cl}
+		\max\limits_{\vect{z}\in\re^3} & 0.5\log(1+\epsilon-z_1)+0.5\log(1+\epsilon+z_1)\\
+		\st &  z_0=z_2 = 1,\, -1\le z_1\le 1.
+	\end{array}
+	\right.
+	\]
+	The optimal values of \eqref{eq:ex_gap} and its convex
+	relaxation are
+	respectively derived as 
+	\[
+	f_{\max} = 0.5\log(\epsilon)+0.5\log(2+\epsilon),
+	\quad
+	f_{\operatorname{mom}} = \log(1+\epsilon).
+	\]
+	The convexification gap satisfies
+	\[
+	f_{\operatorname{mom}}-f_{\max}
+	=
+	\log(1+\epsilon)-0.5\log(\epsilon)-0.5\log(2+\epsilon)
+	\longrightarrow\infty
+	\quad\text{as }\epsilon\to0.
+	\]
+\end{example}
+
+We next give two concrete sufficient conditions under which the
+convexification gap vanishes.
+
+\begin{proposition}\label{prop:gap_maxmom}
+Suppose $K$ is nonempty. The convex relaxation
+\eqref{eq:relax_meas} is tight for the log-polynomial optimization
+\eqref{eq:problem} if either of the following conditions holds.
+\begin{enumerate}
+\item[(i)] There exists $\vect{\hat{x}}\in K$ that simultaneously maximizes
+all the polynomials, i.e.,
+\[
+p_i(\vect{\hat{x}})=\max_{\vect{x}\in K}p_i(\vect{x})
+\qquad\text{for every }i\in[m].
+\]
+
+\item[(ii)] The convex relaxation \eqref{eq:relax_meas} has a
+maximizer
+\[
+\vect{z}^*=\sum_{j=1}^l\lambda_j[\vect{v}_j^*]_{2d},
+\]
+where $\lambda_j\geq0$, $\sum_{j=1}^l\lambda_j=1$, and
+$\vect{v}_j^*\in K$, such that
+\[
+  \mathcal{P}(\vect{v}_1^*)=\cdots=\mathcal{P}(\vect{v}_l^*).
+\]
+\end{enumerate}
+\end{proposition}
+
+
+
+\begin{proof} 
+The log-polynomial optimization problem \eqref{eq:problem} is equivalent to its moment
+reformulation \eqref{eq:momequiv}, and we always have
+$f_{\max}\leq f_{\operatorname{mom}}$.
+
+For condition (i), let $\vect{z}$ be any feasible point of
+\eqref{eq:relax_meas} and write
+\[
+\vect{z}=\sum_{j=1}^l\lambda_j[\vect{v}_j]_{2d},
+\qquad
+\lambda_j\geq0,\quad
+\sum_{j=1}^l\lambda_j=1,\quad \vect{v}_j\in K.
+\]
+For every $i\in[m]$,
+\[
+\langle p_i,\vect{z}\rangle
+=\sum_{j=1}^l\lambda_jp_i(\vect{v}_j)
+\leq p_i(\vect{\hat{x}}).
+\]
+Since the logarithm is increasing,
+\[
+\sum_{i=1}^m a_i\log\langle p_i,\vect{z}\rangle
+\leq
+\sum_{i=1}^m a_i\log p_i(\vect{\hat{x}})
+\leq f_{\max}.
+\]
+Taking the maximum over $\vect{z}$ gives
+$f_{\operatorname{mom}}\leq f_{\max}$.
+
+For condition (ii), the assumed equality of the polynomial images and
+$\sum_{j=1}^l\lambda_j=1$ give
+\[
+f_{\operatorname{mom}}=\sum_{i=1}^m a_i
+  \log\left(\sum_{j=1}^l\lambda_jp_i(\vect{v}_j^*)\right)
+=\sum_{i=1}^m a_i\log p_i(\vect{v}_1^*)
+\leq f_{\max}.
+\]
+Thus, under either condition,
+$f_{\max}=f_{\operatorname{mom}}$. 
+\end{proof}
+
+
+Condition~(i) requires all the polynomials $p_i$ to attain their
+individual maxima at a common point and is therefore a strong special
+case. Condition~(ii) has a geometric interpretation. It requires the
+optimizer of the second maximization in
+\eqref{eq:image_formulations} to belong to $\mathcal{P}(K)$. If both
+maximizations in \eqref{eq:image_formulations} attain their optima, then
+$f_{\max}=f_{\operatorname{mom}}$ is equivalent to this condition, and
+condition~(ii) can be satisfied with $l=1$.
+
+
+In the special case $m=1$,
+the log-polynomial optimization \eqref{eq:problem} is equivalent to 
+the polynomial optimization of maximizing $p_1(\vect{x})$ over $K$.
+The following result follows directly from Proposition~\ref{prop:gap_maxmom}.
+\begin{corollary}
+	The relaxation \eqref{eq:relax_meas} is tight if $m=1$.
+\end{corollary}
+
+In practice, the problem \eqref{eq:relax_meas} is still difficult to solve.
+This is because the moment cone $\mathscr{R}_d(K)$ typically 
+does not have a convenient parametric expression in the multivariate case.
+On the other hand, the moment cone $\mathscr{R}_d(K)$ 
+is often approximated by semidefinite constraints.
+This motivates us to further construct 
+a hierarchy of semidefinite relaxations of \eqref{eq:relax_meas}.
+
+
+\subsection{A hierarchy of moment relaxations}
+
+Recall that $K$ is determined by polynomial constraints
+\[
+c_j(\vect{x}) = 0\,(j\in\mathcal{E}),\quad c_j(\vect{x})\ge 0\,(j\in\mathcal{I}).
+\]
+Let $\vect{z}\in\mathscr{R}_d(K)$ be an arbitrary truncated moment vector. 
+For all $k\ge d$, there exists a $k$-th order truncated multi-sequence extension of $\vect{z}$
+such that
+\[
+\vect{y}=(y_{\vect{\alpha}})\in\re^{\N_{2k}^n}\,\,\mbox{with}\,\,
+y_{\vect{\alpha}} = z_{\vect{\alpha}}
+\, \forall \vect{\alpha}\in\N_{2d}^n\quad \mbox{and}
+\]
+\[
+\mat{M}_{k}[\vect{y}]\succeq 0,\quad \mat{L}_{c_j}^{(k)}[\vect{y}] = 0\,(j\in \mathcal{E}),\quad
+\mat{L}_{c_j}^{(k)}[\vect{y}]\succeq 0\, (j\in \mathcal{I}).
+\]
+In the above, $\mat{M}_k[\vect{y}]$ is the $k$-th order moment matrix and each
+$\mat{L}_{c_j}^{(k)}[\vect{y}]$ is the $k$-th order 
+localizing matrix associated with $c_j$, 
+which are introduced in Subsection~\ref{ssc:momloc}.
+For increasing values of $k = d,d+1,\ldots$, 
+we can build a hierarchy of moment relaxations of \eqref{eq:relax_meas} 
+with semidefinite constraints: 
+\begin{equation}    \label{eq:relax_log}
+	\left\{\begin{array}{rl}
+		f_{\operatorname{mom},k} \coloneqq \displaystyle \max\limits_{\vect{y}} 
+		& \sum\limits_{i=1}^m a_i \log \langle p_i, \vect{y} \rangle \\
+		\st  &  y_0 = 1,\,\vect{y} \in \mathbb{R}^{\mathbb{N}_{2k}^n},\, \mat{M}_k [\vect{y}] \succeq 0,\\
+		&   \mat{L}_{c_j}^{(k)}[\vect{y}] = 0\,(j \in \mathcal{E}),\\ 
+		& \mat{L}_{c_j}^{(k)}[\vect{y}] \succeq 0 \,(j \in \mathcal{I} ),
+	\end{array}\right.
+\end{equation}
+where the integer $k$ is called the {\it relaxation order}.
+To distinguish it from the convex relaxation \eqref{eq:relax_meas},
+we call the problem \eqref{eq:relax_log} the 
+$k$-th order {\it moment relaxation}
+and the corresponding hierarchy the {\it moment hierarchy}.
+Note that each moment relaxation \eqref{eq:relax_log} is a convex
+optimization problem, but it is not a standard semidefinite program
+because its objective is concave and nonlinear.
+In computational practice, it can be solved globally by conic problem 
+solvers with interior point methods.
+Since the feasible sets become tighter as the relaxation order
+increases, and every point of $\mathscr{R}_d(K)$ admits such extensions,
+we have
+\[
+f_{\operatorname{mom}}\le \cdots\le f_{\operatorname{mom},k+1}
+\le f_{\operatorname{mom},k}\le \cdots \le f_{\operatorname{mom},d}.
+\]
+The following result shows that, under the Archimedean condition, the
+moment hierarchy \eqref{eq:relax_log} converges to the convex relaxation
+\eqref{eq:relax_meas}. Importantly, this convergence does not by
+itself imply convergence to the original optimal value $f_{\max}$.
+
+\begin{theorem}\label{thm:asymp}
+Under Assumption~\ref{ass:positivity}, suppose that
+\[
+\operatorname{Ideal}[\vect{c}_{\mathcal{E}}]
++\operatorname{QM}[\vect{c}_{\mathcal{I}}]
+\]
+is Archimedean. Then
+\[
+f_{\operatorname{mom},k}
+\longrightarrow f_{\operatorname{mom}}
+\qquad\text{as }k\to\infty.
+\]
+\end{theorem}
+
+{\color{red}
+\begin{proof}
+Let
+\[
+C\coloneqq\operatorname{conv}(\mathcal{P}(K)).
+\]
+The Archimedean condition implies that $K$ is compact. Since
+$\mathcal{P}$ is continuous, $\mathcal{P}(K)$ is compact, and so is $C$.
+
+Under the convention $\log 0=-\infty$, the function
+\[
+\phi(\vect{u})\coloneqq\sum_{i=1}^m a_i\log u_i
+\]
+is upper semicontinuous on $C$. Moreover, since
+$p_i(\vect{x}^{\circ})>0$ for every $i\in[m]$, each
+$\log p_i(\vect{x}^{\circ})$ is finite, and hence
+$\phi(\mathcal{P}(\vect{x}^{\circ}))
+=\sum_{i=1}^m a_i\log p_i(\vect{x}^{\circ})$ is finite.
+It follows that $\phi$ attains its maximum over $C$ at
+some point $\vect{u}^*$, and necessarily
+\[
+u_i^*>0\qquad(i\in[m]).
+\]
+
+Since $\vect{u}^*$ maximizes the differentiable concave function $\phi$
+over the convex set $C$, the first-order optimality condition gives
+\[
+\nabla\phi(\vect{u}^*)^T(\vect{u}-\vect{u}^*)\leq0
+\qquad\text{for every }\vect{u}\in C.
+\]
+In particular, the polynomial
+\[
+q(\vect{x})\coloneqq
+-\nabla\phi(\vect{u}^*)^T\big(\mathcal{P}(\vect{x})-\vect{u}^*\big)
+=
+\sum_{i=1}^m\frac{a_i}{u_i^*}
+\big(u_i^*-p_i(\vect{x})\big)
+\]
+is nonnegative on $K$.
+
+For every $\epsilon>0$, the polynomial $q+\epsilon$ is strictly
+positive on $K$. By Putinar's Positivstellensatz \cite{Putinar}, there
+exists an
+integer $N(\epsilon)\geq d$ such that
+\[
+q+\epsilon\in
+\operatorname{Ideal}[\vect{c}_{\mathcal{E}}]_{2k}
++\operatorname{QM}[\vect{c}_{\mathcal{I}}]_{2k}
+\qquad
+\text{for every }k\geq N(\epsilon).
+\]
+
+Fix $k\geq N(\epsilon)$ and let
+$\vect{y}\in\mathbb{R}^{\mathbb{N}_{2k}^n}$ be a feasible point of
+\eqref{eq:relax_log} satisfying
+$\langle p_i,\vect{y}\rangle>0$ for every $i\in[m]$. Define
+\[
+\vect{u}(\vect{y})\coloneqq
+\big(\langle p_1,\vect{y}\rangle,\ldots,\langle p_m,\vect{y}\rangle\big).
+\]
+Since $\deg(p_i)\leq2d\leq2k$ for every $i\in[m]$, the vector $\vect{u}(\vect{y})$
+depends only on the degree-$2d$ truncation of $\vect{y}$.
+The certificate above and the feasibility of $\vect{y}$ give
+\[
+\langle q+\epsilon,\vect{y}\rangle\geq0.
+\]
+Indeed, the ideal terms pair to zero, while the quadratic-module
+terms pair nonnegatively because the corresponding localizing matrices
+of $\vect{y}$ are positive semidefinite.
+By the definition and linearity of $\langle\cdot,\vect{y}\rangle$ in
+\eqref{eq:bilinear}, and since $\langle1,\vect{y}\rangle=y_0=1$, we have
+\begin{align*}
+\langle q+\epsilon,\vect{y}\rangle
+&=
+\sum_{i=1}^m\frac{a_i}{u_i^*}
+\left(
+u_i^*\langle1,\vect{y}\rangle-\langle p_i,\vect{y}\rangle
+\right)
++\epsilon\langle1,\vect{y}\rangle\\
+&=
+\sum_{i=1}^m\frac{a_i}{u_i^*}
+\left(
+u_i^*-\langle p_i,\vect{y}\rangle
+\right)
++\epsilon\\
+&=
+-\nabla\phi(\vect{u}^*)^T\big(\vect{u}(\vect{y})-\vect{u}^*\big)+\epsilon.
+\end{align*}
+Combining this identity with
+$\langle q+\epsilon,\vect{y}\rangle\geq0$ yields
+\[
+\nabla\phi(\vect{u}^*)^T\big(\vect{u}(\vect{y})-\vect{u}^*\big)\leq\epsilon.
+\]
+By concavity of $\phi$,
+\[
+\phi(\vect{u}(\vect{y}))
+\leq
+\phi(\vect{u}^*)+
+\nabla\phi(\vect{u}^*)^T\big(\vect{u}(\vect{y})-\vect{u}^*\big)
+\leq
+\phi(\vect{u}^*)+\epsilon
+=
+f_{\operatorname{mom}}+\epsilon.
+\]
+Taking the supremum over all feasible $\vect{y}$ yields
+\[
+f_{\operatorname{mom},k}
+\leq f_{\operatorname{mom}}+\epsilon
+\qquad
+\text{for every }k\geq N(\epsilon).
+\]
+Since $f_{\operatorname{mom}}\leq f_{\operatorname{mom},k}$, we have
+\[
+f_{\operatorname{mom}}
+\leq f_{\operatorname{mom},k}
+\leq f_{\operatorname{mom}}+\epsilon
+\qquad
+\text{for every }k\geq N(\epsilon).
+\]
+Therefore,
+\[
+f_{\operatorname{mom},k}
+\longrightarrow f_{\operatorname{mom}}
+\qquad\text{as }k\to\infty.
+\]
+\end{proof}
+}
+
+Theorem~\ref{thm:asymp} concerns only the moment-truncation gap.
+Convergence to the original optimal value additionally requires the
+convexification gap to vanish.
+
+\begin{corollary}\label{cor:asymp}
+Assume that
+$\operatorname{Ideal}[\vect{c}_{\mathcal{E}}]
++\operatorname{QM}[\vect{c}_{\mathcal{I}}]$
+is Archimedean. If
+$f_{\max}=f_{\operatorname{mom}},$
+then
+$f_{\operatorname{mom},k}\longrightarrow f_{\max}\text{ as }k\to\infty.$
+Since either condition in Proposition~\ref{prop:gap_maxmom} implies
+$f_{\max}=f_{\operatorname{mom}}$, the same convergence conclusion
+holds whenever either condition is satisfied.
+\end{corollary}
+
+
+\begin{proof}
+The conclusion follows immediately from
+Theorem~\ref{thm:asymp} and
+Proposition~\ref{prop:gap_maxmom}.
+\end{proof}
+
+
+
+
+\section{Tightness analysis of moment relaxations}\label{sec:tight}
+
+\rd{The $k$-th moment relaxation \eqref{eq:relax_log} is called
+{\it tight} if its optimal value equals $f_{\max}$. The moment hierarchy
+is said to have {\it finite convergence} if this equality holds at some
+finite relaxation order.}
+In this section, we study how to certify such tightness and 
+\rd{how to extract global maximizers when an appropriate flat-truncation
+condition holds.}
+\rd{We also study a class of problems with SOS-concave polynomials in
+the logarithmic objective, SOS-concave inequality polynomials, and
+linear equality constraints, for which finite convergence is guaranteed.}
+
+
+\subsection{Certifying tightness of moment relaxations}
+
+Let $k$ be the relaxation order.
+Let $f_{\operatorname{mom},k}$ denote the optimal value
+of the moment relaxation \eqref{eq:relax_log},
+$f_{\operatorname{mom}}$ the optimal value
+of the convex relaxation \eqref{eq:relax_meas},
+and $f_{\max}$ the optimal value of the
+original log-polynomial optimization \eqref{eq:problem}.
+Since
+\[
+f_{\max}\leq f_{\operatorname{mom}}
+\leq f_{\operatorname{mom},k},
+\]
+\rd{the $k$-th moment relaxation is tight if and only if the following
+two equalities hold:}
+\[
+\underbrace{f_{\max}=f_{\operatorname{mom}}}_{\text{no convexification gap}},
+\qquad
+\underbrace{f_{\operatorname{mom}}
+=f_{\operatorname{mom},k}}_{\text{no moment-truncation gap}}
+\]
+\rd{The first equality asks whether replacing $\mathcal{P}(K)$ by
+$\operatorname{conv}(\mathcal{P}(K))$ in
+\eqref{eq:image_formulations} changes the optimal value. Under
+attainment, this is equivalent to asking whether the second maximization
+in \eqref{eq:image_formulations} has an optimizer belonging to
+$\mathcal{P}(K)$, as discussed in Section~\ref{sec:rel}. Let
+$\vect{y}^*$ be an optimizer of the $k$-th moment relaxation
+\eqref{eq:relax_log}. The flat truncation condition below certifies the
+second equality by showing that $\vect{y}^*|_{2t}$ admits a
+$K$-representing measure.}
+It reads
+\begin{equation}\label{eq:flat_truncation}
+	\exists t\in\rd{\{d,d+1,\ldots,k\}}\quad \mbox{s.t.}\quad
+	\rank\,\mat{M}_t[\vect{y}^*] = \rank\,\mat{M}_{t-d}[\vect{y}^*].
+\end{equation}
+Under the flat truncation condition, \rd{the truncation
+$\vect{y}^*|_{2t}$} admits a unique $K$-representing
+atomic measure supported by $r=\rank\, \mat{M}_t[\vect{y}^*]$ distinct points.
+In other words, \rd{there exist scalars
+$\lmd_1,\ldots,\lmd_r>0$}
+and distinct points $\vect{v}_1^* \ddd \vect{v}_r^* \in K$ such that
+\begin{equation}\label{eq:ft_decomp}
+	\vect{y}^*|_{2t} = \lmd_1 [\vect{v}_1^*]_{2t} + \cdots + \lmd_r [\vect{v}_r^*]_{2t},
+\end{equation}
+where $\vect{y}^*|_{2t}$ is \rd{the degree-$2t$ truncation} of $\vect{y}^*$.
+\rd{Since $y_0^*=1$, the weights satisfy
+$\sum_{j=1}^r\lambda_j=1$.}
+In particular, such a decomposition \eqref{eq:ft_decomp} is unique by 
+\cite[Theorem~2.7.7]{MPO}, up to reordering. 
+Since $t\ge d$, the decomposition \eqref{eq:ft_decomp} ensures that 
+$\vect{y}^*|_{2d}\in \mathscr{R}_d(K)$.
+We then summarize sufficient conditions for \eqref{eq:relax_log} 
+to be a tight relaxation for \eqref{eq:problem}.
+
+
+\begin{theorem}\label{tm:parallel_all}
+	Suppose $\vect{y}^*$ is an optimizer of the $k$-th order moment relaxation \eqref{eq:relax_log}.
+	If $\vect{y}^*$ satisfies the flat truncation condition 
+	\eqref{eq:flat_truncation} for some
+	$t\in\rd{\{d,d+1,\ldots,k\}}$,
+	then $f_{\operatorname{mom},k} = f_{\operatorname{mom}}$,
+	and $\vect{y}^*|_{2t}$ admits the decomposition in \eqref{eq:ft_decomp} 
+	for $r=\rank\, \mat{M}_t[\vect{y}^*]$ distinct points $\vect{v}_1^*,\ldots, \vect{v}_r^*\in K$.
+	If, in addition,
+$\mathcal{P}(\vect{v}_1^*)=\cdots=\mathcal{P}(\vect{v}_r^*)$,
+	then $f_{\max} = f_{\operatorname{mom}} = f_{\operatorname{mom},k}$
+	and all $\vect{v}_1^* \ddd \vect{v}_r^*$ are global maximizers of \reff{eq:problem}.
+\end{theorem}
+
+\begin{proof} 
+	Under the flat truncation condition, 
+	$\vect{z}^* = \vect{y}^*|_{2d}$ is a feasible point of \eqref{eq:relax_meas}.
+	Since each $\deg(p_i) \le 2d$, we have
+	\begin{equation}
+		f_{\operatorname{mom},k} = \sum_{i=1}^m a_i \log \langle p_i,\vect{y}^*\rangle 
+		= \sum_{i=1}^m a_i \log \langle p_i,\vect{z}^*\rangle 
+		\leq f_{\operatorname{mom}}.
+	\end{equation}
+	\rd{Combining} the above inequality with
+	$f_{\operatorname{mom}} \le f_{\operatorname{mom},k}$,
+	we conclude that $f_{\operatorname{mom}} = f_{\operatorname{mom},k}$.
+	The decomposition \eqref{eq:ft_decomp} is implied by the 
+	flat truncation condition \cite[Theorem~2.7.7]{MPO}.
+	If
+$\mathcal{P}(\vect{v}_1^*)=\cdots=\mathcal{P}(\vect{v}_r^*)$,
+	then $f_{\max} = f_{\operatorname{mom}}$ by Proposition~\ref{prop:gap_maxmom}.
+	Consequently, $f_{\max} = f_{\operatorname{mom}} = f_{\operatorname{mom},k}$.
+	To show that $\vect{v}_l^*$ for each $l\in[r]$ is a global maximizer, 
+	it suffices to show $f(\vect{v}_l^*) = f_{\operatorname{mom},k} = f_{\max}$.
+	\rd{Using
+	$\mathcal{P}(\vect{v}_1^*)=\cdots=\mathcal{P}(\vect{v}_r^*)$
+	and $\sum_{j=1}^r\lambda_j=1$,} we have
+	\begin{equation*}
+		f_{\operatorname{mom},k}
+		= \sum_{i=1}^m a_i \log \Big( \sum_{j=1}^r \lambda_j p_i(\vect{v}_j^*) \Big) 
+		= \sum_{i=1}^m a_i \log \big( p_i(\vect{v}_l^*) \big) = f(\vect{v}_l^*)
+	\end{equation*}
+	for every $l\in[r]$. It follows that $\vect{v}_1^*, \ldots, \vect{v}_r^*$ 
+	are all global maximizers of \eqref{eq:problem}. 
+\end{proof}
+
+Notice that $\rank\, \mat{M}_d[\vect{y}^*] = 1$ if and only if $\vect{y}^*|_{2d} = [\vect{v}^*]_{2d}$ 
+with $\vect{v}^* = (y^*_{\vect{e}_1}\ddd y^*_{\vect{e}_n})$. 
+For this special case, all conditions in Theorem~\ref{tm:parallel_all} 
+are satisfied automatically.
+
+\begin{corollary}\label{cor:rank1}
+	Suppose $\vect{y}^*$ is an optimizer of the $k$-th order moment relaxation
+	\eqref{eq:relax_log}.
+	If $\rank\, \mat{M}_d[\vect{y}^*] = 1$, then $f_{\max} = f_{\operatorname{mom},k}$
+	and $\vect{v}^* = (y^*_{\vect{e}_1}\ddd y^*_{\vect{e}_n})$
+	is a global maximizer of \eqref{eq:problem}.
+\end{corollary}
+
+\rd{The role of flat truncation here is closely related to its role
+in standard polynomial optimization \cite{nie2013certifying}.}
+Suppose $\vect{y}^*$ is an optimizer of the $k$-th order moment relaxation
+\eqref{eq:relax_log}.
+If it satisfies the flat truncation condition
+\eqref{eq:flat_truncation}, then \eqref{eq:relax_log} is a tight
+relaxation of \eqref{eq:relax_meas}, which implies that
+\[
+f_{\operatorname{mom}}=f_{\operatorname{mom},k}.
+\]
+\rd{Thus, flat truncation certifies that the moment-truncation gap vanishes but does
+not by itself certify that the convexification gap vanishes.}
+The convex relaxation \eqref{eq:relax_meas} may not be a tight
+relaxation of the moment reformulation \eqref{eq:momequiv}, as shown
+in Example~\ref{ex:gap}.
+Consequently, even if $\vect{y}^*|_{2t}$ admits the decomposition
+\eqref{eq:ft_decomp} with candidate solutions
+$\vect{v}_1^*,\ldots,\vect{v}_r^*\in K$, it remains possible that
+\[
+f_{\max}<f_{\operatorname{mom}}
+=f_{\operatorname{mom},k}.
+\]
+In such scenarios, the points $\vect{v}_i^*$ may or may not be global
+maximizers of \eqref{eq:problem}.
+We illustrate both possibilities in the following example.
+
+
+
+\begin{example}\label{ex:counter}
+	Consider the log-polynomial optimization problem:
+	\begin{equation}\label{eq:counter}
+		\left\{\begin{array}{cl}
+			\max\limits_{x\in\re} & f(x)\coloneqq \log((x-1)^2+a) + \log((x+1)^2+a)\\
+			\st  & x(x-1)(x+1) = 0,
+		\end{array}\right.
+	\end{equation}
+	where $a>0$ is a parameter. The feasible set $K = \{1, -1, 0\}$
+	and the degree bound $d=2$.
+	It is easy to evaluate
+	\[ f(1) = \log (a(4+a)), \quad f(-1) = \log (a(4+a)),\quad  f(0) = 2\log (1+a). \]
+	Consider the moment relaxation \eqref{eq:relax_log} with 
+	the relaxation order $k=3$.
+	\rd{The equality constraint in \eqref{eq:counter} is equivalent to
+	$x^3-x=0$. Under the localizing-matrix definition used in
+	\eqref{eq:relax_log}, it yields
+	$y_3=y_1$, $y_4=y_2$, and $y_5=y_3$, while $y_6$ remains a
+	free moment variable.}
+	By eliminating variables, 
+	the $3$rd-order moment relaxation of \eqref{eq:counter} can be simplified to 
+	\begin{equation}\label{eq:relax_counter}
+		\left\{\begin{array}{cl}
+			\displaystyle \max_{\rd{(y_1,y_2,y_6)}} &
+			\log(y_2-2y_1+1+a ) +  \log(y_2+2y_1+1+a )   \\
+			\st &
+			\rd{y_1,y_2,y_6\in\re},\,\left[ \begin{array}{cccc}
+				1 & y_1 & y_2 & y_1 \\
+				y_1 & y_2 & y_1 & y_2\\
+				y_2 & y_1 & y_2 & y_1\\
+				y_1 & y_2 & y_1 & \rd{y_6}\\
+			\end{array}
+			\right] \succeq 0.
+		\end{array}\right.
+	\end{equation}
+	In the above, the objective function equals $\log((y_2+1+a)^2-4y_1^2)$ 
+	and the positive semidefinite constraint implies that 
+	$0\le y_1^2 \le y_2^2 \le y_2 \le 1.$
+	Thus, \rd{for every feasible point of \eqref{eq:relax_counter}, we have}
+	\[
+	\log((y_2+1+a)^2-4y_1^2)\le \log((1+1+a)^2-4(0)) = 2\log(a+2).
+	\]
+	\rd{For $y_1=0$ and $y_2=1$, the positive semidefinite constraint in
+	\eqref{eq:relax_counter} holds if and only if $y_6\geq1$.
+	Since the objective is independent of $y_6$, every such choice attains
+	the above upper bound. Choosing $y_6=1$ gives a flat optimal solution.}
+	Hence the optimal value and \rd{one flat optimizer} of the 
+	$3$rd-order moment relaxation of \eqref{eq:counter} are
+	\[
+	f_{\operatorname{mom},3} = 2\log(a+2),\quad
+	\vect{y}^* = (1,0,1,0,1,0,1),
+	\] 
+	where $\vect{y}^* = 0.5[u_1]_6 + 0.5[u_2]_6$ is supported 
+	on feasible points $u_1 = 1$, $u_2 = -1$.
+	
+	(i) When $a = 1$, we have
+	\[
+	f(1) = f(-1) = \log(5)>f(0) = \log(4).
+	\]
+	In this case, $f_{\max} = \log(5)$ and 
+	both $u_1 = 1$ and $u_2 = -1$ are maximizers of (\ref{eq:counter}).
+	However, $f_{\operatorname{mom},3} = \log(9)$, 
+	which is strictly bigger than $f_{\max}$.
+	Indeed, one can check that 
+	$f_{\operatorname{mom}} = f_{\operatorname{mom},k} = \log(9)$ 
+	for all $k\ge 3$, \rd{indicating a persistent nonzero convexification gap.}
+	
+	(ii) When $a = 0.1$, we have
+	\[
+	f(1) =  f(-1) = \log (0.41)< f(0) = \log (1.21).
+	\]
+	This implies that $f_{\max} = \log(1.21)$,
+	which is achieved at the unique optimizer $u_3 = 0$.
+	In this case, $f_{\operatorname{mom},3} = \log (4.41)>f_{\max}$ 
+	and $u_1,u_2$ are no longer global maximizers of \eqref{eq:counter}.
+	It can be further verified that the relaxation \eqref{eq:relax_log} 
+	remains non-tight for all $k\ge 3$.
+\end{example}
+
+Proposition~\ref{prop:gap_maxmom} gives two sufficient conditions for 
+$f_{\max} = f_{\operatorname{mom}}$.
+These conditions are problem-dependent and may be difficult to
+verify a priori.
+Recall that moment relaxations for polynomial optimization exhibit
+finite convergence under suitable optimality conditions
+\cite{nie2014optimality}. This motivates us to study a convex regime
+of log-polynomial optimization.
+
+
+
+\subsection{Concave log-polynomial optimization}
+
+The problem \eqref{eq:problem} is called a {\it concave} log-polynomial 
+optimization problem if $K$ is a convex set and 
+each $p_i$ is concave on $K$, i.e., 
+for all $\vect{u},\vect{v}\in K$, $i\in[m]$ and $\lambda\in[0,1]$,
+\[
+\lambda \vect{u}+(1-\lambda)\vect{v}\in K,\quad
+p_i(\lambda \vect{u}+(1-\lambda)\vect{v})\ge  \lambda p_i(\vect{u})+(1-\lambda)p_i(\vect{v}).
+\]
+Concave log-polynomial optimization has tight moment relaxations 
+under flat truncation conditions.
+
+\begin{theorem}   \label{thm:concave}
+	Assume \eqref{eq:problem} is concave and 
+	$\vect{y}^*$ is an optimizer of its $k$-th order moment relaxation \reff{eq:relax_log}.
+	If $\vect{y}^*$ satisfies the flat truncation condition \reff{eq:flat_truncation},
+	then $f_{\max} = f_{\operatorname{mom}} = f_{\operatorname{mom},k}$ 
+	and $\vect{v}^* = (y^*_{\vect{e}_1}\ddd y^*_{\vect{e}_n})$
+	is a global maximizer of \reff{eq:problem}.
+\end{theorem}
+
+\begin{proof} 
+	Suppose $\vect{y}^*$ satisfies the flat truncation condition \eqref{eq:flat_truncation}
+	for some $t\in\{d,d+1,\ldots,k\}$. Let
+	$r = \rank\,\mat{M}_t[\vect{y}^*]$.
+	There exist positive scalars $\lambda_i$ and distinct points $\vect{v}_i^*\in K$
+	for $i\in[r]$ such that 
+	\[
+	\vect{y}^*|_{2t} = \lambda_1[\vect{v}_1^*]_{2t}+\cdots
+	+\lambda_r[\vect{v}_r^*]_{2t}.
+	\]
+	\rd{The equality $y_0^*=1$ implies
+	$\lambda_1+\cdots+\lambda_r=1$. Since $K$ is convex,}
+	$\vect{v}^* = (y_{\vect{e}_1}^*, \ldots, y_{\vect{e}_n}^*) 
+	= \lambda_1\vect{v}_1^*+\cdots+\lambda_r\vect{v}_r^*\in K.$
+	\rd{Since $\deg(p_i)\leq2d\leq2t$, this implies}
+	\[
+	\langle p_i,\vect{y}^*\rangle 
+	= \sum_{j=1}^r \lambda_j \langle p_i, \rd{[\vect{v}_j^*]_{2t}}\rangle 
+	= \sum_{j=1}^r \lambda_j p_i(\vect{v}_j^*) \le p_i(\vect{v}^*)
+	\]
+	for all $i\in[m]$.
+	By assumption, $\vect{y}^*$ is an optimizer of \eqref{eq:relax_log}.
+	Since the logarithm function is monotonically increasing, 
+	we further have
+	\[
+	f_{\operatorname{mom},k}
+	= \sum\limits_{i=1}^m a_i \log \langle p_i, \vect{y}^* \rangle  
+	\le \sum\limits_{i=1}^m a_i \log p_i(\vect{v}^*)
+	\le f_{\max}.
+	\]
+	\rd{Since \eqref{eq:relax_meas} and \eqref{eq:relax_log} are
+	relaxations of \eqref{eq:problem}, we also have
+	$f_{\max}\leq f_{\operatorname{mom}}\leq
+	f_{\operatorname{mom},k}$. Consequently,
+	$f_{\max}=f_{\operatorname{mom}}=f_{\operatorname{mom},k}$, and
+	$\vect{v}^*$ is a maximizer of \eqref{eq:problem}.}
+\end{proof}
+
+\rd{Theorems~\ref{tm:parallel_all} and \ref{thm:concave} provide two
+different sufficient mechanisms for obtaining tight moment
+relaxations, both under flat truncation.}
+Specifically, Theorem~\ref{tm:parallel_all} provides conditions 
+under which all points $\vect{v}_1^*, \ldots, \vect{v}_r^*$ 
+in the support of the atomic measure admitted by $\vect{y}^*|_{2t}$ 
+are maximizers of \eqref{eq:problem}.
+In contrast, Theorem~\ref{thm:concave} focuses on concave log-polynomial optimization, 
+where these $\vect{v}_1^*, \ldots, \vect{v}_r^*$ are not necessarily 
+global maximizers of \eqref{eq:problem}.
+
+However, determining the convexity or concavity of polynomials 
+with degree four or higher is NP-hard \cite{AAA13}. 
+In computational practice, SOS-convex/concave polynomials, 
+which form a subset of convex/concave polynomials, 
+are of great interest since they can be verified by
+solving a semidefinite program \cite[Lemma~7.1.3]{MPO}.
+A polynomial $q(\vect{x})$ is said to be {\it SOS-convex} 
+if there exists a matrix polynomial $\mat{R}(\vect{x})$ such that its Hessian matrix
+$\nabla^2 q(\vect{x})
+=\mat{R}(\vect{x})^T\mat{R}(\vect{x})$,
+and it is said to be {\it SOS-concave} if $-q$ is SOS-convex.
+We then show that $f_{\max} = f_{\operatorname{mom},k}$ for every $k\ge d$
+if \eqref{eq:problem} is defined by SOS-concave polynomials.
+
+
+\begin{theorem}\label{thm:sosconcave}
+	Assume $c_j$ are SOS-concave for all $j\in\mathcal{I}$, 
+	$\vect{c}_{\mathcal{E}}$ is a linear polynomial tuple and 
+	each $p_i$ for $i\in[m]$ is SOS-concave.
+	Then $f_{\operatorname{mom},k} = f_{\max}$ for all $k\ge d$.
+	\rd{Moreover, for any $k\geq d$, if the $k$-th order moment
+	relaxation \eqref{eq:relax_log} has an optimizer $\vect{y}^*$,}
+	then $\vect{v}^* = (y^*_{\vect{e}_1}\ddd y^*_{\vect{e}_n})$
+	is a global maximizer of \eqref{eq:problem}.
+\end{theorem}
+
+\begin{proof} 
+	Given $k\ge d$, let $\vect{y}$ be a feasible point of \eqref{eq:relax_log}
+	and denote $\pi(\vect{y})\coloneqq (y_{\vect{e}_1}\ddd y_{\vect{e}_n})$.
+	For every $j\in \mathcal{I}$, $\langle c_j,\vect{y}\rangle \ge 0$ 
+	since $\mat{L}_{c_j}^{(k)}[\vect{y}]\succeq 0$.
+	For every $j\in \mathcal{E}$, since $c_j$ is linear, 
+	we have $c_j(\pi(\vect{y})) = 0$ as it corresponds to the 
+	$(1,1)$-th entry of $\mat{L}_{c_j}^{(k)}[\vect{y}]$.
+	Since $\mat{M}_d[\vect{y}]\succeq 0$ and $y_0=1$, 
+	the SOS-concavity and Jensen's inequality \cite[Theorem~7.1.6]{MPO} imply
+	\[ 
+	\langle p_i,\vect{y}\rangle \le p_i(\pi(\vect{y})),\quad 0
+	\le \langle c_j,\vect{y}\rangle \le c_j(\pi(\vect{y})), 
+	\]
+	for all $i\in[m]$ and $j\in \mathcal{I}$. 
+	Thus, we have $\pi(\vect{y})\in K$ and
+	\begin{equation}\label{eq:jensen}
+		\sum\limits_{i=1}^m a_i \log \langle p_i,\vect{y}\rangle  
+		\le  \sum\limits_{i=1}^m a_i \log p_i(\pi(\vect{y})) 
+		\leq  f_{\max}.
+	\end{equation}
+	Note that the relaxation order $k$ and the 
+	feasible point $\vect{y}$ can be chosen arbitrarily.
+	By maximizing \eqref{eq:jensen} with respect to $\vect{y}$ 
+	over the feasible set of \eqref{eq:relax_log}, 
+	we obtain $f_{\operatorname{mom},k} \le f_{\max}$, 
+	The reverse inequality
+	$f_{\max}\leq f_{\operatorname{mom},k}$ follows because
+	\eqref{eq:relax_log} is a relaxation of \eqref{eq:problem}.
+	Hence $f_{\operatorname{mom},k}=f_{\max}$ for all $k\geq d$.
+	Suppose \reff{eq:relax_log} has an optimizer $\vect{y}^*$. 
+    Since $\vect{y}^*$ is optimal, the left-hand side of \eqref{eq:jensen} equals
+    $f_{\operatorname{mom},k}=f_{\max}$.
+    Hence $\sum_{i=1}^m a_i \log p_i(\pi(\vect{y}^*))=f_{\max}$, and $\vect{v}^*=\pi(\vect{y}^*)$ is a global maximizer of \reff{eq:problem}. 
+\end{proof}
+
+\rd{Since the logarithm is increasing and concave, if the polynomials
+$p_i$ are concave and $K$ is convex, then the log-polynomial
+objective is concave on its effective domain. Hence, maximizing it
+over $K$ is a convex optimization problem and is amenable to
+standard convex optimization methods. The main significance of
+Theorem~\ref{thm:sosconcave} in this setting is therefore the
+finite-order exactness of the moment relaxation and, when a moment
+optimizer exists, the recovery of a global maximizer from its first
+moments.}
+
+\rd{Theorem~\ref{thm:sosconcave} provides a finite-order moment
+certificate for maximizing a product of positive SOS-concave
+polynomials over a convex feasible set.}
+Consider a polynomial optimization problem of the form
+\begin{equation}\label{eq:prod_pop}
+	\left\{\begin{array}{cll}
+		\max\limits_{\vect{x}\in\re^n} & \theta(\vect{x})\coloneqq p_1(\vect{x})p_2(\vect{x})\cdots p_{m}(\vect{x})\\
+		\st & c_j(\vect{x}) = 0 \,\, (j \in \mathcal{E}),\\
+		& c_j(\vect{x}) \geq 0 \,\, (j \in \mathcal{I}).
+	\end{array}\right.
+\end{equation}
+Let $K$ denote the feasible set of \eqref{eq:prod_pop}.
+Assume $p_1\ddd p_m$ (not necessarily distinct) are SOS-concave,
+each $c_{j}$ for $j\in\mathcal{E}$ is linear, and every $c_{j}$ for $j\in\mathcal{I}$ is SOS-concave.
+When $m > 1$, its objective function $\theta(\vect{x})$ is typically not concave.
+\rd{Consequently, convexity-based exactness guarantees for the standard
+Moment--SOS hierarchy do not generally apply, and its lowest-order
+relaxation need not be tight.}
+If each $p_i(\vect{x})$ for $i\in[m]$ is positive on $K$, then \eqref{eq:prod_pop} can 
+be equivalently solved as the log-polynomial optimization problem
+\[
+\rd{\max\limits_{\vect{x}\in K}\log \theta(\vect{x})
+=\max\limits_{\vect{x}\in K}\sum\limits_{i=1}^m\log p_i(\vect{x}).}
+\]
+By Theorem~\ref{thm:sosconcave}, this reformulated problem has 
+a tight moment relaxation at its lowest relaxation order.
+\rd{Beyond this convex regime, genuinely nonconcave log-polynomial
+objectives are examined numerically in Section~\ref{sec:scaling}.}
+
+
+
+
+\section{Tighter relaxations with LMEs}
+\label{sec:LME}
+
+
+In this section, we introduce a technique called Lagrange multiplier
+expressions to construct tighter moment relaxations of
+\eqref{eq:problem} than the standard moment relaxation
+\eqref{eq:relax_log}.
+
+For convenience, suppose that $\mathcal{E}\cup \mathcal{I} = [\ell] \coloneq \{1,\ldots, \ell\}$.
+Let $f(\vect{x})$ be the objective function and $\vect{x}^*$ the maximizer of \eqref{eq:problem}.
+Under a suitable constraint qualification at $\vect{x}^*$, there
+exists a vector of Lagrange multipliers
+$\vect{\lambda} = (\lambda_j)$ for $j = 1\ddd \ell$, 
+such that $(\vect{x}^*,\vect{\lambda})\in\mathcal{K}$, where
+\begin{equation}    \label{eq:KKT}
+	\mathcal{K} \coloneqq 
+	\left\{ (\vect{x}, \vect{\lambda})\in K\times \re^{\ell}
+	\left|\begin{array}{c}
+		\nabla f(\vect{x}) + \sum\limits_{j \in \mathcal{E} \cup \mathcal{I}} \lambda_j \nabla c_j(\vect{x}) = 0,\\
+		\lambda_j\ge 0,\, \lambda_j c_j(\vect{x}) = 0\, (j \in \mathcal{I})
+	\end{array}\right.\right\}.
+\end{equation}
+The constraints in \eqref{eq:KKT} are called the 
+Karush-Kuhn-Tucker (KKT) optimality conditions.
+Each $(\vect{x}, \vect{\lambda}) \in \mathcal{K}$ is called a critical pair, 
+where $\vect{x}$ alone is called a critical point.
+Suppose there exists a polynomial or rational tuple 
+$\vect{\tau} = (\tau_1,\ldots, \tau_{\ell})$ such that 
+\begin{equation}\label{eq:lme}
+	\lambda_j = \tau_j(\vect{x})\quad \mbox{for all}\quad
+	(\vect{x},\vect{\lambda})\in \mathcal{K}.
+\end{equation}
+Then we can get a parametric approximation of critical points by
+replacing $\vect{\lambda}$ in \eqref{eq:KKT} with $\vect{\tau}$.
+Such a $\vect{\tau}$ is called a Lagrange multiplier expression (LME).
+LMEs serve as an efficient tool for constructing tight relaxations 
+in polynomial optimization \cite{Nie2019}.
+Recently, they have been applied to challenging optimization problems 
+given by polynomials, including bilevel optimization, 
+generalized Nash equilibrium problems and variational inequalities
+\cite{Choi2024,NieSunTangZ,nie2023convex,NieTangZgnep21,NieWangZBilevel21}.
+
+\begin{example}\label{ex:lmes}
+	We present explicit LMEs for box, simplex and ball constraints.
+	
+	\begin{enumerate}
+		
+		\item[(i)] If $K=\{\vect{x}\in\re^n: a_j \leq x_j \leq b_j,\, j\in[n]\}$, 
+		then $\ell = 2n$ and \eqref{eq:lme} is satisfied for 
+		$\vect{\tau} = (\tau_1,\ldots,\tau_{2n})$ with
+		\begin{equation*}
+			\tau_{2j-1} = \rd{\frac{\frac{\partial f}{\partial x_j}(\vect{x})(x_j-b_j)}
+			{b_j-a_j}},\qquad
+			\tau_{2j} = \rd{\frac{\frac{\partial f}{\partial x_j}(\vect{x})(x_j-a_j)}
+			{b_j-a_j}}\quad
+			\forall j\in[n].
+		\end{equation*}
+		
+		\item[(ii)] If $K=\{\vect{x}\in\re^n: 1 - \mathbf{1}^T \vect{x} \ge 0,\vect{x} \geq 0\}$,
+		then $\ell = n+1$ and \eqref{eq:lme} is satisfied for 
+		\[
+		\vect{\tau} = \vect{x}^T\nabla f(\vect{x})\mathbf{1}
+		- (0,\, \nabla_{x_1} f(\vect{x}),
+		\, \ldots,\, \nabla_{x_n} f(\vect{x})),
+		\]
+		where $\mathbf{1}\in\re^{\rd{n+1}}$ is the vector of all ones.
+		
+		\item[(iii)] If $K = \{\vect{x}\in\re^n: \|\vect{x}-\vect{a}\| \leq b\}$, 
+		then $\ell=1$ and \eqref{eq:lme} is satisfied for
+		\begin{equation*}
+			\vect{\tau}
+			= \frac{(\vect{x}-\vect{a})^T \nabla f(\vect{x})}{2b^2}.
+		\end{equation*}
+		
+	\end{enumerate}
+\end{example}
+
+Next, we introduce how to apply LMEs to construct tighter
+moment relaxations for \eqref{eq:problem}.
+Consider the log-polynomial optimization problem (\ref{eq:problem})
+with box, simplex or ball constraints.
+Then, polynomial LMEs $\tau_j(\vect{x})$ for $j\in\mathcal{E}\cup \mathcal{I}$ are 
+explicitly presented in Example~\ref{ex:lmes}. Recall that 
+\[
+f(\vect{x}) = \sum\limits_{i=1}^m a_i \log p_i(\vect{x}),\quad
+\nabla f(\vect{x}) = \sum\limits_{i=1}^m \frac{a_i}{p_i(\vect{x})}\nabla p_i(\vect{x}).
+\]
+For convenience, denote $p^{\mathbf{1}} = p_1p_2\cdots p_m$ and
+\[
+f_i(\vect{x}) \coloneqq \frac{p^{\mathbf{1}}(\vect{x})}{p_i(\vect{x})},\quad \forall i\in[m].
+\]
+Assume \rd{$p_i>0$ on $K$ for all $i\in[m]$}.
+Then a feasible point $\vect{x}\in K$ is a critical point of \eqref{eq:problem} 
+if and only if it satisfies 
+\[
+\left\{\begin{array}{l}
+	\sum\limits_{i=1}^m a_i f_i(\vect{x})\nabla p_i(\vect{x}) 
+	+ p^{\mathbf{1}}(\vect{x})\sum\limits_{j\in \mathcal{E}\cup \mathcal{I}} 
+	\tau_j(\vect{x})\nabla c_j(\vect{x}) = 0,\\
+	\tau_j(\vect{x})\ge 0\,(j\in\mathcal{I}),\quad  \tau_j(\vect{x})c_j(\vect{x})=0\, (j\in\mathcal{I}).
+\end{array}\right.
+\]
+This system provides additional polynomial constraints for
+strengthening the moment relaxation of \eqref{eq:problem}.
+For convenience, denote the polynomial tuples
+\[	\begin{array}{l}
+	\Phi\coloneq \{ \vect{c}_{\mathcal{E}} \} \cup \Big\{ \sum\limits_{i=1}^m 
+	a_i f_i(\vect{x})\nabla p_i(\vect{x}) + p^{\mathbf{1}}(\vect{x})\sum\limits_{j\in \mathcal{E}\cup \mathcal{I}} 
+	\tau_j(\vect{x})\nabla c_j(\vect{x}) \Big\} \cup 
+	\{\tau_jc_j: j\in \mathcal{I}\},  \\
+	\Psi\coloneq \{ \vect{c}_{\mathcal{I}} \} \cup \{ \tau_j: j\in \mathcal{I} \}.
+\end{array}
+\]
+For a vector $\vect{\phi}$ of polynomials, 
+$\{\vect{\phi}\}$ denotes the polynomial set of entries of $\vect{\phi}$.
+\rd{Using these additional constraints, we reformulate
+\eqref{eq:problem} as}
+\begin{equation}\label{eq:problemhatLME}
+	\left\{\begin{array}{cl}
+		\max\limits_{\vect{x}\in\re^n} 
+		& \sum\limits_{i=1}^m a_i \log p_i(\vect{x})\\
+		\st
+		& \varphi(\vect{x}) = 0 \, (\varphi\in\Phi),\\
+		& \psi(\vect{x})\ge 0 \, (\psi\in\Psi).
+	\end{array}\right.
+\end{equation}
+\rd{Denote the feasible set of \eqref{eq:problemhatLME} by}
+\[
+K_1 \coloneqq \{\vect{x}\in\re^n: \varphi(\vect{x})=0\,(\varphi\in \Phi),\, 
+\psi(\vect{x})\ge 0\,(\psi\in \Psi)\},
+\]
+\rd{By construction, $K_1\subseteq K$, and the inclusion may be proper.
+Under the stated constraint qualification, the global maximizer
+$\vect{x}^*$ belongs to $K_1$. Therefore,
+\eqref{eq:problemhatLME} has the same optimal value as
+\eqref{eq:problem}, although its feasible set may be smaller.}
+The problem \eqref{eq:problemhatLME} is also 
+a log-polynomial optimization problem.
+\rd{Its convex relaxation, analogous to \eqref{eq:relax_meas}, is}
+\begin{equation}  \label{eq:relax_meas_lme}
+	\left\{\begin{array}{rl}
+		f_{\operatorname{lme}} \coloneqq \max\limits_{\vect{z}} 
+		&  \sum\limits_{i=1}^m a_i \log \langle p_i,\vect{z}\rangle   \\
+		\st & z_0 = 1,\, \vect{z}  \in  \mathscr{R}_d(K_1) .
+	\end{array}\right.
+\end{equation}
+Since $K_1\subseteq K$, we must have 
+$f_{\operatorname{lme}} \le f_{\operatorname{mom}}$,
+where $f_{\operatorname{mom}}$ is the optimal value of the 
+standard convex relaxation \eqref{eq:relax_meas}.
+\rd{A hierarchy of semidefinite moment relaxations of
+\eqref{eq:relax_meas_lme}, analogous to \eqref{eq:relax_log}, is
+constructed as follows. Let}
+\[
+d_1
+\coloneqq
+\max\left\{
+d,\,
+\max_{q\in\Phi\cup\Psi}
+\left\lceil\frac{\deg(q)}{2}\right\rceil
+\right\}.
+\]
+\rd{For each $k\geq d_1$, the $k$-th order moment relaxation of
+\eqref{eq:relax_meas_lme} is}
+\begin{equation}\label{eq:relax_lme}
+	\left\{\begin{array}{rl}
+		f_{\operatorname{lme},k} \coloneqq \max\limits_{\vect{y}} 
+		& \sum\limits_{i=1}^m a_i \log \langle p_i, \vect{y} \rangle \\
+		\st 
+		& y_0 = 1,\, \vect{y} \in \mathbb{R}^{\mathbb{N}_{2k}^n},\, 
+		\mat{M}_k [\vect{y}] \succeq 0,\\
+		& \mat{L}_{\varphi}^{(k)}[\vect{y}] = 0\,(\varphi\in\Phi),\\ 
+		& \mat{L}_{\psi}^{(k)}[\vect{y}] \succeq 0 \,(\psi  \in \Psi).
+	\end{array}\right.
+\end{equation}
+Since \eqref{eq:relax_lme} includes the constraints of
+\eqref{eq:relax_log} together with additional LME constraints, its
+feasible set is a subset of the feasible set of
+\eqref{eq:relax_log}.
+Thus, one has $f_{\operatorname{lme},k}\le f_{\operatorname{mom},k}$ 
+for all $k\ge d_1$.
+
+
+\rd{The construction extends to more general feasible sets whenever
+rational LMEs with denominators strictly positive on $K$ are
+available.}
+Suppose the linear independence constraint qualification (LICQ)
+holds for all $\vect{x}\in K$ and all $p_i$ are positive on $K$.
+Then there exist rational LMEs with denominators strictly positive on $K$, 
+by \cite[Proposition~3.6]{nie2023convex}. 
+In summary, we have the following result.
+\begin{proposition}\label{prop:rel}
+	Suppose there exist rational LMEs $\vect{\tau} = (\tau_1,\ldots, \tau_l)$ that
+	satisfy \eqref{eq:lme} with denominators strictly positive on $K$.
+	\rd{Then, for every $k\geq d_1$, the convex relaxation
+	\eqref{eq:relax_meas_lme} and the $k$-th order SDP relaxation
+	\eqref{eq:relax_lme} are relaxations of \eqref{eq:problem}, and their
+	optimal values satisfy}
+	\[
+	\rd{\begin{aligned}
+		f_{\max}
+		&\leq f_{\operatorname{lme}}
+		\leq f_{\operatorname{mom}}
+		\leq f_{\operatorname{mom},k},\\
+		f_{\max}
+		&\leq f_{\operatorname{lme}}
+		\leq f_{\operatorname{lme},k}
+		\leq f_{\operatorname{mom},k}.
+	\end{aligned}}
+	\]
+\end{proposition}
+\rd{It may happen that
+\[
+f_{\operatorname{lme}}=f_{\max}<f_{\operatorname{mom}}.
+\]
+\rd{In this case, the standard moment hierarchy
+\eqref{eq:relax_log} cannot converge to $f_{\max}$,}
+because
+\[
+f_{\operatorname{mom},k}
+\geq f_{\operatorname{mom}}
+>f_{\max}
+\qquad\text{for every }k.
+\]
+\rd{Moreover, the LME convex relaxation}
+\eqref{eq:relax_meas_lme} has no convexification gap.
+If
+$\operatorname{Ideal}[\Phi]+\operatorname{QM}[\Psi]$
+is Archimedean, Theorem~\ref{thm:asymp}, applied with $K$ replaced
+by $K_1$, gives
+\[
+f_{\operatorname{lme},k}
+\longrightarrow f_{\operatorname{lme}}.
+\]
+Thus, in the case above, the LME hierarchy
+\eqref{eq:relax_lme} converges to $f_{\max}$.
+}
+
+\rd{The flat-truncation and rank-one extraction results in
+Theorem~\ref{tm:parallel_all} and Corollary~\ref{cor:rank1} also carry
+over to the LME hierarchy \eqref{eq:relax_lme}, with the representing
+measure supported on $K_1$.}
+
+\rd{The concavity-based result in
+Theorem~\ref{thm:concave} carries over only when $K_1$ is convex and
+the polynomials $p_i$ are concave on $K_1$. The additional
+polynomial optimality conditions defining $K_1$ need not preserve
+convexity, so these assumptions cannot be expected in general.}
+
+We next compare \eqref{eq:relax_log} and \eqref{eq:relax_lme}
+numerically.
+
+
+\begin{example}\label{ex:ABO}
+	Consider the log-polynomial optimization problem derived from the 
+	ABO blood group system \cite{EMBook}:
+	\begin{equation}\label{eq:ABO}
+		\left\{\begin{array}{cl}
+			\max\limits_{\vect{x}\in\re^3} 
+			& 182 \log (x_1^2+2x_1x_3)+ 60 \log (x_2^2+2x_2x_3)\\
+			&\qquad + 17 \log(2x_1x_2) + 176 \log (x_3^2)\\
+			\st & 1-\mathbf{1}^T\vect{x} \ge 0,\,\, \vect{x} \geq \mathbf{0},
+		\end{array}\right.
+	\end{equation}
+	where $\mathbf{1}\in\re^3$ is the vector of all ones and 
+	$\mathbf{0}\in\re^3$ is the vector of all zeros.
+	This optimization problem has simplex constraints, 
+	and its LMEs are explicitly given in Example~\ref{ex:lmes} (ii). 
+	We compare the bounds and optimizer-extraction behavior of the
+	standard moment relaxation \eqref{eq:relax_log} and the tighter LME
+	moment relaxation \eqref{eq:relax_lme}.
+	The moment relaxations were constructed using
+	\texttt{GloptiPoly}~\cite{GloptiPoly}, modeled in
+	\texttt{YALMIP}~\cite{Yalmip}, and solved with the semidefinite
+	programming (SDP) solver \texttt{MOSEK}~\cite{mosek}.
+{\color{red}
+For $k=2,\ldots,6$, the standard moment relaxation
+\eqref{eq:relax_log} gives
+$f_{\operatorname{mom},k}=-491.8158$, whereas the LME moment
+relaxation \eqref{eq:relax_lme} gives
+$f_{\operatorname{lme},k}=-492.5353$, up to the displayed numerical
+precision. No flat truncation is detected for the standard moment
+relaxation through order $k=6$. For the LME moment relaxation,
+ the lowest relaxation order is $d_1=2$, and its order-$2$ moment
+optimizer satisfies the flat truncation condition
+\eqref{eq:flat_truncation} with $t=2$ and $r=1$. Consequently,
+\[
+f_{\max}=f_{\operatorname{lme},2}=-492.5353,
+\qquad
+\vect{x}^*=(0.2644,0.0932,0.6424).
+\]
+}
+\end{example}
+
+{\color{red}
+Choosing between \eqref{eq:relax_log} and
+\eqref{eq:relax_lme} involves a tradeoff between bound quality and
+computational cost. By definition, $d_1\geq d$. At every common
+relaxation order $k\geq d_1$, the feasible set of the LME moment
+relaxation \eqref{eq:relax_lme} is contained in that of the standard
+moment relaxation \eqref{eq:relax_log}, and hence
+\[
+f_{\operatorname{lme},k}
+\leq
+f_{\operatorname{mom},k}.
+\]
+Thus, \eqref{eq:relax_lme} provides an upper bound at least as tight as
+\eqref{eq:relax_log} at the same order. This comparison concerns only
+bound quality; the additional LME constraints and the potentially
+higher minimum order $d_1$ can substantially increase computational
+cost.
+
+For simple feasible sets such as boxes, simplices, and balls, explicit
+LMEs are available, and the LME hierarchy \eqref{eq:relax_lme}
+may provide substantially tighter bounds when $m$ is small and
+$d_1$ remains close to $d$. As $m$
+increases, however, the degrees of the products $p^{\mathbf{1}}$ and
+$f_i$ can increase, causing both $d_1-d$ and the size of the initial
+LME relaxation to grow. In this regime, the standard moment hierarchy
+\eqref{eq:relax_log} may be computationally preferable, although it can
+yield a substantially looser upper bound. Section~\ref{sec:scaling}
+studies this tradeoff by varying $m$, $n$, and the coefficients
+$a_i$. It compares the standard moment hierarchy with the LME,
+direct-product Moment--SOS, and sums-of-AM/GM-exponentials (SAGE)
+relaxations whenever the corresponding formulations are computationally
+applicable.
+}
+
+
+
+\section{Numerical experiments and applications}
+\label{sec:exp}
+
+
+In this section, we present explicit numerical examples 
+and applications of log-polynomial optimization.
+Unless otherwise stated, the \textsc{Matlab} moment relaxations in
+this section were constructed using
+\texttt{GloptiPoly}~\cite{GloptiPoly} and
+\texttt{YALMIP}~\cite{Yalmip} and solved with
+\texttt{MOSEK} 10.0.40~\cite{mosek}.
+The computations were implemented in \textsc{Matlab} R2025b on a
+laptop equipped with an Intel Core i7-1270P CPU running at
+2.20 GHz and 32 GB of RAM.
+Unless otherwise stated, numerical ranks are computed with
+tolerance $10^{-4}$.
+To enhance readability, the floating-point results are reported to
+four decimal places.
+
+
+\subsection{Explicit numerical examples}
+
+\begin{example}\label{ex:88}
+	Consider the log-polynomial optimization problem:
+	\begin{equation*}
+		\left\{\begin{array}{cl}
+			\max\limits_{\vect{x} \in \mathbb{R}^5} & 
+			\frac{30}{218} \log p_1(\vect{x}) + \frac{97}{218} \log p_2(\vect{x}) + \frac{91}{218} \log p_3(\vect{x}) \\
+			\st & \| \vect{x} \| \leq 1,
+		\end{array}\right.
+	\end{equation*}
+	where
+	\begin{equation*}
+		\begin{array}{rl}
+			p_1(\vect{x})  & = (x_3+x_4)^2 + \left(1+2(x_1+x_5)+3(x_2+x_4) \right)^2 + 0.01, \\
+			p_2(\vect{x})  & = (x_2+x_4-x_5)^2 + (2x_2+3x_5)^2 + 0.02,  \\
+			p_3(\vect{x})  & = (x_1+x_3+x_4)^2 + (x_1-x_3+x_4)^2 + 0.03.
+		\end{array}
+	\end{equation*} 
+	It is clear that the objective function is well defined 
+	over the feasible set. 
+	\rd{The relaxation \eqref{eq:relax_log} at $k=2$ was solved in
+	$1.04$ seconds.}
+	The corresponding moment optimizer satisfies the flat truncation 
+	condition \reff{eq:flat_truncation} at $t=2$ with $r=1$.
+	By Corollary \ref{cor:rank1}, the moment relaxation is tight.
+	We obtain the global optimal value
+	$f_{\max} = f_{\operatorname{mom},2} = 1.6292$, 
+	and the global maximizer
+	\begin{equation*}
+		\vect{x}^* = (0.4717, 0.4518, 0.0036, 0.5276, 0.5432).
+	\end{equation*} 
+\end{example}
+
+
+\begin{example}\label{ex:44}
+	Consider the log-polynomial optimization problem:
+	\begin{equation}\label{eq:44}
+		\left\{\begin{array}{cl}
+			\max\limits_{\vect{x} \in \mathbb{R}^3} & \sum\limits_{i=1}^{6} a_i \log  p_i(\vect{x})  \\
+			\st & 1 - \mathbf{1}^T \vect{x} \geq 0,\,\, \vect{x} \geq \mathbf{0},
+		\end{array}\right.
+	\end{equation}
+	where $\vect{a} = (a_1,\ldots, a_6)$ is a given coefficient vector and
+	\begin{equation*}
+		\begin{array}{lll}
+			p_1(\vect{x}) = x_1^3 + 3x_1^2x_2 + 3x_1^2 x_3, 
+			& p_2(\vect{x}) = 3x_1x_2^2 + 6x_1x_2x_3 , 
+			& p_3(\vect{x}) = 3x_1x_3^2,\\
+			p_4(\vect{x}) = x_2^3 + 3x_2^2x_3, 
+			& p_5(\vect{x}) = 3x_2x_3^2 , 
+			& p_6(\vect{x}) = x_3^3 .
+		\end{array}
+	\end{equation*}
+	The problem \eqref{eq:44} has simplex constraints, 
+	and its LMEs are explicitly presented in Example~\ref{ex:lmes} (ii).
+    In the computations for this example, we add the redundant ball
+constraint $\|\vect{x}\|^2\leq 1$.
+	
+	
+	(i) Consider the coefficient vector
+	\[
+	\vect{a}=
+	( 0.0968,\,    0.1419,\,    0.2194,\,    0.0839,\,    0.2839 ,\,   0.1742).
+	\]
+	
+{\color{red}
+	For the standard moment relaxation \eqref{eq:relax_log}, the lowest
+	relaxation order is $d=2$. At relaxation order $k=4$, the relaxation
+	was solved in $3.49$ seconds and gave
+	$f_{\operatorname{mom},4}=-1.7181$. The associated moment optimizer
+	satisfies the flat truncation condition
+	\eqref{eq:flat_truncation} with $t=3$ and $r=2$, admitting the
+	decomposition \eqref{eq:ft_decomp} with
+	\[
+	\begin{array}{ll}
+	\vect{v}_1^*=(0.2092,0.2001,0.5906),
+	& f(\vect{v}_1^*)=-1.7248,\\
+	\vect{v}_2^*=(0.0001,0.3479,0.6519),
+	& f(\vect{v}_2^*)=-5.2817.
+	\end{array}
+	\]
+	By Theorem~\ref{tm:parallel_all},
+	$f_{\operatorname{mom}}=f_{\operatorname{mom},4}$. However, this
+	equality does not imply that
+	$f_{\operatorname{mom}}=f_{\max}$. Since $\vect{v}_1^*$ is feasible
+	for \eqref{eq:44}, we have
+	\[
+	0\leq f_{\operatorname{mom}}-f_{\max}
+	\leq f_{\operatorname{mom},4}-f(\vect{v}_1^*)
+	\leq 0.0067.
+	\]
+
+	For the LME moment relaxation \eqref{eq:relax_lme}, the lowest
+	relaxation order is $d_1=3$. Flat truncation is not detected at
+	$k=3$. At order $k=4$, the relaxation was solved in $4.25$ seconds
+	and gave $f_{\operatorname{lme},4}=-1.7193$. Its moment optimizer
+	satisfies \eqref{eq:flat_truncation} with $t=4$ and $r=2$, and the
+	extracted points are
+	\[
+	\begin{array}{ll}
+	\vect{w}_1^*=(0.1872,0.2161,0.5967),
+	& f(\vect{w}_1^*)=-1.7194,\\
+	\vect{w}_2^*=(0.9982,0.0013,0.0005),
+	& f(\vect{w}_2^*)=-16.1046.
+	\end{array}
+	\]
+	The LME analogue of Theorem~\ref{tm:parallel_all} gives
+	$f_{\operatorname{lme}}=f_{\operatorname{lme},4}$. The two extracted
+	points do not have the same polynomial image, so flat truncation does
+	not certify that $f_{\operatorname{lme}}=f_{\max}$. Nevertheless,
+	$\vect{w}_1^*$ is feasible, and hence
+	\[
+	0\leq f_{\max}-f(\vect{w}_1^*)
+	\leq f_{\operatorname{lme},4}-f(\vect{w}_1^*)
+	\leq 1.4\times10^{-4}.
+	\]
+	Thus, the LME relaxation provides a substantially tighter upper
+	bound, although it does not eliminate the convexification gap in
+	this instance.
+}
+	
+	
+	
+\clearpage
+{\color{red}
+	(ii) We use five fixed coefficient vectors.
+	Table~\ref{tab:ex:44} reports the computational results for these
+	instances. For each relaxation, $k_{\operatorname{mom}}$ or
+	$k_{\operatorname{lme}}$ denotes the lowest order at which the flat
+	truncation condition \eqref{eq:flat_truncation} is detected, and
+	$r_{\operatorname{mom}}$ or $r_{\operatorname{lme}}$ denotes
+	$\operatorname{rank}M_t[\vect{y}^*]$ at that flat-truncation order.
+}
+
+	\begin{table}[!h]
+		\centering
+		\caption{Computational results for Example~\ref{ex:44} (ii).}
+        \label{tab:ex:44}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+& \multicolumn{3}{c|}{Relaxation~\eqref{eq:relax_log}}
+& \multicolumn{3}{c|}{Relaxation~\eqref{eq:relax_lme}}\\
+\hline
+Instance
+& $k_{\operatorname{mom}}$
+& $r_{\operatorname{mom}}$
+& $f_{\operatorname{mom},k_{\operatorname{mom}}}$
+& $k_{\operatorname{lme}}$
+& $r_{\operatorname{lme}}$
+& $f_{\operatorname{lme},k_{\operatorname{lme}}}$\\
+\hline
+\#1 & 3 & 2  & -4.6824 & 3 & 1 & -4.6968\\
+\hline
+\#2 & 3 & 2  & -3.9521 & 3 & 1 & -3.9658\\
+\hline
+\#3 & 8 & 12 & -2.7204 & 4 & 2 & -2.8517\\
+\hline
+\#4 & 3 & 2  & -6.6434 & 3 & 1 & -6.7018\\
+\hline
+\#5 & 5 & 3  & -7.0067 & 3 & 1 & -7.0672\\
+\hline
+\end{tabular}
+	\end{table}
+
+{\color{red}
+	For instances $\#1$, $\#2$, $\#4$, and $\#5$, the LME moment
+	optimizer has rank one. Corollary~\ref{cor:rank1}, as extended to the
+	LME hierarchy, therefore certifies
+	$f_{\max}=f_{\operatorname{lme},3}$. For instance $\#3$, the LME
+	moment optimizer has rank two at $k=4$. Flat truncation certifies
+	$f_{\operatorname{lme}}=f_{\operatorname{lme},4}$, but the extracted
+	points do not have the same polynomial image, so global exactness is
+	not certified for this instance.
+	For instances $\#1$, $\#2$, $\#4$, and $\#5$, flat truncation for the
+	standard relaxation also gives
+	$f_{\operatorname{mom}}=f_{\operatorname{mom},k_{\operatorname{mom}}}$.
+	Thus, the differences between the standard and LME values in the table,
+	namely $0.0144$, $0.0137$, $0.0584$, and $0.0605$, respectively, are
+	the corresponding convexification gaps
+	$f_{\operatorname{mom}}-f_{\max}$.
+
+	At the reported relaxation orders, the times required to solve
+	\eqref{eq:relax_log} on instances $\#1$--$\#5$ were, respectively,
+	$0.97$, $2.22$, $7.40$, $0.41$, and $0.45$ seconds. The corresponding
+	times required to solve \eqref{eq:relax_lme} were
+	$1.60$, $0.64$, $0.76$, $0.51$, and $0.71$ seconds. These values
+	exclude preliminary solves at smaller orders used to identify the
+	lowest order satisfying \eqref{eq:flat_truncation}. Because the two
+	relaxations are not always solved at the same order, these runtimes
+	are computational records rather than a same-order speed comparison.
+}
+\end{example}
+
+{\color{red}
+\begin{example}[An LME relaxation with a rank-two optimal moment matrix]
+\label{ex:lme_rank_two}
+Consider the symmetric log-polynomial optimization problem
+\[
+\left\{
+\begin{array}{cl}
+\displaystyle\max_{x\in\mathbb{R}}
+& \log(2+x^2)+\log(3+x^2)\\
+\st & -1\leq x\leq 1.
+\end{array}
+\right.
+\]
+Its global optimal value and maximizers are
+\[
+f_{\max}=\log(12),
+\qquad x^*\in\{-1,1\}.
+\]
+
+To construct the LME moment relaxation \eqref{eq:relax_lme}, let
+\[
+p_1(x)=2+x^2,\qquad p_2(x)=3+x^2,
+\]
+Since
+\[
+f'(x)=\frac{p_1'(x)}{p_1(x)}+\frac{p_2'(x)}{p_2(x)},
+\]
+multiplying by $p_1(x)p_2(x)$ gives the polynomialized derivative
+\[
+g(x)
+=p_2(x)p_1'(x)+p_1(x)p_2'(x)
+=2x(5+2x^2).
+\]
+For the box constraints, the polynomialized LME multipliers
+$\widehat{\tau}_i=p_1p_2\tau_i$ are
+\[
+\widehat{\tau}_1(x)=\frac{g(x)(x-1)}{2},
+\qquad
+\widehat{\tau}_2(x)=\frac{g(x)(x+1)}{2}.
+\]
+The complementarity constraints have degree five, so the lowest
+relaxation order of \eqref{eq:relax_lme} is $d_1=3$.
+
+For the standard moment relaxation \eqref{eq:relax_log}, the order-$1$
+relaxation is unbounded under this representation of the box constraints.
+At $k=2$, the relaxation value agrees numerically with $\log(12)$, but
+the flat truncation condition \eqref{eq:flat_truncation} is not satisfied.
+The condition first holds at $k=3$, with $t=2$ and rank two. At $k=3$,
+the moment optimizer of the LME moment relaxation \eqref{eq:relax_lme} does not satisfy
+\eqref{eq:flat_truncation}: numerically,
+$\operatorname{rank}M_3=2$ whereas $\operatorname{rank}M_0=1$.
+At $k=4$, however,
+$\operatorname{rank}M_4=\operatorname{rank}M_1=2$, so the flat
+truncation condition holds with $t=4$.
+The results are reported in Table~\ref{tab:lme_rank_two}.
+\begin{table}[htb]
+\centering
+\caption{Standard and LME moment relaxations for
+Example~\ref{ex:lme_rank_two} at their first relaxation orders
+satisfying the flat truncation condition.}
+\label{tab:lme_rank_two}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Relaxation
+& Value
+& Flat order $t$
+& Rank
+& Extracted atoms
+& Time (seconds)\\
+\hline
+Standard ($k=3$)
+& 2.4849
+& 2
+& 2
+& $-0.9999,\ 0.9999$
+& 1.66\\
+\hline
+LME ($k=4$)
+& 2.4849
+& 4
+& 2
+& $-0.9999,\ 0.9999$
+& 1.28\\
+\hline
+\end{tabular}
+\end{table}
+
+The differences $|f_{\operatorname{mom},3}-\log(12)|$ and
+$|f_{\operatorname{lme},4}-\log(12)|$ are of order $10^{-9}$ and are
+attributable to numerical solver tolerances.
+For the LME moment relaxation \eqref{eq:relax_lme},
+$\operatorname{rank}M_4=2$ at each of the tested tolerances
+$10^{-6}$, $10^{-5}$, $10^{-4}$, and $10^{-3}$.
+
+For both relaxations, the extracted atoms have the same polynomial
+image because
+\[
+\mathcal{P}(-1)=\mathcal{P}(1)=(3,4).
+\]
+Thus, Theorem~\ref{tm:parallel_all}, together with its LME counterpart
+described above, explains why the rank-two flat truncations certify
+exactness and recover both global maximizers. In particular, an optimal
+solution of the LME moment relaxation \eqref{eq:relax_lme} need not
+have a rank-one moment matrix.
+The standard moment relaxation \eqref{eq:relax_log} already attains
+the exact value at $k=2$ and provides a flat-truncation certificate at
+$k=3$. Thus, the LME constraints do not improve the bound; instead,
+this example provides a direct comparison of the ranks and extracted
+solutions produced by the two relaxations.
+\end{example}
+}
+
+
+\begin{example}\label{ex:92}
+	Consider the polynomial optimization problem:
+	\[
+	\left\{\begin{array}{cl}
+		\max\limits_{\vect{x}\in\re^5} 
+		& \theta(\vect{x}) = \big((x_3+x_4+x_5)^2-x_1x_2\big)^{20}\big(8-(x_5-x_2)^2\big)^{25}\\
+		\st & \|\vect{x}\|_{2}\le 2,\, (x_3+x_4+x_5)^2-x_1x_2\ge 0,\\
+		&  8-(x_5-x_2)^2\ge 0.
+	\end{array}
+	\right.
+	\]
+	Since $\deg(\theta) = \rd{90}$, \rd{a direct Moment--SOS relaxation
+	starts at order $45$ and is computationally prohibitive.}
+	Instead, we can solve the problem by reformulating it into 
+	an equivalent log-polynomial optimization problem.
+	We consider the following two reformulations:
+	\begin{equation}\label{eq:ex92}
+		\left\{\begin{array}{cl}
+			\max\limits_{\vect{x} \in \mathbb{R}^5} &  20\log\left((x_3+x_4+x_5)^2-x_1x_2\right)+25\log\left(8-(x_5-x_2)^2\right)\\
+			\st & \|\vect{x}\|_{2}\le 2,\, (x_3+x_4+x_5)^2-x_1x_2\ge 0,\\
+			&  8-(x_5-x_2)^2\ge 0;
+		\end{array}\right.
+	\end{equation}
+	\begin{equation}
+		\label{eq:ex92_2}
+		\left\{\begin{array}{cl}
+			\max\limits_{\vect{x} \in \mathbb{R}^5} &  20\log\left((x_3+x_4+x_5)^2-x_1x_2\right)\\
+			& \qquad +25\log\left(2\sqrt{2}-(x_5-x_2)\right)
+			+25\log\left(2\sqrt{2}+(x_5-x_2)\right)\\
+			\st & \|\vect{x}\|_{2}\le 2,\, (x_3+x_4+x_5)^2-x_1x_2\ge 0,\\
+			&  8-(x_5-x_2)^2\ge 0.
+		\end{array}\right.
+	\end{equation}
+	We consider the standard moment relaxation \eqref{eq:relax_log} of 
+	\eqref{eq:ex92}--\eqref{eq:ex92_2},
+	since these log-polynomial optimization problems have
+	relatively complex constraints.
+	
+	
+	(i) For the problem \eqref{eq:ex92}, \rd{the standard moment relaxation
+	\eqref{eq:relax_log} was solved in $3.37$ seconds} at relaxation order
+	$k=2$, and $f_{\operatorname{mom},2}=99.7252$.
+	The corresponding moment optimizer satisfies the flat truncation 
+	condition \eqref{eq:flat_truncation} at $t=2$.
+	It admits the decomposition \eqref{eq:ft_decomp} with 
+	\[\begin{array}{ll}
+		\vect{v}_1^* = ( 0.0673,
+		-0.3654,
+		-1.2400,
+		-1.2400,
+		-0.8870),\\
+		\vect{v}_2^* =  (-0.0673,
+		0.3654,
+		1.2400,
+		1.2400,
+		0.8870).
+	\end{array}
+	\]
+	Denote the polynomials $p_1(\vect{x}) = (x_3+x_4+x_5)^2-x_1x_2$
+	and $p_2(\vect{x}) = 8-(x_5-x_2)^2$.
+	\rd{Since $\vect{v}_2^*=-\vect{v}_1^*$ and
+	$p_j(-\vect{x})=p_j(\vect{x})$ for $j=1,2$, we have
+	$\mathcal{P}(\vect{v}_1^*)=\mathcal{P}(\vect{v}_2^*)$.}
+	Therefore, by Theorem~\ref{tm:parallel_all}, we have
+	\[
+	f_{\max} = f_{\operatorname{mom},2} = 99.7252
+	\]
+	and both $\vect{v}_1^*,\vect{v}_2^*$ are global maximizers of the
+	original polynomial optimization problem.
+	\rd{Consequently, the original polynomial optimization problem has
+	optimal value $\exp(99.7252)$.}
+	
+	
+	(ii) For the problem \eqref{eq:ex92_2},
+	\rd{the standard moment relaxation \eqref{eq:relax_log} was solved in
+	$4.35$ seconds} at relaxation order $k=2$, and
+	$f_{\operatorname{mom},2}=101.6842$.
+	The corresponding moment optimizer satisfies the flat truncation 
+	condition \eqref{eq:flat_truncation} at $t=2$.
+	It admits the decomposition \eqref{eq:ft_decomp} with 
+	\[\begin{array}{ll}
+		\vect{v}_1^* = \rd{(0.0000,
+		0.0001,
+		-1.1553,
+		-1.1553,
+		-1.1554)},\\
+		\vect{v}_2^* = \rd{(0.0000,
+		-0.0001,
+		1.1553,
+		1.1553,
+		1.1554)}.
+	\end{array}
+	\]
+	Denote the polynomials $p_1(\vect{x}) = (x_3+x_4+x_5)^2-x_1x_2$, 
+	$p_2(\vect{x}) = 2\sqrt{2}-(x_5-x_2)$ and $p_3(\vect{x}) = 2\sqrt{2}+(x_5-x_2)$.
+	\rd{Since $p_2(\vect{v}_1^*)\neq p_2(\vect{v}_2^*)$, the sufficient
+	condition in Theorem~\ref{tm:parallel_all} is not satisfied.
+	Moreover, \eqref{eq:ex92} and \eqref{eq:ex92_2} have the same
+	optimal value $f_{\max}=99.7252$, whereas
+	$f_{\operatorname{mom},2}=101.6842$ for \eqref{eq:ex92_2}. Hence,
+	\[
+	f_{\operatorname{mom},2}-f_{\max}=1.9590,
+	\]
+	so the moment relaxation of \eqref{eq:ex92_2} is not tight.}
+\end{example}
+
+
+
+
+
+
+
+
+
+\begin{example}\label{ex:dim10}
+	Consider the following log-polynomial optimization problem:
+	\begin{equation*}
+		\left\{\begin{array}{cl}
+			\max\limits_{\vect{x} \in \mathbb{R}^{10}} & \sum\limits_{i=1}^{5} a_i \log p_i(\vect{x}) \\
+			\st & p_i(\vect{x}) - i \geq 0, \quad (i \in [5]),\\
+			& 6 - (x_6-x_7-x_8)^2 - x_9^2 \geq 0, \\
+			& 7 - (x_1-x_{10})^2 - (x_2-x_9)^2 \geq 0,\\
+			& (x_1 + x_2 + x_3)^2 + (x_4+x_5)^2 - 8 \geq 0,\\ 
+			& (x_2+x_4-x_6+x_8-x_{10})^2 - 9 \geq 0,
+		\end{array}\right.
+	\end{equation*}
+	where each $p_i(\vect{x})$ takes the form
+	\[
+	p_i(\vect{x})\coloneqq \alpha_i - \big(\beta_i(x_{2i-1} + b_i)^2 
+	+ \gamma_i(x_{2i}+c_i)^2 + \delta_i(x_{2i-1}+d_i)(x_{2i}+e_i)\big).
+	\]
+	The weights $a_i$ and the parameters of $p_i$ are reported in
+	Table~\ref{tab:dim10}.
+	\begin{table}[htb]
+		\centering
+		\caption{Parameters of Example~\ref{ex:dim10}}
+		\label{tab:dim10}
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			$i$ & $a_i$ & $\alpha_i$ & $\beta_i$ & $\gamma_i$ & $\delta_i$  & $b_i$ & $c_i$ & $d_i$ & $e_i$\\ \hline
+			1 & 3 & 10 & 2 & 3 & -3  & 0.5 & 0.5 & -0.5 & 0.5\\ \hline
+			2 & 2 & 12 & 3 & 2 &  -1  & -0.6 & 0.1 & -0.6 & -0.1\\ \hline
+			3 & 1 & 11 & 4 & 1 & 0  & 0.7 & -0.2 & 0 & 0 \\ \hline
+			4 & 1 & 15 & 2 & 5 & -2 & -0.8 & 0.3 & -0.8 & 0.3 \\ \hline
+			5 & 5 & 13 & -3 & 2 & 0  & -0.9 & 0.4 & 0 & 0 \\ \hline
+		\end{tabular}
+	\end{table}
+	By checking the negative semidefiniteness of their Hessian matrices, 
+	one can easily verify that $p_1, \ldots, p_4$ are concave, whereas $p_5$ is not.
+	\rd{The standard moment relaxation \eqref{eq:relax_log} at $k=2$
+	was solved in $3.73$ seconds.}
+	The flat truncation condition \eqref{eq:flat_truncation} holds for
+	$t=2$ and $r=1$.
+	By Corollary \ref{cor:rank1}, 
+	the moment relaxation is tight.
+	We get the global optimal value $f_{\max} = f_{\operatorname{mom},2} =  36.3994,$
+	and the optimizer
+	\begin{equation*}
+		\begin{array}{rl}
+			\vect{x}^* = (&-1.4038, -1.5957, 0.4259, -0.4182, -0.7548, \\
+			& 0.6579, 0.9798, -0.3904, -2.4485, -0.0622).
+		\end{array}
+	\end{equation*}
+\end{example}
+
+
+\begin{example} \label{ex:dim12}
+	Consider the log-polynomial optimization problem:
+	\begin{equation*}
+		\left\{\begin{array}{cl}
+			\max\limits_{\vect{x} \in \mathbb{R}^{12}} & \sum\limits_{i=1}^{10} \log p_i(\vect{x}) \\
+			\st & \rd{p_i(\vect{x})\geq 0,\quad i\in[10],}\\
+			& (x_1 + x_2 + x_3 + x_4 + x_5 + x_6)^2 \leq 15,\\
+			& (x_7 + x_8 + x_9 + x_{10} + x_{11} + x_{12})^2 \leq 15,\\
+			& (x_1 - x_3 + x_5 - x_7 + x_9 - x_{11})^2 \leq 8, \\
+			& (x_2 - x_4 + x_6 - x_8 + x_{10} - x_{12})^2 \leq 8, \\
+			& (x_1 + x_{12})^2 + (x_2 + x_{11})^2 \leq 9,\\
+			& (x_3 - x_{10})^2 + (x_4 - x_9)^2 + (x_5-x_8)^2 \leq 9, \\
+			& \sum\limits_{i=1}^6 x_{2i}^2  + 2(x_1^2 + x_3^2 + x_7^2 + x_9^2) + 3(x_5^2 + x_{11}^2) \leq 20,\\
+			& \sum\limits_{i=1}^6 (x_{2i-1} - x_{2i}) \leq 5, \, (x_1 + x_6 + x_{12})^2 \leq 4, \\
+			& x_1 - x_{12} \leq 3, \, \mathbf{1}^T \vect{x} \geq 0,
+		\end{array}\right.
+	\end{equation*}
+	In the above, for each $i = 1\ddd 10$,
+	\begin{equation*}
+		p_i(\vect{x}) \coloneqq \alpha_i - \beta_i \big(h_i(\vect{x})\big)^4,
+	\end{equation*}
+	where for $i=1,\ldots, 5$,
+	\[
+	h_i(\vect{x}) \coloneqq (x_{2i}+\xi_i) + (x_{2i+1}+\zeta_i),
+	\]
+	and for $i=6,\ldots, 10$ ($j_1\bmod j_2$ denotes the remainder of $j_1$ modulo $j_2$)
+	\[ \begin{array}{ll}
+		h_i(\vect{x}) \coloneqq \;& (-1)^{i-4}(x_{i-5}+\xi_i) 
+		+ (-1)^{i+1} (x_i +\zeta_i) \\
+		& + (-1)^{(i+4) \bmod 12} (x_{(i+4) \bmod 12 + 1} + \omega_i).
+	\end{array}
+	\]
+	The parameters in $p_i$ and $h_i$ are reported in
+	Table~\ref{tab:dim12}.
+	\begin{table}[htb]
+		\centering
+		\caption{Parameters of Example~\ref{ex:dim12}}
+		\label{tab:dim12}
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			$i$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+			$\alpha_i$ & 20 & 25 & 18 & 22 & 30 & 15 & 28 & 19 & 21 & 26 \\ \hline
+			$\beta_i$ & 1.5 & 1.2 & 2.5 & 1.1 & 1.6 & 1.9 & 2.3 & 1.7 & 2.4 & 1.4 \\ \hline
+			$\xi_i$ & -0.2 & -1 & 0.4 & 0.4 & -1.1 & -0.8 & -0.3 & -1.7 & 1.2 & 1.7 \\ \hline
+			$\zeta_i$ & -1.6 & -0.4 & -1 & 0.8 & -1.5 & -0.7 & 0 & -1 & -1.9 & 0.9 \\ \hline
+			$\omega_i$ & - & - & - & - & - & -1.3 & 0.7 & -0.7 & 0.8 & -0.5 \\ \hline
+		\end{tabular}
+	\end{table}
+	\rd{Since each $h_i$ is affine and $\beta_i>0$,
+	\[
+	-\nabla^2p_i(\vect{x})
+	=12\beta_i h_i(\vect{x})^2
+	\nabla h_i\nabla h_i^T,
+	\]
+	which is an SOS matrix. Thus, all $p_i$ are SOS-concave.
+	The constraints $p_i(\vect{x})\geq0$ are convex because the $p_i$
+	are concave, and the remaining constraints also define convex sets.
+	Hence, this is a convex optimization problem.}
+	\rd{The standard moment relaxation \eqref{eq:relax_log} at $k=2$
+	was solved in $9.18$ seconds.}
+	The corresponding moment optimizer satisfies the flat truncation
+condition \eqref{eq:flat_truncation} at $t=2$ with $r=1$.
+By Corollary~\ref{cor:rank1}, the moment relaxation is tight. 
+Thus,
+	$
+	f_{\max} = f_{\operatorname{mom},2} = 30.2624,
+	$
+	and the obtained global maximizer is 
+	\begin{equation*}
+	\begin{array}{rl}
+		\vect{x}^* = (& -0.3944, -0.8459, 1.5027, -0.9420, 1.0771, -0.4394,\\
+		& 0.4717, -1.0822, 1.0639, 2.0626, 0.6715, 0.6394).
+	\end{array}
+\end{equation*}
+\end{example}
+
+{\color{red}
+\subsection{Scaling and comparisons with alternative relaxations}
+\label{sec:scaling}
+
+We next examine the quality and computational cost of the standard
+moment relaxation \eqref{eq:relax_log} and the LME moment relaxation
+\eqref{eq:relax_lme} as the number of logarithmic terms, the number of
+variables, and the exponents increase. We consider the simplex
+\[
+K_n\coloneqq\{\vect{x}\in\mathbb{R}^n:\vect{x}\geq 0,\
+\mathbf{1}^T\vect{x}\leq 1\}
+\]
+and the positive quadratic polynomials
+\[
+p_i(\vect{x})=0.05+(\beta_i+\vect{u}_i^T\vect{x})^2,\qquad i\in[m].
+\]
+For each instance, the vector $\vect{u}_i$ is generated from a standard Gaussian
+vector and normalized to have unit Euclidean norm, while
+$\beta_i$ is sampled uniformly from $[-0.15,0.15]$.
+The scaling experiment uses $a_i=1$ for every $i\in[m]$.
+All generated objectives are nonconcave
+on $K_n$. Indeed,
+\[
+\nabla^2 f(\vect{0})
+=
+\sum_{i=1}^m
+\frac{2(0.05-\beta_i^2)}
+{(0.05+\beta_i^2)^2}
+\vect{u}_i\vect{u}_i^T.
+\]
+Since $|\beta_i|\leq0.15<\sqrt{0.05}$ and each $\vect{u}_i$ has unit
+Euclidean norm, this matrix is nonzero and positive semidefinite.
+It therefore has positive curvature along at least one feasible
+coordinate direction near $\vect{x}=\vect{0}$.
+
+For each instance, we use the sequential quadratic programming
+(SQP) algorithm of \texttt{fmincon} in \textsc{Matlab} to locally
+maximize the original nonconvex objective from 100 fixed feasible
+starting points.
+Let $\mathcal{X}_{\mathrm{loc}}$ contain these starting
+points and all feasible terminal points returned by the local runs, and
+define
+\[
+f_{\mathrm{feas}}
+\coloneqq
+\max_{\vect{x}\in\mathcal{X}_{\mathrm{loc}}}f(\vect{x}).
+\]
+Thus, $f_{\mathrm{feas}}\leq f_{\max}$ is the best feasible value found,
+not, in general, a certified global optimal value.
+Since the polynomials $p_i$ are quadratic, the lowest admissible
+order of the standard moment relaxation \eqref{eq:relax_log} is $k=1$.
+We report
+\[
+\Delta_{\mathrm{mom}}
+\coloneqq f_{\mathrm{mom},1}-f_{\mathrm{feas}},
+\qquad
+R_{\mathrm{mom}}
+\coloneqq
+\exp(\Delta_{\mathrm{mom}})
+=
+\frac{\exp(f_{\mathrm{mom},1})}{\exp(f_{\mathrm{feas}})}.
+\]
+The ratio $R_{\mathrm{mom}}$ measures the moment upper bound relative
+to the best feasible value on the original product scale.
+When the LME moment relaxation \eqref{eq:relax_lme} is computed, we also report
+\[
+\Delta_{\mathrm{lme}}
+\coloneqq
+f_{\mathrm{lme},d_1}-f_{\mathrm{feas}},
+\]
+where $d_1$ is the lowest relaxation order of \eqref{eq:relax_lme}.
+For the instances in which the direct Moment--SOS relaxation of
+$\prod_i p_i^{a_i}$ satisfies the flat truncation condition
+\eqref{eq:flat_truncation}, its certified global value agrees
+numerically with $f_{\mathrm{feas}}$.
+Otherwise, $\Delta_{\mathrm{mom}}$ and, when reported,
+$\Delta_{\mathrm{lme}}$ are only the observed differences between the
+corresponding upper bounds and the best feasible value; they are not
+claimed to be exact relaxation gaps.
+
+We first vary $m\in\{2,4,6,8,10,12\}$ with $n=4$, and then vary
+$n\in\{2,4,6,8\}$ with $m=4$. Table~\ref{tab:scaling} reports one
+fixed instance for each pair $(m,n)$. The column $t_{\mathrm{mom}}$
+gives the runtime in seconds for solving the standard moment relaxation
+\eqref{eq:relax_log}. Model construction and solution extraction are
+excluded from the reported runtime.
+The columns $s_{\mathrm{lme}}$ and $s_{\mathrm{prod}}$ give the largest
+positive semidefinite block dimensions required by the LME moment
+relaxation \eqref{eq:relax_lme} and by the direct-product Moment--SOS
+relaxation, respectively.
+
+\begin{table}[htb]
+\centering
+\caption{Scaling behavior on fixed positive nonconcave quadratic
+instances.}
+\label{tab:scaling}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+axis & size & $\Delta_{\mathrm{mom}}$
+& $R_{\mathrm{mom}}$
+& $t_{\mathrm{mom}}$ (seconds)& $s_{\mathrm{lme}}$ & $s_{\mathrm{prod}}$\\
+\hline
+$m$ & 2  & 0.6923 & 1.9984   & 2.8014 & 35   & 15\\
+$m$ & 4  & 2.0110 & 7.4704   & 0.7645 & 126  & 70\\
+$m$ & 6  & 3.6346 & 37.8848  & 0.5331 & 330 & 210\\
+$m$ & 8  & 4.5331 & 93.0479  & 0.5232 & 715 & 495\\
+$m$ & 10 & 4.6270 & 102.2067 & 0.4536 & 1365 & 1001\\
+$m$ & 12 & 6.2265 & 505.9633 & 0.2402 & 2380 & 1820\\
+\hline
+$n$ & 2 & 0.1534 & 1.1658  & 0.2747 & 21   & 15\\
+$n$ & 4 & 2.0110 & 7.4704  & 0.7645 & 126  & 70\\
+$n$ & 6 & 2.3800 & 10.8047 & 0.1940 & 462 & 210\\
+$n$ & 8 & 1.8332 & 6.2537  & 0.2780 & 1287 & 495\\
+\hline
+\end{tabular}
+\end{table}
+
+The block dimensions in Table~\ref{tab:scaling} were computed
+before solving. The LME moment relaxation \eqref{eq:relax_lme} was not
+launched when $s_{\mathrm{lme}}>200$, and the direct-product
+Moment--SOS relaxation was not launched when
+$s_{\mathrm{prod}}>250$.
+
+The standard moment relaxation \eqref{eq:relax_log} remains inexpensive,
+but its observed gap
+increases substantially with $m$ and varies with $n$.
+For the fixed instances with $m=2$ and $m=4$, the LME moment
+relaxation \eqref{eq:relax_lme} is computed at its initial orders
+$d_1=3$ and $d_1=5$, respectively.
+The corresponding values of $\Delta_{\mathrm{lme}}$ are $0.0054$ and
+$0.6106$, and the runtimes are $2.1402$ and $4.2927$ seconds.
+At $m=6$, the LME block dimension is already 330, whereas the direct
+product Moment--SOS relaxation has block dimension 210.
+The direct-product relaxation was solved in $6.7448$ seconds, and
+its optimal moment sequence satisfies the flat truncation condition
+\eqref{eq:flat_truncation}. This illustrates that
+the LME strengthening is not
+uniformly preferable to the direct product formulation when the
+exponents are small integers.
+
+We next fix $n=4$ and $m=3$ and vary the coefficient vector
+$\vect{a}=(a_1,a_2,a_3)$. The standard moment relaxation
+\eqref{eq:relax_log} always has PSD block dimension 5, while the LME
+moment relaxation \eqref{eq:relax_lme} always has order 4 and PSD block
+dimension 70. In contrast, when $\vect{a}$ is a positive integer vector, the
+minimum order of the direct product Moment--SOS relaxation is
+$\sum_i a_i$.
+
+Finally, we compare with the level-zero conditional SAGE relaxation
+of Murray et al.~\cite{MurraySAGE}. A conditional SAGE relaxation is
+a convex relative-entropy relaxation that certifies nonnegativity on
+a specified convex domain. We use the basic relaxation, called level
+zero in the SAGE hierarchy; unlike higher levels, it applies the SAGE
+certificate directly, without a hierarchy multiplier. For this comparison we use the substitution
+$x_i=\exp(y_i)$, under which the simplex becomes the convex log-domain
+$\sum_i\exp(y_i)\leq 1$. The SAGE computations use \texttt{sageopt}
+0.6.1 and MOSEK \rd{10.0.40}.
+For a positive integer coefficient vector $\vect{a}$, let
+$f_{\mathrm{SAGE}}$ be the logarithm of the SAGE upper bound for
+$\prod_i p_i^{a_i}$, and define
+\[
+\Delta_{\mathrm{SAGE}}
+\coloneqq f_{\mathrm{SAGE}}-f_{\mathrm{feas}}.
+\]
+
+\rd{The results are reported in Table~\ref{tab:exponents}.}
+\begin{table}[htb]
+\centering
+\caption{Bound gaps and runtimes for integer and noninteger
+logarithmic coefficients.}
+\label{tab:exponents}
+\renewcommand{\arraystretch}{1.1}
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+& \multicolumn{4}{c|}{Bound gaps}
+& \multicolumn{4}{c|}{Runtimes (seconds)}\\
+\hline
+$\vect{a}$ & $\Delta_{\mathrm{mom}}$
+& $\Delta_{\mathrm{lme}}$
+& $\Delta_{\mathrm{prod}}$
+& $\Delta_{\mathrm{SAGE}}$
+& $t_{\mathrm{mom}}$
+& $t_{\mathrm{lme}}$
+& $t_{\mathrm{prod}}$
+& $t_{\mathrm{SAGE}}$\\
+\hline
+$(1,1,1)$
+& 1.9954 & 0.2775 & 0 & 1.4444
+& 2.2879 & 2.2569 & 1.0937 & \rd{2.6443}\\
+\hline
+$(1,2,3)$
+& 3.7591 & 0.7545 & 0 & 1.3724
+& 0.6818 & 2.5681 & 7.0035 & \rd{697.7900}\\
+\hline
+$(2,5,10)$
+& 9.5145 & 1.3227 & NL & NL
+& 0.4946 & 4.0863 & NL & NL\\
+\hline
+$(5,10,20)$
+& 20.4593 & 3.1742 & NL & NL
+& 1.5051 & 1.7166 & NL & NL\\
+\hline
+$(0.5,1.5,2.5)$
+& 2.6213 & 0.4834 & NA & NA
+& 0.3402 & 1.5147 & NA & NA\\
+\hline
+$(\sqrt{2},\pi/2,e/2)$
+& 2.8041 & 0.3197 & NA & NA
+& 0.3492 & 1.6082 & NA & NA\\
+\hline
+\end{tabular}
+\end{table}
+\FloatBarrier
+
+All rows of Table~\ref{tab:exponents} use the same fixed polynomial
+instance. The quantities $\Delta_{\mathrm{mom}}$,
+$\Delta_{\mathrm{lme}}$, $\Delta_{\mathrm{prod}}$, and
+$\Delta_{\mathrm{SAGE}}$ are differences between the corresponding
+upper bounds and $f_{\mathrm{feas}}$, with the direct-product bound
+reported on the logarithmic scale. All runtimes are in seconds. The
+reported SAGE runtime is the solver time; construction time is excluded.
+The two launched direct-product relaxations satisfy
+\eqref{eq:flat_truncation}, so their certified gaps are zero. In
+Table~\ref{tab:exponents}, NL means not launched and NA means not
+applicable. The two larger integer cases were not launched because
+their direct-product orders are 17 and 35, while their estimated SAGE
+expansions, containing up to $73{,}815$ and $1{,}150{,}626$ monomials,
+respectively, were prohibitively large. For noninteger
+coefficients, neither the direct-product formulation nor the SAGE
+formulation considered here is applicable.
+
+Table~\ref{tab:exponents} shows that the standard and LME
+relaxations \eqref{eq:relax_log} and \eqref{eq:relax_lme} remain
+inexpensive as the coefficients increase on this fixed instance,
+although their observed gaps increase with the coefficient magnitudes.
+For the first two integer vectors, the direct-product Moment--SOS
+relaxation is exact, and conditional SAGE gives a
+tighter bound than the standard moment relaxation
+\eqref{eq:relax_log}, but a looser bound than the LME relaxation
+\eqref{eq:relax_lme}. Increasing the coefficient vector from
+$(1,1,1)$ to $(1,2,3)$ increases the SAGE runtime from about
+\rd{2.6} seconds to about 12 minutes.
+The direct-product Moment--SOS and SAGE formulations become
+prohibitively large as the integer coefficients increase and are not
+applicable to noninteger coefficients in the formulations considered
+here. Thus, the standard
+moment, LME, direct-product Moment--SOS, and conditional SAGE
+formulations have different tradeoffs in bound quality, runtime, and
+applicability.
+}
+
+
+\subsection{Applications}
+\label{sec:app}
+
+
+\begin{example}[Paternity analysis \cite{McCulloch87}] 
+	\label{ex:offspring}
+	Consider a single genetic locus involving a single mother 
+	and $n$ possible fathers.
+	Suppose there are $g$ possible genotypes.
+	Let $x_j$ denote the probability that the $j$th male sires an
+	offspring for $j=1,\ldots,n$.
+	Our goal is to estimate the probabilities $\vect{x}=(x_1,\ldots, x_n)$ 
+	using genotype data from a potentially multiply-parented litter.
+	This can be done by solving 
+	\begin{equation}\label{eq:offspring}
+		\left\{\begin{array}{cl}
+			\max\limits_{\vect{x}\in\re^n} & \sum\limits_{i=1}^{g} N_i \log \Big( \sum\limits_{j=1}^n P_{ij}x_j \Big)\\
+			\st & \mathbf{1}^T\vect{x} = 1,\,\, \vect{x} \geq \mathbf{0},
+		\end{array}\right.
+	\end{equation}
+	where each $N_i$ denotes the number of offspring in the litter with 
+	the $i$-th possible genotype,
+	and each $P_{ij}$ is the conditional probability that an offspring
+	has the $i$-th genotype given that the $j$-th male is its father.
+
+	Let $\vect{\bar{x}} = (x_1,\ldots, x_{n-1})$.
+	With the substitution $x_n = 1-\mathbf{1}_{n-1}^T\vect{\bar{x}}$, 
+	we can reformulate \eqref{eq:offspring} into 
+	\begin{equation}\label{eq:offspring_updated}
+		\left\{\begin{array}{cl}
+			\max\limits_{\vect{\bar{x}}\in\re^{n-1}} & \sum\limits_{i=1}^{g} N_i\log\Big(
+			P_{in}+\sum\limits_{j=1}^{n-1}(P_{ij}-P_{in})x_j\Big)\\
+			\st &  \vect{\bar{x}}\geq \mathbf{0},\\
+			& 1-\mathbf{1}_{n-1}^T\vect{\bar{x}}\ge 0.
+		\end{array}
+		\right.
+	\end{equation}
+
+This is a log-polynomial optimization problem with simplex constraints.
+Since the logarithm arguments are affine and the feasible set is
+a simplex, this is a convex optimization problem that can generally
+be solved efficiently by standard convex optimization methods. We
+therefore include this example as an application and certification
+check, rather than as evidence that the moment relaxation is
+computationally preferable to such methods.
+It can also be solved using the LME moment relaxation
+\eqref{eq:relax_lme}, with the LMEs in
+Example~\ref{ex:lmes}~(ii); below, we use this formulation to
+illustrate the moment-based global optimality certificate and
+solution-extraction procedure.
+
+We use genotype-probability matrices $\mat{P}$ based on the
+simulation configurations in \cite{McCulloch87}, together with the
+fixed count vectors $\vect{N}$ reported in
+Table~\ref{tab:offspring}.
+	After extracting an optimizer $\vect{\bar{x}}^*$ of
+	\eqref{eq:offspring_updated}, we recover an optimizer of the original
+	problem \eqref{eq:offspring} as
+	$\vect{x}^*=(\vect{\bar{x}}^*,
+	1-\mathbf{1}_{n-1}^T\vect{\bar{x}}^*)$.
+	For every reported instance, the computed optimizer of the LME
+	moment relaxation \eqref{eq:relax_lme} satisfies the flat truncation
+	condition \eqref{eq:flat_truncation}, and the corresponding moment
+	matrix has rank one. By the LME analogue of
+	Corollary~\ref{cor:rank1}, the LME moment relaxation is tight for the
+	original problem.
+
+	The detailed input data and our numerical results are reported 
+	in Table~\ref{tab:offspring}.
+	In the table, we denote parameters
+	$\vect{N} = (N_1,\ldots, N_{g})$ 
+	and $\mat{P} = (P_{ij})\in\re^{g\times n}$.
+	The value $k$ is the relaxation order used in
+	\eqref{eq:relax_lme}, $t$ is the order at which the flat truncation
+	condition \eqref{eq:flat_truncation} holds, and
+	$r=\rank\mat{M}_t[\vect{y}^*]$.
+	The notation $\vect{x}^*$ denotes the computed optimizer of the original log-polynomial
+	optimization problem \eqref{eq:offspring}.
+	The column `runtime' reports the runtime in seconds for solving
+	the $k$th-order LME moment relaxation \eqref{eq:relax_lme}.
+	After one unreported warm-up solve, each runtime is one wall-clock
+	measurement of the corresponding solve.
+	\begin{table}[ht]
+	\centering
+	\caption{Numerical results for Example \ref{ex:offspring}}
+    \label{tab:offspring}
+	\setlength{\tabcolsep}{3pt}
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|}\hline
+		$n$ & $g$ & $\vect{N}$ & $\mat{P}$ & $k$ & $t$ & $r$ & $\vect{x}^*$ & runtime (seconds)\\ \hline
+		%Z
+		2 & 2 &$\left[\begin{array}{r}
+			77 \\ 23
+		\end{array}\right]$ & $\begin{bmatrix}
+			0.5 & 1 \\
+			0.5 & 0
+		\end{bmatrix}$ & 2 & \rd{2} & 1 & $\left[\begin{array}{r}
+			0.4600 \\ 0.5400
+		\end{array}\right]$ & 0.77\\ \hline
+		%S
+		2 & 2 &$\left[\begin{array}{r}
+			63 \\ 37
+		\end{array}\right]$ & $\begin{bmatrix}
+			0.5 & 1 \\
+			0.5 & 0
+		\end{bmatrix}$ & 2 & \rd{2} & 1 & $\left[\begin{array}{r}
+			0.7400 \\ 0.2600
+		\end{array}\right]$ & 2.22\\ \hline
+		%B
+		2 & 3 &$\left[\begin{array}{r}
+			49 \\ 40 \\ 11
+		\end{array}\right]$ & $\begin{bmatrix}
+			0.5 & 0.875 \\
+			0.25 & 0.125 \\
+			0.25 & 0
+		\end{bmatrix}$ & 3 & \rd{3} & 1 & $\left[\begin{array}{r}
+			0.8813 \\ 0.1187
+		\end{array}\right]$ & 0.46\\ \hline
+		%T
+		2 & 3 &$\left[\begin{array}{c}
+			83 \\ 2 \\ 15
+		\end{array}\right]$ & $\begin{bmatrix}
+			0.5 & 0.25\\
+			0.5 & 0.5\\
+			0 & 0.25
+		\end{bmatrix}$ & 2 & \rd{2} & 1 & $\left[\begin{array}{r}
+			0.6939 \\ 0.3061
+		\end{array}\right]$ & 1.25\\ \hline
+		%Y
+		2 & 3 &$\left[\begin{array}{r}
+			63 \\ 17 \\ 20
+		\end{array}\right]$ & $\begin{bmatrix}
+			0.5 & 0.25 \\
+			0.5 & 0.5 \\
+			0 & 0.25
+		\end{bmatrix}$ & 2 & \rd{2} & 1 & $\left[\begin{array}{r}
+			0.5181 \\ 0.4819
+		\end{array}\right]$ & 0.17\\ \hline
+		%W
+		2 & 4 &$\left[\begin{array}{c}
+			59 \\ 8 \\ 16 \\ 17
+		\end{array}\right]$ & $\begin{bmatrix}
+			0.25 & 0.5 \\
+			0.25 & 0.5 \\
+			0.25 & 0 \\
+			0.25 & 0
+		\end{bmatrix}$ & 3 & \rd{3} & 1 & $\left[\begin{array}{r}
+			0.6599 \\ 0.3401
+		\end{array}\right]$ & 0.23\\ \hline
+		%X
+		2 & 5 &$\left[\begin{array}{c}
+			7 \\ 9 \\ 4 \\ 33 \\ 47
+		\end{array}\right]$ & $\begin{bmatrix}
+			0.25 & 0 \\
+			0.25 & 0 \\
+			0.25 & 0 \\
+			0.25 & 0.5 \\
+			0 & 0.5
+		\end{bmatrix}$ & 4 & \rd{4} & 1 & $\left[\begin{array}{r}
+			0.2463 \\ 0.7537
+		\end{array}\right]$ & 0.11\\ \hline
+		%A
+		3 & 3 &$\left[\begin{array}{r}
+			39 \\ 38 \\ 23
+		\end{array}\right]$ & $\begin{bmatrix}
+			0.5 & 0 & 0.875 \\
+			0.25 & 0.75 & 0.125 \\
+			0.25 & 0.25 & 0
+		\end{bmatrix}$ & 3 & \rd{2} & 1 & $\left[\begin{array}{r}
+			0.6400 \\ 0.2800 \\ 0.0800
+		\end{array}\right]$ & 0.31\\ \hline
+		%C
+		3 & 4 &$\left[\begin{array}{r}
+			29 \\ 21 \\ 88 \\ 62
+		\end{array}\right]$ & $\begin{bmatrix}
+			0.5 & 0 & 0 \\
+			0.25 & 0.75 & 0.25 \\
+			0.25 & 0.25 & 0.5 \\
+			0 & 0 & 0.25
+		\end{bmatrix}$ & \rd{4} & \rd{3} & 1 & $\left[\begin{array}{r}
+			0.2240 \\ 0.0000 \\ 0.7760
+		\end{array}\right]$ & 0.32\\ \hline
+	\end{tabular}
+\end{table}
+\end{example}
+
+
+\begin{example}[Latent class models \cite{ChenLCM20}]\label{ex:LCM}
+	Latent class models (LCMs) are a type of finite 
+	mixture model used to identify hidden, unobserved categorical groups 
+	within a population based on observed categorical data.
+	Let $\vect{y} = (y_1,\ldots, y_d)$ be a vector of categorical random 
+	variables, where each $y_j$ takes values from $c_j$ categories, 
+	say, $\{1,\ldots, c_j\}$.
+	Let $s\in\{1,\ldots,T\}$ denote the latent class variable.
+	Conditional on $s$, the categorical variables
+	$y_1,\ldots,y_d$ are assumed to be independent.
+	Let $I(\cdot)$ denote the Iverson bracket function
+	such that $I(P) = 1$ if $P$ is true and zero otherwise.
+	Then the probability mass function of $\vect{y}$ in the $t$-th 
+	subgroup is
+	\[
+	\prod\limits_{j=1}^d\prod\limits_{l=1}^{c_j} \pi_{t,j,l}^{I(y_j=l)}
+	\quad \mbox{with}\quad
+	\pi_{t,j,l} = \Pr(y_j=l\mid s=t),
+	\]
+	Set
+	$\vect{\pi}=(\pi_{t,j,l})_{t\in[T],\,j\in[d],\,l\in[c_j]}$.
+	The overall probability mass function of the latent class model
+	is then a weighted sum
+	\[
+	p(\vect{y}\mid\vect{\eta},\vect{\pi}) = \sum\limits_{t=1}^T
+	\Big(\eta_t	\prod\limits_{j=1}^d\prod\limits_{l=1}^{c_j} 
+	\pi_{t,j,l}^{I(y_j=l)}\Big),
+	\]
+	where $\vect{\eta}=(\eta_1,\ldots,\eta_T)$ consists of
+	nonnegative mixing weights
+	satisfying $\sum_{t=1}^T\eta_t=1$.
+	Consider $N$ samples drawn from the LCM distribution, denoted as $\vect{y}^{(1)}, \ldots, \vect{y}^{(N)}$.
+	The maximum-likelihood estimation problem for the LCM is then
+	formulated as follows:
+	\begin{equation}\label{eq:LCM}
+		\left\{\begin{array}{cl}
+			\max\limits_{\vect{\eta}, \vect{\pi}} & \sum\limits_{i=1}^N \log \left(\sum\limits_{t=1}^T \eta_t	\prod\limits_{j=1}^d\prod\limits_{l=1}^{c_j} \pi_{t,j,l}^{I(y_j^{(i)}=l)}\right)\\
+			\st & \vect{\eta}\ge 0,\, \vect{\pi}\ge 0,\, \sum\limits_{t=1}^T\eta_t = 1,\\
+			& \sum\limits_{l=1}^{c_j} \pi_{t,j,l} = 1\, ( t\in[T],\, j\in[d]).
+		\end{array}
+		\right.
+	\end{equation}
+We consider three instances using the same settings as in \cite{ChenLCM20}.
+We call an LCM setting saturated when its model image fills the
+corresponding probability simplex, so every empirical distribution can
+be represented by the model. Cases (i)--(iii) below are saturated in
+this sense. They serve as reproducibility and implementation checks but
+do not test genuinely non-saturated behavior.
+For reproducibility, we use one fixed simulated dataset of $N=500$
+observations for each instance and approximate \eqref{eq:LCM}
+by its standard moment relaxation \eqref{eq:relax_log} at the
+initial order $k=2$.
+For cases (i)--(iii), we compare the resulting moment upper bound
+with the log-likelihood at the data-generating parameters reported in
+\cite{ChenLCM20}. We then add a fourth, non-saturated binary LCM instance that exhibits a persistent convexification gap.
+In the binary examples below, the outcomes $0$ and $1$
+correspond to the parameter indices $l=1$ and $l=2$, respectively.
+After one unreported warm-up solve, we measured one wall-clock runtime
+for each of cases (i)--(iii).
+	
+	(i) For $d=1, T = 2$, suppose $y_1$ is a binary variable, 
+	i.e., $y_1\in\{0,1\}$. Let
+	\[\begin{array}{llll}
+		\eta_1 = 0.5, &  \eta_2 = 0.5, &  \pi_{1,1,1} = 0.4, &  \pi_{1,1,2} = 0.6,\\
+		\pi_{2,1,1} = 0.8, & \pi_{2,1,2} = 0.2.
+	\end{array}\] 
+    In the fixed dataset, 303 observations have $\vect{y}=0$ and 197 observations have $\vect{y}=1$.
+	\rd{The standard moment relaxation \eqref{eq:relax_log} was solved in
+	$1.72$ seconds}, and the moment upper bound was
+	$f_{\operatorname{mom},2}=-335.2519$.
+This result is very close to the log-likelihood $-335.29$ at the
+data-generating parameters.
+	
+	(ii) For $d=1, T=3$, suppose $y_1$ is a binary variable, 
+	i.e., $y_1\in\{0,1\}$. Let
+	\[
+	\begin{array}{lllll}
+		\eta_1 = 0.5, & \eta_2 = 0.3, & \eta_3 = 0.2, & \pi_{1,1,1} = 0.4, &  \pi_{1,1,2} = 0.6,\\
+		\pi_{2,1,1} = 0.8, & \pi_{2,1,2} = 0.2 & \pi_{3,1,1} = 0.1, & \pi_{3,1,2} = 0.9.
+	\end{array}
+	\]
+    In the fixed dataset, 227 observations have $\vect{y}=0$ and 273 observations have $\vect{y}=1$.
+	\rd{The standard moment relaxation \eqref{eq:relax_log} was solved in
+	$4.36$ seconds}, and the moment upper bound was
+	$f_{\operatorname{mom},2}=-344.45$.
+This result is very close to the log-likelihood $-344.49$ at the
+data-generating parameters.
+	
+	
+	(iii) For $d=2, T=2$, suppose each $y_j$, $j=1,2$, is a binary variable, 
+	i.e., $y_j\in\{0,1\}$. Let
+	\[
+	\begin{array}{llllll}
+		\eta_1 = 0.5, & \eta_2 = 0.5,  & \pi_{1,1,1} = 0.4, &  \pi_{1,1,2} = 0.6,
+		& \pi_{2,1,1} = 0.8,\\
+		\pi_{2,1,2} = 0.2, & \pi_{1,2,1} = 0.1, & \pi_{1,2,2} = 0.9 & \pi_{2,2,1} = 0.6, & \pi_{2,2,2} = 0.4.
+	\end{array}
+	\]
+    \rd{For the outcomes $(0,0)$, $(0,1)$, $(1,0)$, and $(1,1)$,
+    the fixed dataset has counts 131, 174, 49, and 146, respectively.}
+	\rd{The standard moment relaxation \eqref{eq:relax_log} was solved in
+	$2.73$ seconds}, and the moment upper bound was
+	$f_{\operatorname{mom},2}=-652.6718$.
+This result is close to \rd{the log-likelihood $-653.1616$ at the
+data-generating parameters}.
+
+{\color{red}
+\medskip
+
+\noindent
+(iv) We next consider a genuinely non-saturated binary LCM with
+$d=4$ and $T=2$. The data-generating mixing proportions are
+$\eta_1=\eta_2=0.5$, and the conditional success probabilities are
+\[
+\left(\Pr(y_j=1\mid s=t)\right)_{\substack{t=1,2\\j=1,\ldots,4}}
+=
+\begin{pmatrix}
+0.38 & 0.42 & 0.46 & 0.50\\
+0.62 & 0.58 & 0.54 & 0.50
+\end{pmatrix}.
+\]
+We use a fixed sample of $N=500$ observations. In lexicographic order
+\[
+(0000),(0001),\ldots,(0111),(1000),\ldots,(1111),
+\]
+the sixteen outcome counts are
+\[
+\begin{array}{c}
+(30,26,39,26,27,19,28,30,\\
+\phantom{(}24,25,39,33,45,31,35,43).
+\end{array}
+\]
+This dataset was selected as a diagnostic stress instance from
+30 fixed candidate datasets using a 20-start expectation--maximization
+(EM) screening run \cite{Dempster1977,EMBook}. The candidates
+were ranked first by the
+fraction of starts attaining the best terminal value and then by the
+separation from the second-best terminal value. Thus, this example is
+intended as a stress test rather than as a representative average-case
+experiment.
+The EM algorithm was implemented directly in \textsc{Matlab}.
+
+The cell-probability polynomials have degree five, so the lowest
+relaxation order is $k=3$. The numerical results are reported
+in Table~\ref{tab:lcm_nonsaturated}.
+\begin{table}[htb]
+\centering
+\caption{Moment upper bound and multistart EM result for the
+non-saturated LCM in Example~\ref{ex:LCM}(iv).}
+\label{tab:lcm_nonsaturated}
+\begin{tabular}{|l|r|}
+\hline
+Quantity & Value\\
+\hline
+Saturated log-likelihood
+    & $-1373.7676$\\
+Moment upper bound $f_{\operatorname{mom},3}$
+    & $-1373.7676$\\
+Best log-likelihood from 100-start EM
+    & $-1377.1748$\\
+$f_{\operatorname{mom},3}-f_{\operatorname{EM}}$
+    & $3.4072$\\
+Deviance relative to the saturated model
+    & $6.8144$\\
+Moment relaxation runtime (seconds)
+    & $39.42$\\
+100-start EM runtime (seconds)
+    & $29.74$\\
+\hline
+\end{tabular}
+\end{table}
+The moment-relaxation runtime covers solving the standard moment
+relaxation \eqref{eq:relax_log}, whereas the EM runtime covers the
+complete 100-start EM run.
+The moment bound and the saturated log-likelihood agree to within
+$9.92\times 10^{-8}$, which is attributable to numerical solver
+tolerance. Among the 100 EM starts,
+62 terminated within $10^{-6}$ of the best value, while 39 reached
+the maximum of 5000 iterations. The largest shortfall from the best
+EM value was $0.1843$.
+
+This behavior follows from the geometry of the LCM image. Every point
+mass on the sixteen binary outcomes belongs to the model image because
+the class-conditional probabilities can be chosen deterministically.
+Consequently, the convex hull of the model image is the full
+probability simplex, and the convex relaxation \eqref{eq:relax_meas}
+returns the saturated maximum likelihood value. Increasing the moment
+relaxation order may reduce the moment-truncation gap, but it cannot
+eliminate the convexification gap between this bound and the best
+likelihood found over the non-saturated LCM itself.
+For this instance, EM is slightly faster and returns a feasible LCM
+fit, but it does not by itself certify global optimality. The moment
+relaxation provides a global upper bound, but the bound is too loose to
+recover or certify the non-saturated maximum likelihood estimate.
+Thus, EM is more useful for obtaining an estimate in this example,
+whereas the moment result serves as a diagnostic bound.
+}
+    
+\end{example}
+
+
+\section{Conclusion and Discussion}\label{sec:con}
+
+This work explores log-polynomial optimization problems, 
+characterized by logarithmic polynomial objectives with 
+polynomial equality and inequality constraints. 
+Using truncated $K$-moment relaxations,
+we derive a hierarchy of moment relaxations
+for the potentially nonconvex original formulation.
+\rd{We give sufficient conditions for the relaxation to be tight and
+establish criteria for detecting tightness and, under an appropriate
+flat-truncation condition, extracting global optimizers.}
+We further apply the Lagrange multiplier expression technique
+to construct tighter relaxations 
+for log-polynomial optimization with box, simplex and
+ball constraints. 
+\rd{The relationships among the standard moment relaxation
+\eqref{eq:relax_log}, the LME moment relaxation
+\eqref{eq:relax_lme}, and the original log-polynomial optimization
+problem \eqref{eq:problem} are summarized in
+Proposition~\ref{prop:rel}.}
+
+The proposed approach has practical relevance in applications 
+such as maximum likelihood estimation and
+fixed-distribution cross-entropy or KL divergence minimization
+when the predicted probabilities are polynomial in the decision variables.
+Entropy-type objectives with decision-dependent coefficients
+multiplying logarithms are not covered by the present framework.
+
+\rd{Our numerical study also identifies a clear limitation of the
+approach. In the tested nonconcave family, the observed difference
+between the first-order standard moment upper bound
+$f_{\operatorname{mom},1}$ from \eqref{eq:relax_log} and the best
+feasible value
+grows substantially with $m$ and varies with $n$,
+whereas the size of the LME relaxation grows rapidly at similar
+scales. Moreover, when a convexification gap is present,
+increasing the relaxation order cannot eliminate it because the
+hierarchy converges to the convex relaxation
+\eqref{eq:relax_meas}.}
+\rd{These findings suggest that the proposed method is most useful for
+problems with small or moderate $m$ and $n$, particularly when large
+or noninteger exponents make a direct full Moment--SOS relaxation
+expensive or unavailable. Promising future directions include
+exploiting sparsity in the moment matrices, developing less expensive
+strengthenings, and extending the framework to non-polynomial
+constraints.}
+
+
+\section*{Statements and Declarations}
+
+\subsection*{Funding}
+\rd{Jiawang Nie is partially supported by the U.S. National Science
+Foundation under grant DMS-2513254. Xindong Tang is partially supported
+by the Hong Kong Research Grants Council under grants HKBU-15303423 and
+HKBU-22304125.}
+
+\subsection*{Competing interests}
+\rd{The authors declare that they have no competing interests.}
+
+\subsection*{Data availability}
+\rd{The data used in the numerical experiments are either generated
+by the accompanying code or included in the public GitHub repository at
+\url{https://github.com/iamjiyoung/LogPOP}.}
+
+\subsection*{Code availability}
+\rd{The \textsc{Matlab} and Python code used for the numerical
+experiments is available in the public GitHub repository at
+\url{https://github.com/iamjiyoung/LogPOP}.}
+
+\subsection*{Author contributions}
+\rd{All authors contributed equally to this work. All authors read and
+approved the final manuscript.}
+
+
+\begin{thebibliography}{99}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+
+\bibitem{AAA13}
+{\sc A.~A.~Ahmadi, A.~Olshevsky, P.~A.~Parrilo, and J.~N.~Tsitsiklis},
+{\em NP-hardness of deciding convexity of quartic polynomials and related problems},
+Math. Program., 137, 453--476, 2013.
+\url{https://doi.org/10.1007/s10107-011-0499-2}
+
+\bibitem{Anari24}
+{\sc N.~Anari, K.~Liu, S.~O.~Gharan and C.~Vinzant},
+{\em Log-concave polynomials II: High-dimensional walks and an FPRAS for counting bases of a matroid},
+Ann. of Math. (2) 199 (1) 259--299, 2024.
+\url{https://doi.org/10.4007/annals.2024.199.1.4}
+
+\bibitem{Bach2025}
+
+{\sc F.~Bach},
+{\em Sum-of-squares relaxations for information theory and
+variational inference},
+Foundations of Computational Mathematics, 25,
+pp.~865--903, 2025.
+\url{https://doi.org/10.1007/s10208-024-09651-0}
+
+
+\bibitem{mosek}
+
+{\sc MOSEK ApS}, {\em MOSEK Optimization Toolbox for MATLAB Manual},
+Version 10.0, 2023.
+\url{https://docs.mosek.com/10.0/toolbox/index.html}
+
+
+\bibitem{Banerjee2008}
+{\sc O. Banerjee, L. El Ghaoui, and A. d'Aspremont},
+{\em Model selection through sparse maximum likelihood estimation for multivariate Gaussian or binary data},
+Journal of Machine Learning Research, 9,
+pp. 485--516, 2008.
+\url{https://jmlr.org/papers/v9/banerjee08a.html}
+
+
+\bibitem{Bishop2006}
+{\sc C. M. Bishop},
+{\em Pattern recognition and machine learning. Information Science and Statistics}, Springer, New York, 2006.
+\url{https://doi.org/10.1007/978-0-387-45528-0}
+
+\bibitem{Carpenter2018}
+{\sc T. Carpenter, I. Diakonikolas, A. Sidiropoulos, and A. Stewart},
+{\em Near-optimal sample complexity bounds for maximum likelihood estimation of multivariate log-concave densities},
+In Proceedings of the 31st Conference on Learning Theory,
+Proceedings of Machine Learning Research, vol. 75,
+pp. 1234--1262, 2018.
+\url{https://proceedings.mlr.press/v75/carpenter18a.html}
+
+\bibitem{Choi2024}
+{\sc J. Choi, J. Nie, X. Tang, and S. Zhong},
+{\em Generalized Nash equilibrium problems with quasi-linear constraints},
+SIAM Journal on Optimization, 36(3), pp. 1589--1618, 2026.
+\url{https://doi.org/10.1137/24M1699395}
+
+%\bibitem{Clarke}
+%{\sc F.H.~Clarke}, {\em Optimization and nonsmooth analysis},
+%SIAM, Philadelphi, 1990.
+
+%\bibitem{flatext}
+%{\sc R.E. Curto and L.A. Fialkow},
+%{\em Truncated k-moment problems in several variables}, Journal of Operator Theory, 54(1), pp. 189--226, 2005.
+
+\bibitem{ChenLCM20}
+{\sc H.~Chen, L.~Han, and A.~Lim},
+{\em Beyond the EM algorithm: constrained optimization methods for latent class model},
+Communications in Statistics--Simulation and Computation, 51,
+pp.~5222--5244, 2022.
+\url{https://doi.org/10.1080/03610918.2020.1764034}
+
+\bibitem{Dempster1977}
+{\sc A. P. Dempster, N. M. Laird, and D. B. Rubin},
+{\em Maximum likelihood from incomplete data via the EM algorithm},
+Journal of the Royal Statistical Society. Series B (Methodological),
+39(1), pp. 1--22, 1977.
+\url{https://doi.org/10.1111/j.2517-6161.1977.tb01600.x}
+
+\bibitem{Fisher1922}
+{\sc R. A. Fisher},
+{\em On the mathematical foundations of theoretical statistics},
+Philosophical Transactions of the Royal Society of London. Series A, Containing Papers of a Mathematical or Physical Character, 222, pp. 309--368, 1922.
+\url{https://doi.org/10.1098/rsta.1922.0009}
+
+\bibitem{Goodfellow2016}
+{\sc I. J. Goodfellow, Y. Bengio, and A. Courville},
+{\em Deep learning}, MIT Press, Cambridge, MA, 2016.
+\url{https://mitpress.mit.edu/9780262035613/deep-learning/}
+
+\bibitem{Goodfellow2014}
+{\sc I. J. Goodfellow, J. Pouget-Abadie, M. Mirza, B. Xu, D. Warde-Farley, S. Ozair, A. Courville, and Y. Bengio},
+{\em Generative adversarial nets},
+Advances in Neural Information Processing Systems 27,
+pp. 2672--2680, 2014.
+\url{https://proceedings.neurips.cc/paper_files/paper/2014/hash/f033ed80deb0234979a61f95710dbe25-Abstract.html}
+
+
+
+\bibitem{Gusmao2024}
+{\sc G. S. Gusmão and A. J. Medford},
+{\em Maximum-likelihood estimators in physics-informed neural networks for high-dimensional inverse problems}, Computers \& Chemical Engineering, 181, 108547, 2024.
+\url{https://doi.org/10.1016/j.compchemeng.2023.108547}
+
+\bibitem{Hansen2024}
+{\sc D. Hansen, D. C. Maddix, S. Alizadeh, G. Gupta, and M. W. Mahoney},
+{\em Learning physical models that can respect conservation laws},
+Physica D: Nonlinear Phenomena, 457, 133952, 2024.
+\url{https://doi.org/10.1016/j.physd.2023.133952}
+
+
+%\bibitem{Hanson1965}
+%{\sc M.A. Hanson}, {\em Inequality constrained maximum likelihood estimation}, Annals of the Institute of Statistical Mathematics, 17 (1965), pp. 311-321.
+
+%\bibitem{HenrionKordaLasserre2020}
+%{\sc D.~Henrion, M.~Korda, and J.~B. Lasserre}, {\em The Moment-SOS Hierarchy},
+%  WORLD SCIENTIFIC (EUROPE), 2020.
+
+\bibitem{GloptiPoly}
+{\sc D. Henrion, J.-B. Lasserre, and J. L\"ofberg},
+{\em GloptiPoly 3: Moments, optimization and semidefinite programming},
+Optimization Methods and Software, 24(4--5), pp. 761--779, 2009.
+\url{https://doi.org/10.1080/10556780802699201}
+
+\bibitem{Karanam2025}
+{\sc B. A. Karanam, S. Mathur, S. Sidheekh, and S. Natarajan},
+{\em A unified framework for human-allied learning of probabilistic circuits}, In Proceedings of the AAAI Conference on Artificial Intelligence, 39(17), pp. 17779--17787, 2025.
+\url{https://doi.org/10.1609/aaai.v39i17.33955}
+
+\bibitem{Vinayak2019}
+{\sc R. Korlakai Vinayak, W. Kong, G. Valiant, and S. M. Kakade},
+{\em Maximum likelihood estimation for learning populations of parameters},
+In Proceedings of the 36th International Conference on Machine Learning,
+Proceedings of Machine Learning Research, vol. 97,
+pp. 6448--6457, 2019.
+\url{https://proceedings.mlr.press/v97/vinayak19a.html}
+
+
+%\bibitem{MLEquation05}
+%{\sc S. Hoşten, A. Khetan, and B. Sturmfels}, {\em Solving the Likelihood Equations}, Foundations of Computational Mathematics, 5 (2005), pp. 389--407.
+
+%\bibitem{lasserre2015}
+%{\sc J.~B. Lasserre}, {\em An Introduction to Polynomial and Semi-Algebraic
+	%  Optimization}, Cambridge Texts in Applied Mathematics, Cambridge University
+%  Press, 2015.
+
+\bibitem{lasserre2001}
+{\sc J.~B.~Lasserre}, {\em Global optimization with polynomials and the problem of moments}, SIAM Journal on Optimization, 11(3), pp. 796--817, 2001.
+\url{https://doi.org/10.1137/S1052623400366802}
+
+\bibitem{Lauritzen2019}
+{\sc S. Lauritzen, C. Uhler, and P. Zwiernik},
+{\em Maximum likelihood estimation in Gaussian models under total positivity},
+The Annals of Statistics, 47(4), pp. 1835--1863, 2019.
+\url{https://doi.org/10.1214/17-AOS1668}
+
+
+
+%\bibitem{Lau09}
+%{\sc M.~Laurent}, {\em Sums of squares, moment matrices and optimization over
+	% polynomials}, in Emerging Applications of Algebraic Geometry, M.~Putinar and
+%  S.~Sullivant, eds., The IMA volumes in mathematics and its applications, New
+%  York, NY, 2009, Springer New York, pp.~157--270.
+
+\bibitem{Yalmip}
+{\sc J. Löfberg}, {\em YALMIP: A toolbox for modeling and optimization in MATLAB}, In Proceedings of the 2004 IEEE International Symposium on Computer Aided Control Systems Design, pp.~284--289, 2004.
+\url{https://doi.org/10.1109/CACSD.2004.1393890}
+
+\bibitem{Mannor2005}
+{\sc S. Mannor, D. Peleg, and R. Rubinstein},
+{\em The cross entropy method for classification},
+In Proceedings of the 22nd International Conference on Machine Learning (ICML), pp. 561--568, 2005.
+\url{https://doi.org/10.1145/1102351.1102422}
+
+\bibitem{Mao2023}
+{\sc A. Mao, M. Mohri, and Y. Zhong},
+{\em Cross-entropy loss functions: theoretical analysis and applications}, In Proceedings of the 40th International Conference on Machine Learning, Proceedings of Machine Learning Research, vol.~202, pp.~23803--23828, 2023.
+\url{https://proceedings.mlr.press/v202/mao23b.html}
+
+
+\bibitem{McCulloch87}
+{\sc C. E. McCulloch}, {\em Maximum likelihood estimation in a multinomial mixture model}, Technical Report BU-934-MA, Biometrics Unit, Cornell University, Ithaca, NY, 1987.
+\url{https://ecommons.cornell.edu/bitstream/handle/1813/33048/BU-934-MA.pdf?sequence=1}
+
+\bibitem{EMBook}
+
+{\sc G. J. McLachlan and T. Krishnan},
+{\em The EM algorithm and extensions}, 2nd ed.,
+Wiley, Hoboken, NJ, 2008.
+\url{https://doi.org/10.1002/9780470191613}
+
+
+%\bibitem{ECM}
+%{\sc X. Meng and D. B. Rubin}, {\em Maximum Likelihood Estimation via the ECM Algorithm: A General Framework}, Biometrika, 80(2) (1993), pp. 267-278.
+
+
+\bibitem{MPO}
+{\sc J.~Nie},
+{\em Moment and polynomial optimization},
+SIAM, Philadelphia, 2023.
+\url{https://doi.org/10.1137/1.9781611977608}
+
+
+\bibitem{MurraySAGE}
+{\sc R.~Murray, V.~Chandrasekaran, and A.~Wierman},
+{\em Signomial and polynomial optimization via relative entropy
+and partial dualization},
+Mathematical Programming Computation, 13,
+pp.~257--295, 2021.
+\url{https://doi.org/10.1007/s12532-020-00193-4}
+
+
+%\bibitem{nie2014optimality}
+%\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em Optimality
+	%  conditions and finite convergence of {L}asserre's hierarchy}, Mathematical
+%  Programming, 146 (2014), pp.~97--121.
+
+
+
+\bibitem{nie2013certifying}
+{\sc J.~Nie},
+{\em Certifying convergence of Lasserre’s hierarchy via flat truncation},
+Mathematical Programming, 142, pp.~485--510, 2013.
+\url{https://doi.org/10.1007/s10107-012-0589-9}
+
+\bibitem{nie2014optimality}
+{\sc J.~Nie}, {\em Optimality
+	conditions and finite convergence of {L}asserre's hierarchy}, Mathematical
+Programming, 146, pp.~97--121, 2014.
+\url{https://doi.org/10.1007/s10107-013-0680-x}
+
+
+
+\bibitem{Nie2019}
+{\sc J.~Nie}, {\em Tight relaxations for polynomial optimization and {L}agrange multiplier expressions}, Mathematical Programming, 178, pp.~1--37, 2019.
+\url{https://doi.org/10.1007/s10107-018-1276-2}
+
+\bibitem{NieSunTangZ}
+{\sc J. Nie, D. Sun, X. Tang, and M. Zhang},
+{\em Solving polynomial variational inequality problems via Lagrange
+multiplier expressions and Moment-SOS relaxations},
+Computational Optimization and Applications, 90, pp.~361--394, 2025.
+\url{https://doi.org/10.1007/s10589-024-00635-y}
+
+\bibitem{nie2023convex}
+{\sc J.~Nie and X.~Tang}, {\em Convex generalized {N}ash equilibrium problems
+	and polynomial optimization}, Mathematical Programming, 198,
+pp.~1485--1518, 2023.
+\url{https://doi.org/10.1007/s10107-021-01739-7}
+
+\bibitem{NieTangZgnep21}
+{\sc J.~Nie, X.~Tang, and S.~Zhong}, {\em Rational generalized Nash
+	equilibrium problems}, SIAM Journal on Optimization, 33, pp.~1587--1620, 2023.
+\url{https://doi.org/10.1137/21M1456285}
+
+\bibitem{NieWangZBilevel21}
+{\sc J.~Nie, L.~Wang, J.~J.~Ye, and S.~Zhong}, {\em A Lagrange multiplier expression method for bilevel polynomial optimization}, SIAM Journal on Optimization, 31, pp.~2368--2395, 2021.
+\url{https://doi.org/10.1137/20M1352375}
+
+
+
+
+\bibitem{Putinar}
+{\sc M.~Putinar}, {\em Positive polynomials on compact semi-algebraic sets},
+Indiana University Mathematics Journal, 42, pp.~969--984, 1993.
+\url{https://doi.org/10.1512/iumj.1993.42.42045}
+
+\bibitem{Rayas2022}
+{\sc A. Rayas, R. Anguluri, and G. Dasarathy},
+{\em Learning the structure of large networked systems obeying conservation laws}, Advances in Neural Information Processing Systems 35, pp.~14637--14650, 2022.
+\url{https://doi.org/10.52202/068431-1064}
+
+\bibitem{Silverman1986}
+{\sc B. W. Silverman},
+{\em Density estimation for statistics and data analysis}, Chapman and Hall, London, 1986.
+\url{https://doi.org/10.1201/9781315140919}
+
+
+\bibitem{Srivastava2024}
+{\sc A. Srivastava, A. Bayati, and S. M. Salapaka},
+{\em Sparse linear regression with constraints: a flexible entropy-based framework}, In Proceedings of the 2024 European Control Conference (ECC), pp.~2105--2110, 2024.
+\url{https://doi.org/10.23919/ECC64448.2024.10591241}
+
+\bibitem{Zhang2018}
+{\sc Z. Zhang and M. R. Sabuncu},
+{\em Generalized cross entropy loss for training deep neural networks with noisy labels},
+Advances in Neural Information Processing Systems 31, pp.~8778--8788, 2018.
+\url{https://proceedings.neurips.cc/paper/2018/hash/f2925f97bc13ad2852a7a551802feea0-Abstract.html}
+
+
+
+\end{thebibliography}
+
+
+%%%%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%%%%

@@ -41,8 +41,11 @@ elsewhere on your computer.
 ## SAGE
 
 The SAGE calculations for Table 6 use Python with
-[sageopt](https://sageopt.readthedocs.io/), NumPy, and MOSEK. From a
-terminal in this directory, run
+[sageopt](https://pypi.org/project/sageopt/), NumPy, and MOSEK 10.0.
+On Windows, the script detects MOSEK in its default installation directory,
+`C:\Program Files\Mosek\10.0`. If MOSEK 10.0 is installed elsewhere, set
+the `MOSEK10_HOME` environment variable to its installation directory.
+From a terminal in this directory, run
 
 ```bash
 python Table_6_sage.py
