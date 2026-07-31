@@ -1,6 +1,6 @@
 % paternity-analysis results in Example 11.
 %
-% J. Choi, July 29, 2026
+% J. Choi, July 31, 2026
 
 clear
 clc
@@ -21,12 +21,17 @@ Pdata = {
     [0.5 0 0; 0.25 0.75 0.25; 0.25 0.25 0.5; 0 0 0.25]};
 orders = [2; 2; 3; 2; 2; 3; 4; 3; 4];
 
+fprintf('\n============================================================\n');
+fprintf('Example 11: one unreported solver warm-up\n');
+fprintf('============================================================\n');
+Ex_11_solve_case(Ndata{1}, Pdata{1}, orders(1));
+
 instance = (1:9)';
 n = zeros(9,1);
-t = zeros(9,1);
+g = zeros(9,1);
 k = orders;
 r = NaN(9,1);
-flat_t = NaN(9,1);
+t = NaN(9,1);
 bound = NaN(9,1);
 time = NaN(9,1);
 N = strings(9,1);
@@ -40,9 +45,9 @@ for i = 1:9
     fprintf('============================================================\n');
     out = Ex_11_solve_case(Ndata{i}, Pdata{i}, orders(i));
     n(i) = size(Pdata{i},2);
-    t(i) = size(Pdata{i},1);
+    g(i) = size(Pdata{i},1);
     r(i) = out.flat_rank;
-    flat_t(i) = out.flat_order;
+    t(i) = out.flat_order;
     bound(i) = out.bound;
     time(i) = out.time;
     N(i) = string(mat2str(Ndata{i}));
@@ -58,11 +63,11 @@ fprintf('\n=== Example 11: reported results ===\n');
 for i = 1:9
     fprintf('\nInstance %d\n', instance(i));
     fprintf('Number of fathers n       : %d\n', n(i));
-    fprintf('Number of genotypes t     : %d\n', t(i));
+    fprintf('Number of genotypes g     : %d\n', g(i));
     fprintf('Counts N                  : %s\n', N(i));
     fprintf('Relaxation order k        : %d\n', k(i));
     fprintf('Optimal relaxation value  : %.10f\n', bound(i));
-    fprintf('Flat-truncation order t   : %d\n', flat_t(i));
+    fprintf('Flat-truncation order t   : %d\n', t(i));
     fprintf('Rank                       : %d\n', r(i));
     fprintf('Extracted optimizer        : %s\n', optimizer(i));
     fprintf('Runtime (seconds)          : %.4f\n', time(i));

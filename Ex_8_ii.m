@@ -1,6 +1,6 @@
 % Example 8(ii).
 %
-% J. Choi, July 29, 2026
+% J. Choi, July 30, 2026
 
 clear all, 
 clc
@@ -27,8 +27,8 @@ N = N/max(N);
 % feasibility
 Ktheta = [b^2 - (x-a)'*(x-a) >= 0;
     p{1}>=0;
-    p{2}>=0;
-    p{3}>=0];
+    % Keep the quadratic constraint used in equation (31).
+    p{2}*p{3}>=0];
 
 % d = 1;
 ord = 2;

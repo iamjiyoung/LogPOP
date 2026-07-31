@@ -4,7 +4,7 @@ This is a standalone Python entry script. It contains the fixed seed-3
 instance used in the manuscript, prints all reported quantities to the
 terminal, and does not read or write CSV or MAT files.
 """
-# J. Choi, July 29, 2026
+# J. Choi, July 31, 2026
 
 from __future__ import annotations
 
@@ -150,7 +150,8 @@ for profile_name in selected_profiles:
                 "status": profile["status"],
                 "bound": math.nan,
                 "gap": math.nan,
-                "time": math.nan,
+                "solver_time": math.nan,
+                "total_time": math.nan,
             }
         )
         continue
@@ -215,7 +216,8 @@ for profile_name in selected_profiles:
             "status": str(problem.status),
             "bound": log_upper_bound,
             "gap": sage_gap,
-            "time": total_time,
+            "solver_time": solve_time,
+            "total_time": total_time,
         }
     )
 
@@ -228,13 +230,15 @@ def format_number(value):
 print("\n=== Table 6: SAGE summary ===")
 print(
     f"{'profile':<18} {'coefficient vector a':<24} "
-    f"{'status':<25} {'log bound':>12} {'gap':>12} {'total sec.':>12}"
+    f"{'status':<25} {'log bound':>12} {'gap':>12} "
+    f"{'solver sec.':>12} {'total sec.':>12}"
 )
-print("-" * 108)
+print("-" * 121)
 for row in summary_rows:
     print(
         f"{row['profile']:<18} {row['weights']:<24} "
         f"{row['status']:<25} {format_number(row['bound']):>12} "
         f"{format_number(row['gap']):>12} "
-        f"{format_number(row['time']):>12}"
+        f"{format_number(row['solver_time']):>12} "
+        f"{format_number(row['total_time']):>12}"
     )

@@ -1,10 +1,11 @@
 % standard relaxation in Example 6(i).
 %
-% J. Choi, July 29, 2026
+% J. Choi, July 31, 2026
 
 clear all,
 clc
-run(fullfile(fileparts(mfilename('fullpath')), 'functions', 'setup_paths.m'))
+run(fullfile(fileparts(mfilename('fullpath')), ...
+    'functions', 'setup_paths.m'))
 
 %%%  Gloptipoly Code
 mpol x 3
@@ -43,10 +44,6 @@ Ktheta = [x'*x <= 1;
     1-sum(x) >= 0];
 for i = 1:length(x)
     Ktheta = [Ktheta; x(i) >= 0;];
-end
-log_floor = 1e-5;
-for i = 1:length(p)
-    Ktheta = [Ktheta; p{i} >= log_floor];
 end
 
 % d = 2;
@@ -130,9 +127,18 @@ fprintf('Optimal relaxation value  : %.10f\n', upperbound);
 fprintf('Flat-truncation order t    : %d\n', extract_t);
 fprintf('Rank                       : %d\n', extract_rank);
 fprintf('Runtime (seconds)          : %.4f\n', solve_time);
-fprintf('Extracted optimizers:\n');
+fprintf('Extracted atoms:\n');
 for atom_index = 1:numel(xx)
     fprintf('  atom %d: %s\n', atom_index, mat2str(xx{atom_index}(:)', 10));
+    p_at_atom = zeros(1, numel(p));
+    for p_index = 1:numel(p)
+        p_at_atom(p_index) = double(subs(p{p_index}, x, xx{atom_index}));
+    end
+    objective_at_atom = sum(N.*log(p_at_atom));
+    fprintf('  objective at atom %d     : %.10f\n', ...
+        atom_index, objective_at_atom);
+    fprintf('  min_i p_i(atom %d)       : %.12e\n', ...
+        atom_index, min(p_at_atom));
 end
 
 % pp11 = double(subs(p{1},x,xx{1}));

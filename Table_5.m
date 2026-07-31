@@ -1,6 +1,6 @@
 % scaling results reported in Table 5.
 %
-% J. Choi, July 29, 2026
+% J. Choi, July 31, 2026
 
 
 clear
@@ -11,6 +11,7 @@ config.m_values = [2 4 6 8 10 12];
 config.n_values = [2 4 6 8];
 config.fixed_n = 4;
 config.fixed_m = 4;
+config.n_values_to_solve = config.n_values(config.n_values ~= config.fixed_n);
 config.seeds = 3;
 config.epsilon = 0.05;
 config.num_starts = 100;
@@ -21,13 +22,13 @@ config.max_full_sos_psd_dim = 250;
 config.full_sos_max_extra_orders = 2;
 
 num_m_cases = numel(config.m_values)*numel(config.seeds);
-num_n_cases = numel(config.n_values)*numel(config.seeds);
+num_n_cases = numel(config.n_values_to_solve)*numel(config.seeds);
 num_cases = num_m_cases+num_n_cases;
 study = [repmat("m", num_m_cases, 1); repmat("n", num_n_cases, 1)];
 seed = [repelem(config.seeds(:), numel(config.m_values), 1); ...
-    repelem(config.seeds(:), numel(config.n_values), 1)];
+    repelem(config.seeds(:), numel(config.n_values_to_solve), 1)];
 n = [repmat(config.fixed_n, num_m_cases, 1); ...
-    repmat(config.n_values(:), numel(config.seeds), 1)];
+    repmat(config.n_values_to_solve(:), numel(config.seeds), 1)];
 m = [repmat(config.m_values(:), numel(config.seeds), 1); ...
     repmat(config.fixed_m, num_n_cases, 1)];
 local_value = NaN(num_cases, 1);
@@ -145,8 +146,29 @@ results = table(study, seed, n, m, local_value, local_time, local_successes, ...
     full_sos_psd_dim, full_sos_status, full_sos_product_bound, ...
     full_sos_log_bound, full_sos_time, full_sos_log_gap, ...
     full_sos_full_rank, full_sos_flat_order, full_sos_flat_rank);
+
+% The (n,m)=(4,4) instance is shared by both scaling axes. Reuse the
+% m-scaling result instead of solving the same instance a second time.
+baseline = results(results.study == "m" & results.n == config.fixed_n ...
+    & results.m == config.fixed_m, :);
+baseline.study = repmat("n", height(baseline), 1);
+insert_after = num_m_cases+sum(config.n_values_to_solve < config.fixed_n);
+results = [results(1:insert_after, :); baseline; results(insert_after+1:end, :)];
+
 fprintf('\n=== Table 5: quantities reported in the paper ===\n');
 paper_results = results(:, {'study','n','m','log_gap', ...
     'multiplicative_gap','mom_time','lme_psd_dim','full_sos_psd_dim'});
 disp(paper_results)
+
+fprintf('\n=== Table 5: LME quantities reported in the text ===\n');
+lme_report = results(results.study == "m" & ismember(results.m, [2 4]), ...
+    {'m','lme_log_gap','lme_time'});
+disp(lme_report)
+
+fprintf('\n=== Table 5: direct-product quantities reported in the text ===\n');
+direct_report = results(results.study == "m" & results.m == 6, ...
+    {'m','full_sos_time','full_sos_log_gap', ...
+    'full_sos_flat_order','full_sos_flat_rank'});
+disp(direct_report)
+
 fprintf('Detailed relaxation results remain available in the variable results.\n');

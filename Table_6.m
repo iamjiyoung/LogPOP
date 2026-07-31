@@ -1,7 +1,7 @@
 % Reproduce the MATLAB results reported in Table 6.
 % Run this script directly.
 %
-% J. Choi, July 29, 2026
+% J. Choi, July 31, 2026
 
 clear
 clc
@@ -137,4 +137,11 @@ fprintf('\n=== Table 6: MATLAB quantities reported in the paper ===\n');
 paper_results = results(:, {'weights_text','mom_log_gap','lme_log_gap', ...
     'full_sos_log_gap','mom_time','lme_time','full_sos_time'});
 disp(paper_results)
+
+fprintf('\n=== Table 6: direct-product status and flat truncation ===\n');
+direct_report = results(:, {'weights_text','full_sos_status', ...
+    'full_sos_required_order','full_sos_actual_order', ...
+    'full_sos_flat_order','full_sos_flat_rank'});
+disp(direct_report)
+
 fprintf('Detailed relaxation results remain available in the variable results.\n');

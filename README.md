@@ -28,6 +28,8 @@ Set the MATLAB Current Folder to this directory. Open an `Ex_*.m` or
 at the end of the MATLAB Command Window.
 
 - `Ex_4.m`--`Ex_12_iv.m` reproduce the numerical examples.
+- `Ex_12_iv_screening.m` reproduces the candidate-dataset screening
+  used to select the stress instance in Example 12(iv).
 - `Table_5.m` and `Table_6.m` reproduce the scaling and coefficient studies.
 - `functions` contains supporting codes and should not be run directly.
   The optimizer-extraction routines are in `functions/extraction`.

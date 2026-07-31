@@ -1,13 +1,58 @@
 % the rank-two LME relaxation in Example 7.
 %
-% J. Choi, July 29, 2026
+% J. Choi, July 30, 2026
 
 clear
 clc
 run(fullfile(fileparts(mfilename('fullpath')), 'functions', 'setup_paths.m'))
 
-standard = Ex_7_solve_case(false, 3);
-lme = Ex_7_solve_case(true, 4);
+standard = [];
+fprintf(['\nThe standard order-k=1 relaxation is unbounded for the ', ...
+    'box-constraint representation used here.\n']);
+for candidate_order = 2:3
+    fprintf('\n--- Standard moment relaxation, order k=%d ---\n', ...
+        candidate_order);
+    try
+        candidate = Ex_7_solve_case(false, candidate_order);
+    catch solver_error
+        fprintf('No optimal solution returned at k=%d: %s\n', ...
+            candidate_order, solver_error.message);
+        continue
+    end
+    if isnan(candidate.flat_order)
+        fprintf('No flat truncation detected at k=%d (rank M_%d = %d).\n', ...
+            candidate_order, candidate_order, candidate.full_rank);
+    else
+        standard = candidate;
+        break
+    end
+end
+if isempty(standard)
+    error('No standard flat truncation found through order 3.');
+end
+
+lme = [];
+for candidate_order = 3:4
+    fprintf('\n--- LME moment relaxation, order k=%d ---\n', ...
+        candidate_order);
+    try
+        candidate = Ex_7_solve_case(true, candidate_order);
+    catch solver_error
+        fprintf('No optimal solution returned at k=%d: %s\n', ...
+            candidate_order, solver_error.message);
+        continue
+    end
+    if isnan(candidate.flat_order)
+        fprintf('No flat truncation detected at k=%d (rank M_%d = %d).\n', ...
+            candidate_order, candidate_order, candidate.full_rank);
+    else
+        lme = candidate;
+        break
+    end
+end
+if isempty(lme)
+    error('No LME flat truncation found through order 4.');
+end
 solutions = {standard; lme};
 
 method = ["standard"; "LME"];
