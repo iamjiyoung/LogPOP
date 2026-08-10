@@ -104,6 +104,13 @@ per-instance time limit.
 The scripts print the evaluated feasible value, SCIP upper bound,
 optimality gap, runtime, and node count.
 
+The SCIP models use the following redundant variable bounds implied by
+the constraints in the paper: `[0,1]` for Examples 4, 6, 11, and 12;
+`[-1,1]` for Examples 5 and 7; `[-2,2]` for Example 8; `[-10,10]`
+for Example 9; and `[-sqrt(20),sqrt(20)]` for Example 10. Bounds on the
+auxiliary variables representing the logarithm arguments are specified
+directly in `Ex_4_to_12_SCIP.py`.
+
 ## Citation
 
 If you use these codes, please cite
