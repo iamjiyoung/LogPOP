@@ -1,5 +1,5 @@
 function instance = Table_5_6_generate_instance(n, m, seed, epsilon)
-%TABLE_5_6_GENERATE_INSTANCE Generate a fixed quadratic test instance.
+%TABLE_6_7_GENERATE_INSTANCE Generate a fixed quadratic test instance.
 % This helper is called by Table_5.m and Table_6.m. Do not run it
 % directly; the table scripts set the dimensions, seed, and epsilon.
 % The returned structure stores all coefficients and logarithmic weights.

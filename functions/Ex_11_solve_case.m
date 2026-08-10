@@ -1,10 +1,11 @@
-function out = Ex_11_solve_case(report_weights, P, ord)
-%EX_11_SOLVE_CASE Solve one paternity-analysis instance from Example 11.
+function out = Ex_11_solve_case(report_weights, P, ord, use_lme)
+%EXAMPLE_11_SOLVE_CASE Solve a paternity-analysis moment relaxation.
 % This helper is called repeatedly by Ex_11.m. Do not run it directly;
 % Ex_11.m defines the data and reports the manuscript quantities. The
-% output contains the LME bound, runtime, flat-truncation data, and atoms.
+% output contains the standard or LME bound and the associated numerical
+% data. Set use_lme to false for the order-one standard relaxation.
 %
-% J. Choi, July 29, 2026
+% J. Choi, August 10, 2026
 mset clear
 mset('verbose', true)
 nred = size(P,2)-1;
@@ -18,38 +19,47 @@ for i = 1:size(P,1)
 end
 
 solve_weights = report_weights/max(report_weights);
-for i = 1:numel(p)
-    product = 1;
-    for j = 1:numel(p)
-        if j ~= i
-            product = product*p{j};
+if use_lme
+    for i = 1:numel(p)
+        product = 1;
+        for j = 1:numel(p)
+            if j ~= i
+                product = product*p{j};
+            end
+        end
+        others{i} = product; %#ok<AGROW>
+    end
+
+    for i = 1:nred
+        g{i} = 0; %#ok<AGROW>
+        for j = 1:numel(p)
+            g{i} = g{i} + solve_weights(j)*others{j}*diff(p{j},x(i));
         end
     end
-    others{i} = product; %#ok<AGROW>
-end
-
-for i = 1:nred
-    g{i} = 0; %#ok<AGROW>
-    for j = 1:numel(p)
-        g{i} = g{i} + solve_weights(j)*others{j}*diff(p{j},x(i));
+    % Here g{i} is p^1 times the ith partial derivative of the log objective.
+    hat_tau0 = 0;
+    for i = 1:nred
+        hat_tau0 = hat_tau0 + x(i)*g{i};
     end
-end
-lme0 = 0;
-for i = 1:nred
-    lme0 = lme0 + x(i)*g{i};
-end
-for i = 1:nred
-    lme(i) = lme0-g{i};
-end
+    for i = 1:nred
+        hat_tau(i) = hat_tau0-g{i};
+    end
 
-Ktheta = [sum(x)-1 <= 0; lme0 >= 0; lme0*(1-sum(x)) == 0];
-for i = 1:nred
-    Ktheta = [Ktheta; x(i) >= 0; lme(i) >= 0; lme(i)*x(i) == 0]; %#ok<AGROW>
+    Ktheta = [sum(x)-1 <= 0; hat_tau0 >= 0; ...
+        hat_tau0*(1-sum(x)) == 0];
+    for i = 1:nred
+        Ktheta = [Ktheta; x(i) >= 0; hat_tau(i) >= 0; ...
+            hat_tau(i)*x(i) == 0]; %#ok<AGROW>
+    end
+    flat_degree = ceil((numel(p)+1)/2);
+    flat_max = ord;
+else
+    Ktheta = [sum(x)-1 <= 0; x >= 0];
+    flat_degree = 1;
+    flat_max = 0;
 end
-
-flat_degree = ceil((numel(p)+1)/2);
 out = raw_log_moment_relaxation(x, p, solve_weights, report_weights, ...
-    Ktheta, ord, ord, flat_degree, flat_degree);
+    Ktheta, ord, flat_max, flat_degree, flat_degree);
 end
 
 function out = raw_log_moment_relaxation( ...
@@ -109,7 +119,7 @@ end
 % Step 5: Solve the SDP with MOSEK.
 started = tic;
 solution = optimize(constraints, objective, ...
-    sdpsettings('solver', 'mosek', 'verbose', 1));
+    sdpsettings('solver', 'mosek', 'verbose', 0));
 elapsed = toc(started);
 if solution.problem ~= 0
     error('MOSEK failed: %s', solution.info);

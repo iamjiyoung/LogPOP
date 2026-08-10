@@ -1,6 +1,6 @@
 % Example 8(ii).
 %
-% J. Choi, July 30, 2026
+% J. Choi, August 10, 2026
 
 clear all, 
 clc
@@ -27,7 +27,7 @@ N = N/max(N);
 % feasibility
 Ktheta = [b^2 - (x-a)'*(x-a) >= 0;
     p{1}>=0;
-    % Keep the quadratic constraint used in equation (31).
+    % Keep the quadratic factor-product constraint in the feasible set.
     p{2}*p{3}>=0];
 
 % d = 1;
@@ -70,7 +70,8 @@ for i = 2:length(p)
 end
 
 started = tic;
-sol = optimize(MomRelax,obj, sdpsettings('solver', 'mosek'));
+sol = optimize(MomRelax,obj, ...
+    sdpsettings('solver', 'mosek', 'verbose', 0));
 solve_time = toc(started);
 
 mdim = MCone.f + MCone.l;

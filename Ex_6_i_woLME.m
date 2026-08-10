@@ -1,6 +1,6 @@
 % standard relaxation in Example 6(i).
 %
-% J. Choi, July 31, 2026
+% J. Choi, August 10, 2026
 
 clear all,
 clc
@@ -89,7 +89,8 @@ for i = 2:length(p)
 end
 
 started = tic;
-sol = optimize(MomRelax,obj, sdpsettings('solver', 'mosek'));
+sol = optimize(MomRelax,obj, ...
+    sdpsettings('solver', 'mosek', 'verbose', 0));
 solve_time = toc(started);
 
 mdim = MCone.f + MCone.l;

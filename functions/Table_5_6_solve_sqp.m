@@ -1,5 +1,5 @@
 function out = Table_5_6_solve_sqp(instance, num_starts)
-%TABLE_5_6_SOLVE_SQP Compute the best feasible value by multistart SQP.
+%TABLE_6_7_SOLVE_SQP Compute the best feasible value by multistart SQP.
 % This helper is called by Table_5.m and Table_6.m and should not be run
 % directly. It solves the original nonlinear problem from deterministic
 % starts and returns the best feasible value, point, runtime, and status.

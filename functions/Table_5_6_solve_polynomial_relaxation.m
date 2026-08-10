@@ -1,5 +1,5 @@
 function out = Table_5_6_solve_polynomial_relaxation(x, objective_poly, Ktheta, ord, flat_max)
-%TABLE_5_6_SOLVE_POLYNOMIAL_RELAXATION Solve one polynomial Moment-SOS relaxation.
+%TABLE_6_7_SOLVE_POLYNOMIAL_RELAXATION Solve one polynomial Moment-SOS relaxation.
 % This lower-level helper is called by Table_5_6_solve_direct_product.m,
 % not by a user-facing script. It returns the polynomial bound, runtime,
 % moment-matrix ranks, flat-truncation order, and extracted atoms.

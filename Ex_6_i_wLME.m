@@ -1,6 +1,6 @@
 % LME relaxation in Example 6(i).
 %
-% J. Choi, July 31, 2026
+% J. Choi, August 10, 2026
 
 clear all,
 clc
@@ -36,16 +36,18 @@ N=[0.0968    0.1419    0.2194    0.0839    0.2839    0.1742];
 % N=[0.3424    0.7360    0.7947    0.5449    0.6862    0.8936];
 
 
-% Calculate gradient (here g{i} = g{i}*x(i))
+% Build the reduced polynomialized simplex LME system. The rational
+% multipliers are simplified before their denominators are cleared.
+% Here, g{i} denotes the cleared expression for x(i)*df/dx(i).
 g{1} = N(1)*3*(x(1)+2*x(2)+2*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)) + (N(2) + N(3))*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3));
 g{2} = N(1)*3*x(2)*(x(2)+2*x(3))*(x(2)+3*x(3)) + N(2)*(2*x(2)+2*x(3))*(x(1)+3*x(2)+3*x(3))*(x(2)+3*x(3)) + N(4)*3*(x(2)+2*x(3))*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3)) + N(5)*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3));
 g{3} = N(1)*3*x(3)*(x(2)+2*x(3))*(x(2)+3*x(3)) + N(2)*2*x(3)*(x(1)+3*x(2)+3*x(3))*(x(2)+3*x(3)) + 2*N(3)*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)) + N(4)*3*x(3)*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3)) + (2*N(5) +3*N(6))*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3));
 
-% Lagrange Multiplier (Simplex)
-lme0 = g{1} + g{2} + g{3};
-lme(1) = lme0*x(1) - (N(1)*3*(x(1)+2*x(2)+2*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)) + (N(2) + N(3))*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)));
-lme(2) = lme0*x(2) - (3*N(1)*(x(2)+2*x(3))*(x(2)+3*x(3))*x(2) + N(2)*(2*x(2)+2*x(3))*(x(1)+3*x(2)+3*x(3))*(x(2)+3*x(3)) + N(4)*3*(x(2)+2*x(3))*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3)) + N(5)*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)));
-lme(3) = lme0*x(3) - (3*N(1)*(x(2)+2*x(3))*(x(2)+3*x(3))*x(3) + N(2)*2*(x(1)+3*x(2)+3*x(3))*(x(2)+3*x(3))*x(3) + N(3)*2*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)) + N(4)*3*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*x(3) + N(5)*2*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)) + 3*N(6)*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)));
+% Reduced polynomialized Lagrange multipliers for the simplex.
+hat_tau0 = g{1} + g{2} + g{3};
+hat_tau(1) = hat_tau0*x(1) - (N(1)*3*(x(1)+2*x(2)+2*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)) + (N(2) + N(3))*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)));
+hat_tau(2) = hat_tau0*x(2) - (3*N(1)*(x(2)+2*x(3))*(x(2)+3*x(3))*x(2) + N(2)*(2*x(2)+2*x(3))*(x(1)+3*x(2)+3*x(3))*(x(2)+3*x(3)) + N(4)*3*(x(2)+2*x(3))*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3)) + N(5)*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)));
+hat_tau(3) = hat_tau0*x(3) - (3*N(1)*(x(2)+2*x(3))*(x(2)+3*x(3))*x(3) + N(2)*2*(x(1)+3*x(2)+3*x(3))*(x(2)+3*x(3))*x(3) + N(3)*2*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)) + N(4)*3*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*x(3) + N(5)*2*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)) + 3*N(6)*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)));
 
 % Feasibility
 Ktheta = [x'*x <= 1;
@@ -54,17 +56,17 @@ for i = 1:length(x)
     Ktheta = [Ktheta; x(i) >= 0];
 end
 
-% LME Positivity
-Ktheta = [Ktheta; lme0 >= 0];
+% Polynomialized LME multiplier positivity
+Ktheta = [Ktheta; hat_tau0 >= 0];
 for i = 1:length(x)
-    Ktheta = [Ktheta; lme(i) >= 0];
+    Ktheta = [Ktheta; hat_tau(i) >= 0];
 end
 
 % Complementarity
 for i = 1:length(x)
-    Ktheta = [Ktheta; lme(i)*x(i) == 0];
+    Ktheta = [Ktheta; hat_tau(i)*x(i) == 0];
 end
-Ktheta = [Ktheta; lme0*(1-sum(x)) == 0];
+Ktheta = [Ktheta; hat_tau0*(1-sum(x)) == 0];
 
 % d = 3;
 ord = 4;
@@ -106,7 +108,8 @@ for i = 2:length(p)
 end
 
 started = tic;
-sol = optimize(MomRelax,obj, sdpsettings('solver', 'mosek'));
+sol = optimize(MomRelax,obj, ...
+    sdpsettings('solver', 'mosek', 'verbose', 0));
 solve_time = toc(started);
 
 mdim = MCone.f + MCone.l;

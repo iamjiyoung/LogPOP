@@ -1,11 +1,11 @@
 function out = Ex_6_ii_solve_case(weights, use_lme, ord)
-%EX_6_II_SOLVE_CASE Solve one coefficient instance from Example 6(ii).
+%EXAMPLE_6_II_SOLVE_CASE Solve one coefficient instance from Example 6(ii).
 % This helper is called by Ex_6_ii.m for either the standard or the LME
 % moment relaxation. Do not run it directly; open and run Ex_6_ii.m.
 % The output contains the relaxation value, runtime, flat-truncation data,
 % and extracted atoms.
 %
-% J. Choi, July 30, 2026
+% J. Choi, August 10, 2026
 mset clear
 mset('verbose', true)
 mpol('x', 3)
@@ -25,6 +25,9 @@ end
 flat_degree = 2;
 if use_lme
     flat_degree = 3;
+    % Build the reduced polynomialized simplex LME system. The rational
+    % multipliers are simplified before their denominators are cleared,
+    % giving the lowest relaxation order d1 = 3.
     g{1} = weights(1)*3*(x(1)+2*x(2)+2*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)) ...
         +(weights(2)+weights(3))*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3));
     g{2} = weights(1)*3*x(2)*(x(2)+2*x(3))*(x(2)+3*x(3)) ...
@@ -36,13 +39,15 @@ if use_lme
         +2*weights(3)*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3)) ...
         +weights(4)*3*x(3)*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3)) ...
         +(2*weights(5)+3*weights(6))*(x(1)+3*x(2)+3*x(3))*(x(2)+2*x(3))*(x(2)+3*x(3));
-    lme0 = g{1}+g{2}+g{3};
-    lme(1) = lme0*x(1)-g{1};
-    lme(2) = lme0*x(2)-g{2};
-    lme(3) = lme0*x(3)-g{3};
-    Ktheta = [Ktheta; lme0 >= 0; lme0*(1-sum(x)) == 0];
+    % Reduced polynomialized simplex multipliers.
+    hat_tau0 = g{1}+g{2}+g{3};
+    hat_tau(1) = hat_tau0*x(1)-g{1};
+    hat_tau(2) = hat_tau0*x(2)-g{2};
+    hat_tau(3) = hat_tau0*x(3)-g{3};
+    Ktheta = [Ktheta; hat_tau0 >= 0; hat_tau0*(1-sum(x)) == 0];
     for i = 1:length(x)
-        Ktheta = [Ktheta; lme(i) >= 0; lme(i)*x(i) == 0]; %#ok<AGROW>
+        Ktheta = [Ktheta; hat_tau(i) >= 0; ...
+            hat_tau(i)*x(i) == 0]; %#ok<AGROW>
     end
 end
 
@@ -115,7 +120,7 @@ end
 % Step 5: Solve the SDP with MOSEK.
 started = tic;
 solution = optimize(constraints, objective, ...
-    sdpsettings('solver', 'mosek', 'verbose', 1));
+    sdpsettings('solver', 'mosek', 'verbose', 0));
 elapsed = toc(started);
 if solution.problem ~= 0
     error('MOSEK failed: %s', solution.info);

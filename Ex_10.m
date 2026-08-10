@@ -1,6 +1,6 @@
 % Example 10.
 %
-% J. Choi, July 31, 2026
+% J. Choi, August 10, 2026
 
 clear all, 
 clc
@@ -35,7 +35,7 @@ p{8} = 19 - 1.7*( (x(3)+v(2,8)) - (x(8)+v(8,8)) + (x(1)-0.7) )^4;
 p{9} = 21 - 2.4*( -(x(4)+v(3,9)) + (x(9)+v(9,9)) - (x(2)+0.8) )^4;
 p{10} = 26 - 1.4*( (x(5)+v(4,10)) - (x(10)+v(10,10)) + (x(3)-0.5) )^4;
 
-%Choose random N
+% Objective weights
 N = [1 1 1 1 1 1 1 1 1 1];
 NN = N;
 N = N/max(N);
@@ -53,6 +53,7 @@ Ktheta = [(sum(x(1:6)))^2 - 15 <= 0;
      2*x(7)^2 + x(8)^2 + 2*x(9)^2 + x(10)^2 + 3*x(11)^2 + x(12)^2) - 20 <= 0;
     (x(1)+x(6)+x(12))^2 - 4 <= 0;
     x(1) - x(12) - 3 <= 0;
+    sum(x) >= 0;
     p{1} >= 0;
     p{2} >= 0;
     p{3} >= 0;
@@ -103,7 +104,8 @@ for i = 2:length(p)
 end
 
 started = tic;
-sol = optimize(MomRelax,obj, sdpsettings('solver', 'mosek'));
+sol = optimize(MomRelax,obj, ...
+    sdpsettings('solver', 'mosek', 'verbose', 0));
 solve_time = toc(started);
 
 mdim = MCone.f + MCone.l;
@@ -154,3 +156,37 @@ fprintf('Flat-truncation order t    : %d\n', extract_t);
 fprintf('Rank                       : %d\n', extract_rank);
 fprintf('Runtime (seconds)          : %.4f\n', solve_time);
 fprintf('Extracted optimizer        : %s\n', mat2str(xx{1}(:)', 10));
+
+%%% Verify the strict-positivity witness used in the paper.
+witness = [-0.3; -0.9; 1.5; -0.9; 1.1; -0.4; ...
+    0.5; -1.1; 1.0; 2.1; 0.6; 0.7];
+witness_p = zeros(1, length(p));
+for i = 1:length(p)
+    witness_p(i) = double(subs(p{i}, x, witness));
+end
+
+witness_slacks = [
+    15-sum(witness(1:6))^2;
+    15-sum(witness(7:12))^2;
+    8-(witness(1)-witness(3)+witness(5)-witness(7)+witness(9)-witness(11))^2;
+    8-(witness(2)-witness(4)+witness(6)-witness(8)+witness(10)-witness(12))^2;
+    9-(witness(1)+witness(12))^2-(witness(2)+witness(11))^2;
+    9-(witness(3)-witness(10))^2-(witness(4)-witness(9))^2-(witness(5)-witness(8))^2;
+    sum(witness);
+    5-(sum(witness(1:2:11))-sum(witness(2:2:12)));
+    20-(2*witness(1)^2+witness(2)^2+2*witness(3)^2+witness(4)^2+ ...
+        3*witness(5)^2+witness(6)^2+2*witness(7)^2+witness(8)^2+ ...
+        2*witness(9)^2+witness(10)^2+3*witness(11)^2+witness(12)^2);
+    4-(witness(1)+witness(6)+witness(12))^2;
+    3-witness(1)+witness(12)];
+
+assert(min(witness_p) > 0, ...
+    'The paper witness does not make every logarithm argument positive.');
+assert(min(witness_slacks) >= -1e-10, ...
+    'The paper witness violates a defining constraint.');
+
+[minimum_p, minimum_p_index] = min(witness_p);
+fprintf('\n=== Example 10: positivity-witness check ===\n');
+fprintf('Minimum p_i at witness     : %.10f (i = %d)\n', ...
+    minimum_p, minimum_p_index);
+fprintf('Minimum constraint slack   : %.10f\n', min(witness_slacks));

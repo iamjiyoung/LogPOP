@@ -1,11 +1,11 @@
 function out = Table_5_6_solve_log_relaxation(instance, use_lme, ord)
-%TABLE_5_6_SOLVE_LOG_RELAXATION Solve a standard or LME log relaxation.
+%TABLE_6_7_SOLVE_LOG_RELAXATION Solve a standard or LME log relaxation.
 % This helper is called by Table_5.m and Table_6.m. Do not run it
 % directly. It constructs the selected relaxation and delegates the
 % moment-SDP calculation to Common_solve_log_moment_relaxation.m.
 % Solve the standard or LME log-moment relaxation for a generated instance.
 %
-% J. Choi, July 29, 2026
+% J. Choi, August 4, 2026
 
 mset clear
 mset('verbose', false)
@@ -41,14 +41,17 @@ if use_lme
             g{i} = g{i}+instance.weights(j)*diff(p{j}, x(i))*product_others;
         end
     end
-    lme0 = 0;
+    % g{i} is p^1 times the ith partial derivative of the log objective.
+    hat_tau0 = 0;
     for i = 1:instance.n
-        lme0 = lme0+x(i)*g{i};
+        hat_tau0 = hat_tau0+x(i)*g{i};
     end
-    Ktheta = [Ktheta; lme0 >= 0; lme0*(1-sum(x)) == 0];
+    Ktheta = [Ktheta; hat_tau0 >= 0; ...
+        hat_tau0*(1-sum(x)) == 0];
     for i = 1:instance.n
-        lme_i = lme0-g{i};
-        Ktheta = [Ktheta; lme_i >= 0; lme_i*x(i) == 0]; %#ok<AGROW>
+        hat_tau_i = hat_tau0-g{i};
+        Ktheta = [Ktheta; hat_tau_i >= 0; ...
+            hat_tau_i*x(i) == 0]; %#ok<AGROW>
     end
 end
 

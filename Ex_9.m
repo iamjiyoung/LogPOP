@@ -1,6 +1,6 @@
 % Example 9.
 %
-% J. Choi, July 29, 2026
+% J. Choi, August 10, 2026
 
 clear all, 
 clc
@@ -16,7 +16,7 @@ p{3} = 11 - ( 4*(x(5)+0.7)^2 + (x(6)-0.2)^2 );
 p{4} = 15 - ( 2*(x(7)-0.8)^2 + 5*(x(8)+0.3)^2 - 2*(x(7)-0.8)*(x(8)+0.3) );
 p{5} = 13 - ( -3*(x(9)-0.9)^2 + 2*(x(10)+0.4)^2 );
 
-%Choose random N
+% Objective weights
 N = [3 2 1 1 5];
 NN = N;
 N = N/max(N);
@@ -71,7 +71,8 @@ for i = 2:length(p)
 end
 
 started = tic;
-sol = optimize(MomRelax,obj, sdpsettings('solver', 'mosek'));
+sol = optimize(MomRelax,obj, ...
+    sdpsettings('solver', 'mosek', 'verbose', 0));
 solve_time = toc(started);
 
 mdim = MCone.f + MCone.l;

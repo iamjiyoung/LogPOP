@@ -1,4 +1,4 @@
-% scaling results reported in Table 5.
+% Reproduce the scaling results reported in Table 5.
 %
 % J. Choi, July 31, 2026
 

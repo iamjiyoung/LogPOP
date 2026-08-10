@@ -1,6 +1,6 @@
 % non-saturated latent-class-model results in Example 12(iv).
 %
-% J. Choi, July 29, 2026
+% J. Choi, August 10, 2026
 
 clear
 clc
@@ -26,8 +26,8 @@ model_gap = saturated_loglik-em.loglik;
 moment_gap = moment.bound-em.loglik;
 deviance = 2*model_gap;
 em_gaps = em.loglik-em.final_loglik;
-sorted_em_gaps = sort(em_gaps);
-em_p90_gap = sorted_em_gaps(ceil(0.9*numel(sorted_em_gaps)));
+num_max_iterations = sum(em.iterations == em_options.max_iterations);
+largest_shortfall = max(em_gaps);
 
 fprintf('\n=== Example 12(iv): reported results ===\n');
 fprintf('Observed-variable count d       : %d\n', 4);
@@ -39,8 +39,10 @@ fprintf('Moment upper bound               : %.10f\n', moment.bound);
 fprintf('Moment bound minus saturated     : %.3e\n', moment_minus_saturated);
 fprintf('Best 100-start EM log-likelihood : %.10f\n', em.loglik);
 fprintf('Moment bound minus EM            : %.10f\n', moment_gap);
-fprintf('Deviance from saturated model    : %.10f\n', deviance);
-fprintf('Moment runtime (seconds)          : %.4f\n', moment.time);
+fprintf('Deviance of best EM fit           : %.10f\n', deviance);
+fprintf('Moment-relaxation runtime (seconds): %.4f\n', moment.time);
 fprintf('100-start EM runtime (seconds)    : %.4f\n', em.time);
 fprintf('Distinct EM terminal values      : %d\n', em.num_distinct_solutions);
 fprintf('Starts within 1e-6 of best EM    : %d\n', em.num_best_solutions);
+fprintf('Starts reaching 5000 iterations  : %d\n', num_max_iterations);
+fprintf('Largest shortfall from best EM    : %.10f\n', largest_shortfall);

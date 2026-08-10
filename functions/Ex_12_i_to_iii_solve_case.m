@@ -1,10 +1,10 @@
 function out = Ex_12_i_to_iii_solve_case(instance, report_weights)
-%EX_12_I_TO_III_SOLVE_CASE Solve one saturated LCM instance.
+%EXAMPLE_12_I_TO_III_SOLVE_CASE Solve one saturated LCM instance.
 % This helper is called by Ex_12_i_to_iii.m for cases (i), (ii), and (iii).
 % Do not run it directly. The output contains the moment upper bound,
 % runtime, logarithm arguments, and first moments.
 %
-% J. Choi, July 29, 2026
+% J. Choi, August 10, 2026
 mset clear
 mset('verbose', true)
 
@@ -96,7 +96,7 @@ end
 % Step 5: Solve the SDP with MOSEK.
 started = tic;
 solution = optimize(constraints, objective, ...
-    sdpsettings('solver', 'mosek', 'verbose', 1));
+    sdpsettings('solver', 'mosek', 'verbose', 0));
 elapsed = toc(started);
 if solution.problem ~= 0
     error('MOSEK failed: %s', solution.info);

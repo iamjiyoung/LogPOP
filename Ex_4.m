@@ -1,6 +1,6 @@
 % Example 4: ABO blood-group likelihood.
 %
-% J. Choi, July 29, 2026
+% J. Choi, August 10, 2026
 
 clear
 clc
@@ -46,22 +46,24 @@ for row = 1:numel(orders)
         flat_degree = 1;
         if use_lme
             flat_degree = 2;
-            lme0 = 2*sum(solve_weights);
-            lme(1) = lme0*x(1)*(x(1)+2*x(3)) ...
+            % Reduced polynomialized simplex multiplier constraints.
+            % Factors positive on K_+ are canceled, giving d1 = 2.
+            hat_tau0 = 2*sum(solve_weights);
+            hat_tau(1) = hat_tau0*x(1)*(x(1)+2*x(3)) ...
                 -(solve_weights(1)+solve_weights(3))*(x(1)+2*x(3)) ...
                 -solve_weights(1)*x(1);
-            lme(2) = lme0*x(2)*(x(2)+2*x(3)) ...
+            hat_tau(2) = hat_tau0*x(2)*(x(2)+2*x(3)) ...
                 -(solve_weights(2)+solve_weights(3))*(x(2)+2*x(3)) ...
                 -solve_weights(2)*x(2);
-            lme(3) = lme0*x(3)*(x(1)+2*x(3))*(x(2)+2*x(3)) ...
+            hat_tau(3) = hat_tau0*x(3)*(x(1)+2*x(3))*(x(2)+2*x(3)) ...
                 -2*solve_weights(4)*(x(1)+2*x(3))*(x(2)+2*x(3)) ...
                 -2*solve_weights(1)*x(3)*(x(2)+2*x(3)) ...
                 -2*solve_weights(2)*x(3)*(x(1)+2*x(3));
             for i = 1:length(x)
-                Ktheta = [Ktheta; lme(i) >= 0; ...
-                    lme(i)*x(i) == 0]; %#ok<AGROW>
+                Ktheta = [Ktheta; hat_tau(i) >= 0; ...
+                    hat_tau(i)*x(i) == 0]; %#ok<AGROW>
             end
-            Ktheta = [Ktheta; lme0*(1-sum(x)) == 0];
+            Ktheta = [Ktheta; hat_tau0*(1-sum(x)) == 0];
         end
 
         %% Build the moment relaxation with GloptiPoly
@@ -116,7 +118,7 @@ for row = 1:numel(orders)
 
         started = tic;
         solution = optimize(constraints, objective, ...
-            sdpsettings('solver', 'mosek'));
+            sdpsettings('solver', 'mosek', 'verbose', 0));
         elapsed = toc(started);
         if solution.problem ~= 0
             error('MOSEK failed: %s', solution.info);

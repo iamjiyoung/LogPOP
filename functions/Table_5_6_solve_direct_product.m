@@ -1,5 +1,5 @@
 function out = Table_5_6_solve_direct_product(instance, min_ord, max_extra_orders, max_psd_dim)
-%TABLE_5_6_SOLVE_DIRECT_PRODUCT Solve the direct-product Moment-SOS model.
+%TABLE_6_7_SOLVE_DIRECT_PRODUCT Solve the direct-product Moment-SOS model.
 % This helper is called by Table_5.m and Table_6.m for integer exponents.
 % Do not run it directly. It checks the PSD-block size, solves admissible
 % orders, and returns the product bound, runtime, rank, and flat order.

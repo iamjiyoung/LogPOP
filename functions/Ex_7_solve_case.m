@@ -1,10 +1,10 @@
 function out = Ex_7_solve_case(use_lme, ord)
-%EX_7_SOLVE_CASE Solve one relaxation used in Example 7.
+%EXAMPLE_7_SOLVE_CASE Solve one relaxation used in Example 7.
 % Ex_7.m calls this helper once for the standard relaxation and once for
 % the LME relaxation. Do not run this file directly. The output contains
 % the bound, runtime, optimal moment matrix, flat order, rank, and atoms.
 %
-% J. Choi, July 29, 2026
+% J. Choi, August 10, 2026
 mset clear
 mset('verbose', true)
 mpol('x', 1)
@@ -19,11 +19,11 @@ if use_lme
     flat_degree = 3;
     % Polynomialized derivative of log(p1)+log(p2).
     g = 2*x*p{2}+2*x*p{1};
-    tau_lower = g*(x-1)/2;
-    tau_upper = g*(x+1)/2;
+    hat_tau_lower = g*(x-1)/2;
+    hat_tau_upper = g*(x+1)/2;
     Ktheta = [Ktheta; ...
-        tau_lower >= 0; tau_upper >= 0; ...
-        tau_lower*(x+1) == 0; tau_upper*(1-x) == 0];
+        hat_tau_lower >= 0; hat_tau_upper >= 0; ...
+        hat_tau_lower*(x+1) == 0; hat_tau_upper*(1-x) == 0];
 end
 
 out = raw_log_moment_relaxation(x, p, weights, weights, Ktheta, ...
@@ -87,7 +87,7 @@ end
 % Step 5: Solve the SDP with MOSEK.
 started = tic;
 solution = optimize(constraints, objective, ...
-    sdpsettings('solver', 'mosek', 'verbose', 1));
+    sdpsettings('solver', 'mosek', 'verbose', 0));
 elapsed = toc(started);
 if solution.problem ~= 0
     error('MOSEK failed: %s', solution.info);

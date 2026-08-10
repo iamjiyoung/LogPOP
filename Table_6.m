@@ -28,6 +28,8 @@ m = config.m*ones(num_cases, 1);
 weights_text = strings(num_cases, 1);
 sum_weights = NaN(num_cases, 1);
 integer_weights = false(num_cases, 1);
+direct_product_scale = NaN(num_cases, 1);
+direct_product_weights_text = strings(num_cases, 1);
 local_value = NaN(num_cases, 1);
 local_time = NaN(num_cases, 1);
 local_successes = NaN(num_cases, 1);
@@ -67,6 +69,24 @@ for pidx = 1:num_profiles
         weights_text(row) = sprintf('%.10g,%.10g,%.10g', weights);
         sum_weights(row) = sum(weights);
         integer_weights(row) = all(abs(weights-round(weights)) <= 1e-10);
+
+        % The fractional profile is commensurate: multiplying the
+        % logarithmic objective by 2 gives integer exponents (1,3,5).
+        % This positive rescaling preserves its maximizers. The irrational
+        % profile has no finite integer rescaling in the formulation used.
+        if integer_weights(row)
+            direct_product_scale(row) = 1;
+            product_weights = round(weights);
+        elseif profile(row) == "fractional"
+            direct_product_scale(row) = 2;
+            product_weights = round(2*weights);
+        else
+            product_weights = [];
+        end
+        if ~isempty(product_weights)
+            direct_product_weights_text(row) = sprintf( ...
+                '%.0f,%.0f,%.0f', product_weights);
+        end
         fprintf('[%d/%d] profile=%s, seed=%d\n', ...
             row, num_cases, profile(row), seed(row));
 
@@ -93,11 +113,11 @@ for pidx = 1:num_profiles
         lme_flat_order(row) = tighter.flat_order;
         lme_flat_rank(row) = tighter.flat_rank;
 
-        if ~integer_weights(row)
-            full_sos_status(row) = "not_applicable_noninteger";
+        if isempty(product_weights)
+            full_sos_status(row) = "not_applicable_incommensurate";
             continue
         end
-        full_sos_required_order(row) = sum(round(weights));
+        full_sos_required_order(row) = sum(product_weights);
         full_sos_required_psd_dim(row) = nchoosek(config.n+ ...
             full_sos_required_order(row), full_sos_required_order(row));
         if full_sos_required_psd_dim(row) > config.max_full_sos_psd_dim
@@ -105,12 +125,14 @@ for pidx = 1:num_profiles
             continue
         end
         try
-            full = Table_5_6_solve_direct_product(instance, full_sos_required_order(row), ...
+            product_instance = instance;
+            product_instance.weights = product_weights;
+            full = Table_5_6_solve_direct_product(product_instance, full_sos_required_order(row), ...
                 config.full_sos_max_extra_orders, config.max_full_sos_psd_dim);
             full_sos_status(row) = "solved";
             full_sos_actual_order(row) = full.order;
             full_sos_actual_psd_dim(row) = nchoosek(config.n+full.order, full.order);
-            full_sos_log_bound(row) = log(full.bound);
+            full_sos_log_bound(row) = log(full.bound)/direct_product_scale(row);
             full_sos_time(row) = full.time;
             full_sos_log_gap(row) = max(0, full_sos_log_bound(row)-local.value);
             full_sos_flat_order(row) = full.flat_order;
@@ -124,7 +146,8 @@ for pidx = 1:num_profiles
 end
 
 results = table(profile, seed, n, m, weights_text, sum_weights, ...
-    integer_weights, local_value, local_time, local_successes, local_solver, ...
+    integer_weights, direct_product_scale, direct_product_weights_text, ...
+    local_value, local_time, local_successes, local_solver, ...
     mom_bound, mom_time, ...
     mom_psd_dim, mom_log_gap, mom_gap_per_weight, mom_multiplicative_gap, ...
     lme_order, lme_psd_dim, lme_bound, lme_time, lme_log_gap, ...
@@ -140,6 +163,7 @@ disp(paper_results)
 
 fprintf('\n=== Table 6: direct-product status and flat truncation ===\n');
 direct_report = results(:, {'weights_text','full_sos_status', ...
+    'direct_product_scale','direct_product_weights_text', ...
     'full_sos_required_order','full_sos_actual_order', ...
     'full_sos_flat_order','full_sos_flat_rank'});
 disp(direct_report)

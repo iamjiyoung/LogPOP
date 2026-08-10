@@ -1,6 +1,6 @@
 % paternity-analysis results in Example 11.
 %
-% J. Choi, July 31, 2026
+% J. Choi, August 10, 2026
 
 clear
 clc
@@ -22,9 +22,10 @@ Pdata = {
 orders = [2; 2; 3; 2; 2; 3; 4; 3; 4];
 
 fprintf('\n============================================================\n');
-fprintf('Example 11: one unreported solver warm-up\n');
+fprintf('Example 11: unreported standard and LME warm-up solves\n');
 fprintf('============================================================\n');
-Ex_11_solve_case(Ndata{1}, Pdata{1}, orders(1));
+Ex_11_solve_case(Ndata{1}, Pdata{1}, 1, false);
+Ex_11_solve_case(Ndata{1}, Pdata{1}, orders(1), true);
 
 instance = (1:9)';
 n = zeros(9,1);
@@ -34,6 +35,9 @@ r = NaN(9,1);
 t = NaN(9,1);
 bound = NaN(9,1);
 time = NaN(9,1);
+standard_bound = NaN(9,1);
+standard_time = NaN(9,1);
+standard_optimizer = strings(9,1);
 N = strings(9,1);
 P = strings(9,1);
 optimizer = strings(9,1);
@@ -41,9 +45,19 @@ optimizer = strings(9,1);
 for i = 1:9
     fprintf('\n============================================================\n');
     fprintf('Example 11, paternity instance %d of 9\n', i);
+    fprintf('Standard moment relaxation, order k=1\n');
+    fprintf('============================================================\n');
+    standard = Ex_11_solve_case(Ndata{i}, Pdata{i}, 1, false);
+    standard_bound(i) = standard.bound;
+    standard_time(i) = standard.time;
+    reduced_standard = standard.first_moments;
+    full_standard = [reduced_standard, 1-sum(reduced_standard)];
+    standard_optimizer(i) = string(mat2str(full_standard, 10));
+
+    fprintf('\n');
     fprintf('LME moment relaxation, order k=%d\n', orders(i));
     fprintf('============================================================\n');
-    out = Ex_11_solve_case(Ndata{i}, Pdata{i}, orders(i));
+    out = Ex_11_solve_case(Ndata{i}, Pdata{i}, orders(i), true);
     n(i) = size(Pdata{i},2);
     g(i) = size(Pdata{i},1);
     r(i) = out.flat_rank;
@@ -65,10 +79,16 @@ for i = 1:9
     fprintf('Number of fathers n       : %d\n', n(i));
     fprintf('Number of genotypes g     : %d\n', g(i));
     fprintf('Counts N                  : %s\n', N(i));
+    fprintf('Standard order-1 value    : %.10f\n', standard_bound(i));
+    fprintf('Standard first moments    : %s\n', standard_optimizer(i));
+    fprintf('Standard runtime (seconds): %.4f\n', standard_time(i));
     fprintf('Relaxation order k        : %d\n', k(i));
-    fprintf('Optimal relaxation value  : %.10f\n', bound(i));
+    fprintf('LME relaxation value      : %.10f\n', bound(i));
     fprintf('Flat-truncation order t   : %d\n', t(i));
     fprintf('Rank                       : %d\n', r(i));
     fprintf('Extracted optimizer        : %s\n', optimizer(i));
     fprintf('Runtime (seconds)          : %.4f\n', time(i));
 end
+
+fprintf('\nMaximum absolute difference between standard and LME values: %.3e\n', ...
+    max(abs(standard_bound-bound)));
