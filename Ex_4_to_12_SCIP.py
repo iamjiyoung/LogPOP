@@ -1,4 +1,4 @@
-"""Run SCIP directly on Examples 4--12 from the LogPOP manuscript.
+"""Reproduce the SCIP comparisons in Tables 8--9 for Examples 4--12.
 
 This is an experimental comparison script.  It reports separately whether
 SCIP returned a feasible optimizer candidate and whether its primal--dual gap

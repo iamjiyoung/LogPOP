@@ -1,4 +1,4 @@
-"""Classify and run the direct-product SAGE comparison for Examples 4--12.
+"""Reproduce the SAGE applicability results in Table 11 for Examples 4--12.
 
 The formulation is applicable when the variables are nonnegative and all
 logarithmic weights are positive integers.  ``NL`` means that the finite

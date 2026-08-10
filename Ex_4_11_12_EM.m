@@ -1,4 +1,4 @@
-% EM comparisons for Examples 4, 11, and 12.
+% Reproduce the EM comparisons in Table 12 for Examples 4, 11, and 12.
 %
 % The script prints the best objective value, returned parameter vector,
 % number of iterations, and wall-clock runtime.  EM returns feasible

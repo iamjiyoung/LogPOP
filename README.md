@@ -30,7 +30,10 @@ at the end of the MATLAB Command Window.
 - `Ex_4.m`--`Ex_12_iv.m` reproduce the numerical examples.
 - `Ex_12_iv_screening.m` reproduces the candidate-dataset screening
   used to select the stress instance in Example 12(iv).
-- `Table_5.m` and `Table_6.m` reproduce the scaling and coefficient studies.
+- `Table_7.m` reproduces the scaling study.
+- `Table_10.m` and `Table_10_sage.py` reproduce the coefficient study.
+- `Ex_4_to_12_SCIP.py` reproduces the SCIP comparisons in Tables 8--9.
+- `Ex_4_to_12_SAGE.py` reproduces the SAGE applicability results in Table 11.
 - `Ex_4_11_12_EM.m` reproduces the EM comparisons in Table 12.
 - `functions` contains supporting codes and should not be run directly.
   The optimizer-extraction routines are in `functions/extraction`.
@@ -41,7 +44,7 @@ elsewhere on your computer.
 
 ## SAGE
 
-The SAGE calculations for Tables 7 and 8 use Python with
+The SAGE calculations for Tables 10 and 11 use Python with
 [sageopt](https://pypi.org/project/sageopt/), NumPy, and MOSEK 10.0.
 On Windows, the script detects MOSEK in its default installation directory,
 `C:\Program Files\Mosek\10.0`. If MOSEK 10.0 is installed elsewhere, set
@@ -49,7 +52,7 @@ the `MOSEK10_HOME` environment variable to its installation directory.
 From a terminal in this directory, run
 
 ```bash
-python Table_6_sage.py
+python Table_10_sage.py
 ```
 
 The script examines all six coefficient profiles, performs the two
@@ -58,16 +61,18 @@ applicable SAGE calculations, and prints a final summary table. The
 To run only one applicable profile, use
 
 ```bash
-python Table_6_sage.py --profile unit
-python Table_6_sage.py --profile small_integer
+python Table_10_sage.py --profile unit
+python Table_10_sage.py --profile small_integer
 ```
 
 The codes print their results to the MATLAB Command Window or Python
 terminal and do not create separate result files.
 Objective values, gaps, and ranks should agree with the paper to the
 reported precision; runtimes can vary with the computer and system load.
+Each reported MATLAB moment-relaxation runtime is measured on the second
+of two consecutive solves of the same instance, formulation, and order.
 
-The SAGE applicability comparison in Table 8 and the seven launched
+The SAGE applicability comparison in Table 11 and the seven launched
 paternity cases are reproduced by
 
 ```bash
@@ -79,7 +84,7 @@ Use `--case classify` to print only the applicability classification or
 
 ## SCIP
 
-The general-purpose global-solver comparisons in Tables 5 and 11 use
+The general-purpose global-solver comparisons in Tables 8 and 9 use
 [PySCIPOpt](https://pypi.org/project/PySCIPOpt/), which includes SCIP.
 Install it with
 
