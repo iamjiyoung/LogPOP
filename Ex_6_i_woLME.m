@@ -19,7 +19,7 @@ p{6} = x(3)^3;
 
 %Choose random N
 
-%r=2 0.0128 ord 4
+%r=2 0.0128 ord 3
 N=[0.0968    0.1419    0.2194    0.0839    0.2839    0.1742]; 
 
 %r=2 0.2036 ord 4
@@ -47,7 +47,7 @@ for i = 1:length(x)
 end
 
 % d = 2;
-ord = 4;
+ord = 3;
 
 for i = 1:length(N)
     PO{i} = msdp (max(p{i}), Ktheta, ord);
@@ -88,9 +88,13 @@ for i = 2:length(p)
     obj = obj - N(i)*log(b0{i}+bp{i}'*mom_y);
 end
 
+settings = sdpsettings('solver', 'mosek', 'verbose', 0);
+warmup = optimize(MomRelax, obj, settings);
+if warmup.problem ~= 0
+    error('MOSEK warm-up failed: %s', warmup.info);
+end
 started = tic;
-sol = optimize(MomRelax,obj, ...
-    sdpsettings('solver', 'mosek', 'verbose', 0));
+sol = optimize(MomRelax, obj, settings);
 solve_time = toc(started);
 
 mdim = MCone.f + MCone.l;
