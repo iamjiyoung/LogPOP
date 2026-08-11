@@ -25,6 +25,9 @@ rank_lme = NaN(5,1);
 flat_t_lme = NaN(5,1);
 time_mom = NaN(5,1);
 time_lme = NaN(5,1);
+f_factorized = NaN(5,1);
+time_factorized = NaN(5,1);
+maximizer_factorized = NaN(5,3);
 atoms_mom = strings(5,1);
 atoms_lme = strings(5,1);
 standard_order_history = cell(5,1);
@@ -59,6 +62,18 @@ for i = 1:5
                 candidate.flat_order = NaN;
                 candidate.flat_rank = NaN;
                 candidate.atoms = {};
+            end
+            if ~isnan(candidate.flat_order) && candidate.flat_rank == 1
+                objective_residual = ...
+                    abs(candidate.atom_values(1)-candidate.bound);
+                if objective_residual > 1e-4
+                    fprintf(['Rejected numerical flat truncation: ' ...
+                        'objective reconstruction residual = %.3e.\n'], ...
+                        objective_residual);
+                    candidate.flat_order = NaN;
+                    candidate.flat_rank = NaN;
+                    candidate.atoms = {};
+                end
             end
         end
         standard_last = candidate;
@@ -98,6 +113,18 @@ for i = 1:5
                 candidate.flat_rank = NaN;
                 candidate.atoms = {};
             end
+            if ~isnan(candidate.flat_order) && candidate.flat_rank == 1
+                objective_residual = ...
+                    abs(candidate.atom_values(1)-candidate.bound);
+                if objective_residual > 1e-4
+                    fprintf(['Rejected numerical flat truncation: ' ...
+                        'objective reconstruction residual = %.3e.\n'], ...
+                        objective_residual);
+                    candidate.flat_order = NaN;
+                    candidate.flat_rank = NaN;
+                    candidate.atoms = {};
+                end
+            end
         end
         if ~isnan(candidate.flat_order)
             tighter = candidate;
@@ -108,6 +135,9 @@ for i = 1:5
     if isempty(tighter)
         error('No LME flat truncation found for instance %d through order 6.', i);
     end
+
+    fprintf('\n--- Factorized standard moment relaxation, order k=1 ---\n');
+    factorized = Ex_6_factorized_solve_case(weights(i,:));
     rank_mom(i) = standard.flat_rank;
     flat_t_mom(i) = standard.flat_order;
     f_mom(i) = standard.bound;
@@ -116,6 +146,9 @@ for i = 1:5
     flat_t_lme(i) = tighter.flat_order;
     time_mom(i) = standard.time;
     time_lme(i) = tighter.time;
+    f_factorized(i) = factorized.bound;
+    time_factorized(i) = factorized.time;
+    maximizer_factorized(i,:) = factorized.maximizer;
     atom_text = strings(1, numel(standard.atoms));
     for j = 1:numel(standard.atoms)
         atom_text(j) = string(mat2str(standard.atoms{j}(:)', 10));
@@ -154,6 +187,12 @@ for i = 1:5
     fprintf('Rank                        : %d\n', rank_lme(i));
     fprintf('Extracted atoms             : %s\n', atoms_lme(i));
     fprintf('Runtime (seconds)           : %.4f\n', time_lme(i));
+    fprintf('\nFactorized standard moment relaxation\n');
+    fprintf('Relaxation order k         : 1\n');
+    fprintf('Optimal relaxation value   : %.10f\n', f_factorized(i));
+    fprintf('First-moment maximizer     : %s\n', ...
+        mat2str(maximizer_factorized(i,:), 10));
+    fprintf('Runtime (seconds)           : %.4f\n', time_factorized(i));
 end
 
 fprintf('\n=== Example 6(ii), instance 3: standard order history ===\n');

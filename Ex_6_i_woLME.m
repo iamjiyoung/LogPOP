@@ -146,6 +146,16 @@ for atom_index = 1:numel(xx)
         atom_index, min(p_at_atom));
 end
 
+factorized = Ex_6_factorized_solve_case(N);
+fprintf('\n=== Example 6(i): factorized standard moment relaxation ===\n');
+fprintf('Relaxation order k        : 1\n');
+fprintf('Optimal relaxation value  : %.10f\n', factorized.bound);
+fprintf('Runtime (seconds)          : %.4f\n', factorized.time);
+fprintf('First-moment maximizer     : %s\n', ...
+    mat2str(factorized.maximizer, 10));
+fprintf('Objective at maximizer     : %.10f\n', ...
+    factorized.maximizer_value);
+
 % pp11 = double(subs(p{1},x,xx{1}));
 % pp12 = double(subs(p{2},x,xx{1}));
 % pp13 = double(subs(p{3},x,xx{1}));

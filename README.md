@@ -28,6 +28,10 @@ Set the MATLAB Current Folder to this directory. Open an `Ex_*.m` or
 at the end of the MATLAB Command Window.
 
 - `Ex_4.m`--`Ex_12_iv.m` reproduce the numerical examples.
+- `Ex_4.m`, `Ex_6_i_woLME.m`, and `Ex_6_ii.m` also solve the
+  affine-factor formulations discussed in Examples 4 and 6. These
+  order-one relaxations print their certified values and first-moment
+  maximizers.
 - `Ex_12_iv_screening.m` reproduces the candidate-dataset screening
   used to select the stress instance in Example 12(iv).
 - `Table_7.m` reproduces the scaling study.
@@ -35,7 +39,8 @@ at the end of the MATLAB Command Window.
 - `Ex_4_to_12_SCIP.py` reproduces the SCIP comparisons in Tables 8--9.
 - `Ex_4_to_12_SAGE.py` reproduces the SAGE applicability results in Table 11.
 - `Ex_4_11_12_EM.m` reproduces the EM comparisons in Table 12.
-- `functions` contains supporting codes and should not be run directly.
+- `functions` contains supporting codes, including the affine-factor
+  solver for Example 6, and should not be run directly.
   The optimizer-extraction routines are in `functions/extraction`.
 
 The default package locations are specified in

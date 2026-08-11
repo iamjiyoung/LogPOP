@@ -17,6 +17,42 @@ lme_flat_t = NaN(size(orders));
 lme_flat_r = NaN(size(orders));
 lme_atoms = cell(size(orders));
 
+%% Solve the affine-factor formulation at order one
+mset clear
+mset('verbose', true)
+mpol('x', 3)
+affine_factors = {
+    x(1), x(2), x(3), x(1)+2*x(3), x(2)+2*x(3)};
+factor_weights = [199 77 352 182 60];
+solve_factor_weights = factor_weights/max(factor_weights);
+factor_constant = 17*log(2);
+Kfactor = [1-sum(x) >= 0];
+for i = 1:length(x)
+    Kfactor = [Kfactor; x(i) >= 0]; %#ok<AGROW>
+end
+factorized = Common_solve_log_moment_relaxation( ...
+    x, affine_factors, solve_factor_weights, factor_weights, Kfactor, ...
+    1, 1, 1, 1);
+factorized.bound = factorized.bound+factor_constant;
+factorized_maximizer = factorized.arguments(1:3);
+values = [factorized_maximizer(1), factorized_maximizer(2), ...
+    factorized_maximizer(3), ...
+    factorized_maximizer(1)+2*factorized_maximizer(3), ...
+    factorized_maximizer(2)+2*factorized_maximizer(3)];
+factorized_maximizer_value = ...
+    sum(factor_weights.*log(values))+factor_constant;
+factorized_violation = max([0; -factorized_maximizer(:); ...
+    sum(factorized_maximizer)-1]);
+if factorized_violation > 1e-4
+    error('Factorized first-moment maximizer is infeasible by %.3e.', ...
+        factorized_violation);
+end
+if abs(factorized_maximizer_value-factorized.bound) > 1e-4
+    error(['Factorized first moments do not reproduce the relaxation ' ...
+        'value: residual %.3e.'], ...
+        abs(factorized_maximizer_value-factorized.bound));
+end
+
 for row = 1:numel(orders)
     ord = orders(row);
 
@@ -116,9 +152,13 @@ for row = 1:numel(orders)
             objective = objective-solve_weights(i)*log(log_arguments{i});
         end
 
+        settings = sdpsettings('solver', 'mosek', 'verbose', 0);
+        warmup = optimize(constraints, objective, settings);
+        if warmup.problem ~= 0
+            error('MOSEK warm-up failed: %s', warmup.info);
+        end
         started = tic;
-        solution = optimize(constraints, objective, ...
-            sdpsettings('solver', 'mosek', 'verbose', 0));
+        solution = optimize(constraints, objective, settings);
         elapsed = toc(started);
         if solution.problem ~= 0
             error('MOSEK failed: %s', solution.info);
@@ -154,6 +194,21 @@ for row = 1:numel(orders)
         end
         rng(previous_rng);
 
+        if use_lme && ~isnan(flat_t) && flat_r == 1
+            atom = atoms{1};
+            atom_violation = max([0; -atom(:); sum(atom)-1]);
+            atom_arguments = zeros(1, num_terms);
+            for i = 1:num_terms
+                atom_arguments(i) = double(subs(p{i}, x, atom));
+            end
+            atom_value = sum(report_weights.*log(atom_arguments));
+            if atom_violation > 1e-4 || abs(atom_value-bound) > 1e-4
+                error(['The rank-one LME extraction failed validation: ' ...
+                    'feasibility %.3e, objective residual %.3e.'], ...
+                    atom_violation, abs(atom_value-bound));
+            end
+        end
+
         %% Store the result
         if use_lme
             lme_bound(row) = bound;
@@ -175,6 +230,15 @@ results = table(orders, mom_bound, lme_bound, mom_time, lme_time, ...
     {'k','f_mom','f_lme','time_mom','time_lme', ...
     'flat_t_mom','rank_mom','flat_t_lme','rank_lme'});
 fprintf('\n=== Example 4: reported results ===\n');
+
+fprintf('\nFactorized standard moment relaxation\n');
+fprintf('Relaxation order k        : 1\n');
+fprintf('Optimal relaxation value  : %.10f\n', factorized.bound);
+fprintf('First-moment maximizer     : %s\n', ...
+    mat2str(factorized_maximizer, 10));
+fprintf('Objective at maximizer     : %.10f\n', ...
+    factorized_maximizer_value);
+fprintf('Runtime (seconds)          : %.4f\n', factorized.time);
 
 for row = 1:numel(orders)
     fprintf('\nStandard moment relaxation\n');
