@@ -1,6 +1,6 @@
 % five coefficient instances in Example 6(ii).
 %
-% J. Choi, July 31, 2026
+% J. Choi, August 10, 2026
 
 clear
 clc
@@ -27,6 +27,12 @@ time_mom = NaN(5,1);
 time_lme = NaN(5,1);
 atoms_mom = strings(5,1);
 atoms_lme = strings(5,1);
+standard_order_history = cell(5,1);
+standard_bound_history = cell(5,1);
+standard_rank_history = cell(5,1);
+standard_flat_order_history = cell(5,1);
+standard_flat_rank_history = cell(5,1);
+atom_feasibility_tolerance = 1e-4;
 
 for i = 1:5
     fprintf('\n============================================================\n');
@@ -34,10 +40,33 @@ for i = 1:5
     fprintf('Coefficient vector: %s\n', mat2str(weights(i,:), 10));
     fprintf('============================================================\n');
     standard = [];
+    standard_last = [];
     for candidate_order = 2:8
         fprintf('\n--- Standard moment relaxation, order k=%d ---\n', ...
             candidate_order);
         candidate = Ex_6_ii_solve_case(weights(i,:), false, candidate_order);
+        if ~isnan(candidate.flat_order)
+            max_violation = 0;
+            for j = 1:numel(candidate.atoms)
+                atom = candidate.atoms{j}(:);
+                violation = max([0; -atom; sum(atom)-1; atom'*atom-1]);
+                max_violation = max(max_violation, violation);
+            end
+            if max_violation > atom_feasibility_tolerance
+                fprintf(['Rejected numerical flat truncation: ' ...
+                    'maximum atom feasibility violation = %.3e.\n'], ...
+                    max_violation);
+                candidate.flat_order = NaN;
+                candidate.flat_rank = NaN;
+                candidate.atoms = {};
+            end
+        end
+        standard_last = candidate;
+        standard_order_history{i}(end+1) = candidate_order;
+        standard_bound_history{i}(end+1) = candidate.bound;
+        standard_rank_history{i}(end+1) = candidate.full_rank;
+        standard_flat_order_history{i}(end+1) = candidate.flat_order;
+        standard_flat_rank_history{i}(end+1) = candidate.flat_rank;
         if ~isnan(candidate.flat_order)
             standard = candidate;
             mom_orders(i) = candidate_order;
@@ -45,13 +74,31 @@ for i = 1:5
         end
     end
     if isempty(standard)
-        error('No flat truncation found for instance %d through order 8.', i);
+        standard = standard_last;
+        fprintf(['No numerically reliable standard flat truncation ' ...
+            'was found for instance %d through order 8.\n'], i);
     end
     tighter = [];
     for candidate_order = 3:6
         fprintf('\n--- LME moment relaxation, order k=%d ---\n', ...
             candidate_order);
         candidate = Ex_6_ii_solve_case(weights(i,:), true, candidate_order);
+        if ~isnan(candidate.flat_order)
+            max_violation = 0;
+            for j = 1:numel(candidate.atoms)
+                atom = candidate.atoms{j}(:);
+                violation = max([0; -atom; sum(atom)-1; atom'*atom-1]);
+                max_violation = max(max_violation, violation);
+            end
+            if max_violation > atom_feasibility_tolerance
+                fprintf(['Rejected numerical flat truncation: ' ...
+                    'maximum atom feasibility violation = %.3e.\n'], ...
+                    max_violation);
+                candidate.flat_order = NaN;
+                candidate.flat_rank = NaN;
+                candidate.atoms = {};
+            end
+        end
         if ~isnan(candidate.flat_order)
             tighter = candidate;
             lme_orders(i) = candidate_order;
@@ -86,11 +133,19 @@ for i = 1:5
     fprintf('\nInstance %d\n', instance(i));
     fprintf('Coefficient vector         : %s\n', mat2str(weights(i,:), 10));
     fprintf('\nStandard moment relaxation\n');
-    fprintf('Relaxation order k         : %d\n', mom_orders(i));
+    if isnan(mom_orders(i))
+        fprintf('Flat truncation            : not detected through k=8\n');
+        fprintf('Reported bound order k     : %d\n', ...
+            standard_order_history{i}(end));
+    else
+        fprintf('Relaxation order k         : %d\n', mom_orders(i));
+    end
     fprintf('Optimal relaxation value   : %.10f\n', f_mom(i));
-    fprintf('Flat-truncation order t     : %d\n', flat_t_mom(i));
-    fprintf('Rank                        : %d\n', rank_mom(i));
-    fprintf('Extracted atoms             : %s\n', atoms_mom(i));
+    if ~isnan(flat_t_mom(i))
+        fprintf('Flat-truncation order t     : %d\n', flat_t_mom(i));
+        fprintf('Rank                        : %d\n', rank_mom(i));
+        fprintf('Extracted atoms             : %s\n', atoms_mom(i));
+    end
     fprintf('Runtime (seconds)           : %.4f\n', time_mom(i));
     fprintf('\nLME moment relaxation\n');
     fprintf('Relaxation order k         : %d\n', lme_orders(i));
@@ -99,4 +154,20 @@ for i = 1:5
     fprintf('Rank                        : %d\n', rank_lme(i));
     fprintf('Extracted atoms             : %s\n', atoms_lme(i));
     fprintf('Runtime (seconds)           : %.4f\n', time_lme(i));
+end
+
+fprintf('\n=== Example 6(ii), instance 3: standard order history ===\n');
+for j = 1:numel(standard_order_history{3})
+    if isnan(standard_flat_order_history{3}(j))
+        flat_text = 'no';
+    else
+        flat_text = sprintf('yes (t=%d, rank=%d)', ...
+            standard_flat_order_history{3}(j), ...
+            standard_flat_rank_history{3}(j));
+    end
+    fprintf(['k=%d: bound=%.10f, moment rank=%d, ' ...
+        'flat truncation=%s\n'], ...
+        standard_order_history{3}(j), ...
+        standard_bound_history{3}(j), ...
+        standard_rank_history{3}(j), flat_text);
 end
