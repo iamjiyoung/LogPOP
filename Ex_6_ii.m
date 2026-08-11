@@ -30,6 +30,8 @@ time_factorized = NaN(5,1);
 maximizer_factorized = NaN(5,3);
 atoms_mom = strings(5,1);
 atoms_lme = strings(5,1);
+atom_values_mom = cell(5,1);
+atom_values_lme = cell(5,1);
 standard_order_history = cell(5,1);
 standard_bound_history = cell(5,1);
 standard_rank_history = cell(5,1);
@@ -154,11 +156,13 @@ for i = 1:5
         atom_text(j) = string(mat2str(standard.atoms{j}(:)', 10));
     end
     atoms_mom(i) = strjoin(atom_text, '; ');
+    atom_values_mom{i} = standard.atom_values;
     atom_text = strings(1, numel(tighter.atoms));
     for j = 1:numel(tighter.atoms)
         atom_text(j) = string(mat2str(tighter.atoms{j}(:)', 10));
     end
     atoms_lme(i) = strjoin(atom_text, '; ');
+    atom_values_lme{i} = tighter.atom_values;
 end
 
 fprintf('\n=== Example 6(ii): reported results ===\n');
@@ -178,6 +182,8 @@ for i = 1:5
         fprintf('Flat-truncation order t     : %d\n', flat_t_mom(i));
         fprintf('Rank                        : %d\n', rank_mom(i));
         fprintf('Extracted atoms             : %s\n', atoms_mom(i));
+        fprintf('Objectives at atoms         : %s\n', ...
+            mat2str(atom_values_mom{i}, 10));
     end
     fprintf('Runtime (seconds)           : %.4f\n', time_mom(i));
     fprintf('\nLME moment relaxation\n');
@@ -186,6 +192,8 @@ for i = 1:5
     fprintf('Flat-truncation order t     : %d\n', flat_t_lme(i));
     fprintf('Rank                        : %d\n', rank_lme(i));
     fprintf('Extracted atoms             : %s\n', atoms_lme(i));
+    fprintf('Objectives at atoms         : %s\n', ...
+        mat2str(atom_values_lme{i}, 10));
     fprintf('Runtime (seconds)           : %.4f\n', time_lme(i));
     fprintf('\nFactorized standard moment relaxation\n');
     fprintf('Relaxation order k         : 1\n');
