@@ -1,6 +1,12 @@
-# Log-polynomial optimization
+# LogPOP
 
-This folder contains the code used for the numerical experiments in the paper.
+This repository contains code for reproducing the numerical experiments in
+[Log-Polynomial Optimization](https://arxiv.org/abs/2601.02797) by Jiyoung Choi,
+Jiawang Nie, Xindong Tang, and Suhan Zhong.
+
+The paper studies optimization problems whose objectives are weighted sums of
+logarithms of polynomial functions and develops moment relaxations for solving
+them.
 
 ## Requirements
 
