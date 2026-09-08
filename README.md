@@ -1,123 +1,63 @@
-# Log-Polynomial Optimization
+# Log-polynomial optimization
 
-This repository contains the numerical codes for
-[Log-Polynomial Optimization](https://arxiv.org/abs/2601.02797) by
-Jiyoung Choi, Jiawang Nie, Xindong Tang, and Suhan Zhong.
+This folder contains the code used for the numerical experiments in the paper.
 
-The paper studies optimization problems of the form
+## Requirements
 
-$$
-\max_{x\in K}\ \sum_{i=1}^m a_i\log p_i(x),
-$$
+- MATLAB R2025b
+- MATLAB Optimization Toolbox
+- MOSEK 10.0
+- GloptiPoly 3
+- YALMIP
+- SeDuMi
+- Python with PySCIPOpt 6.2.1 and SCIP 10.0.2 for the SCIP comparison
 
-where $a_i>0$, the functions $p_i$ are polynomials, and $K$ is a
-semialgebraic set.
+## MATLAB setup
 
-The MATLAB codes require
-[GloptiPoly](https://homepages.laas.fr/henrion/software/gloptipoly3/),
-[YALMIP](https://yalmip.github.io/),
-[SeDuMi](https://github.com/sqlp/sedumi), and
-[MOSEK](https://www.mosek.com/). The SQP calculations also require the
-MATLAB Optimization Toolbox.
+Start MATLAB, change to this folder, and add the required packages and local
+extraction functions to the MATLAB path. Replace the package paths below with
+their locations on your computer.
 
-## MATLAB
-
-Set the MATLAB Current Folder to this directory. Open an `Ex_*.m` or
-`Table_*.m` file and click **Run**. Each entry script automatically calls
-`functions/setup_paths.m` and prints the quantities reported in the paper
-at the end of the MATLAB Command Window.
-
-- `Ex_4.m`--`Ex_12_iv.m` reproduce the numerical examples.
-- `Ex_4.m`, `Ex_6_i_woLME.m`, and `Ex_6_ii.m` also solve the
-  affine-factor formulations discussed in Examples 4 and 6. These
-  order-one relaxations print their certified values and first-moment
-  maximizers.
-- `Ex_12_iv_screening.m` reproduces the candidate-dataset screening
-  used to select the stress instance in Example 12(iv).
-- `Table_7.m` reproduces the scaling study.
-- `Table_10.m` and `Table_10_sage.py` reproduce the coefficient study.
-- `Ex_4_to_12_SCIP.py` reproduces the SCIP comparisons in Tables 8--9.
-- `Ex_4_to_12_SAGE.py` reproduces the SAGE applicability results in Table 11.
-- `Ex_4_11_12_EM.m` reproduces the EM comparisons in Table 12.
-- `functions` contains supporting codes, including the affine-factor
-  solver for Example 6, and should not be run directly.
-  The optimizer-extraction routines are in `functions/extraction`.
-
-The default package locations are specified in
-`functions/setup_paths.m`. Modify them if the packages are installed
-elsewhere on your computer.
-
-## SAGE
-
-The SAGE calculations for Tables 10 and 11 use Python with
-[sageopt](https://pypi.org/project/sageopt/), NumPy, and MOSEK 10.0.
-On Windows, the script detects MOSEK in its default installation directory,
-`C:\Program Files\Mosek\10.0`. If MOSEK 10.0 is installed elsewhere, set
-the `MOSEK10_HOME` environment variable to its installation directory.
-From a terminal in this directory, run
-
-```bash
-python Table_10_sage.py
+```matlab
+addpath(genpath('path/to/gloptipoly3'))
+addpath(genpath('path/to/YALMIP'))
+addpath(genpath('path/to/SeDuMi'))
+addpath('path/to/MOSEK/10.0/toolbox/r2017a')
+addpath(fullfile(pwd,'functions'))
 ```
 
-The script examines all six coefficient profiles, performs the two
-applicable SAGE calculations, and prints a final summary table. The
-`small_integer` calculation can take approximately 10--15 minutes.
-To run only one applicable profile, use
+Each experiment can then be reproduced by opening the corresponding script and
+clicking **Run**, or by entering its file name without `.m` in the Command
+Window.
 
-```bash
-python Table_10_sage.py --profile unit
-python Table_10_sage.py --profile small_integer
+## Files
+
+- `Ex_5_3_woLME.m`, `Ex_5_3_wLME.m`: Example 5.3, standard and LME relaxations
+- `Ex_6_1.m`: Example 6.1
+- `Ex_6_2_woLME.m`, `Ex_6_2_wLME.m`: Example 6.2, standard and LME relaxations
+- `Ex_6_3_1.m`, `Ex_6_3_2.m`: Example 6.3(i) and (ii)
+- `Ex_6_4.m`, `Ex_6_5.m`: Examples 6.4 and 6.5
+- `Ex_6_6_1.m`--`Ex_6_6_9.m`: the nine paternity instances in Example 6.6
+- `Ex_6_7_1.m`--`Ex_6_7_3.m`: the first three LCM instances in Example 6.7
+- `Ex_6_7_4.m`: the non-saturated LCM instance and 100-start EM comparison
+- `Table_5.m`: the scaling experiment reported in Table 5
+- `Table_6.m`: the weight experiment reported in Table 6
+- `Table_7_SCIP.py`: the comparison reported in Table 7
+- `Section_5_rank2_LME.m`: the rank-two LME illustration in Section 5
+- `functions/`: extraction and Table 5 helper functions; these files are not run directly
+
+The active coefficient vector in each `Ex_6_2` script reproduces Example
+6.2(i). To reproduce the five instances in Example 6.2(ii), uncomment one of
+the five alternative vectors in each script and leave only that assignment
+active.
+
+## SCIP comparison
+
+Run all four comparison cases from a terminal with
+
+```text
+python Table_7_SCIP.py --example all --time-limit 600 --relative-gap 1e-6
 ```
 
-The codes print their results to the MATLAB Command Window or Python
-terminal and do not create separate result files.
-Objective values, gaps, and ranks should agree with the paper to the
-reported precision; runtimes can vary with the computer and system load.
-Each reported MATLAB moment-relaxation runtime is measured on the second
-of two consecutive solves of the same instance, formulation, and order.
-
-The SAGE applicability comparison in Table 11 and the seven launched
-paternity cases are reproduced by
-
-```bash
-python Ex_4_to_12_SAGE.py
-```
-
-Use `--case classify` to print only the applicability classification or
-`--case 1` through `--case 7` to solve one paternity instance.
-
-## SCIP
-
-The general-purpose global-solver comparisons in Tables 8 and 9 use
-[PySCIPOpt](https://pypi.org/project/PySCIPOpt/), which includes SCIP.
-Install it with
-
-```bash
-python -m pip install pyscipopt
-```
-
-Run all Examples 4--12 with
-
-```bash
-python Ex_4_to_12_SCIP.py
-```
-
-Use `--example 10` for one example, `--example easy` or `--example hard`
-for the predefined groups, or `--time-limit 600` to change the
-per-instance time limit.
-The scripts print the evaluated feasible value, SCIP upper bound,
-optimality gap, runtime, and node count.
-
-The SCIP models use the following redundant variable bounds implied by
-the constraints in the paper: `[0,1]` for Examples 4, 6, 11, and 12;
-`[-1,1]` for Examples 5 and 7; `[-2,2]` for Example 8; `[-10,10]`
-for Example 9; and `[-sqrt(20),sqrt(20)]` for Example 10. Bounds on the
-auxiliary variables representing the logarithm arguments are specified
-directly in `Ex_4_to_12_SCIP.py`.
-
-## Citation
-
-If you use these codes, please cite
-[Log-Polynomial Optimization](https://doi.org/10.48550/arXiv.2601.02797).
-Citation metadata are provided in `CITATION.cff`.
+Wall-clock times, and the SCIP upper bound at the time limit, can vary with the
+computing environment.
