@@ -11,12 +11,10 @@ them.
 ## Requirements
 
 - MATLAB R2025b
-- MATLAB Optimization Toolbox
 - MOSEK 10.0
 - GloptiPoly 3
 - YALMIP
 - SeDuMi
-- Python with PySCIPOpt 6.2.1 and SCIP 10.0.2 for the SCIP comparison
 
 ## MATLAB setup
 
@@ -38,32 +36,24 @@ Window.
 
 ## Files
 
-- `Ex_5_3_woLME.m`, `Ex_5_3_wLME.m`: Example 5.3, standard and LME relaxations
+- `Ex_5_3_standard.m`, `Ex_5_3_LME.m`: Example 5.3, standard and LME relaxations
 - `Ex_6_1.m`: Example 6.1
-- `Ex_6_2_woLME.m`, `Ex_6_2_wLME.m`: Example 6.2, standard and LME relaxations
+- `Ex_6_2_standard.m`, `Ex_6_2_LME.m`: Example 6.2, standard and LME relaxations
 - `Ex_6_3_1.m`, `Ex_6_3_2.m`: Example 6.3(i) and (ii)
 - `Ex_6_4.m`, `Ex_6_5.m`: Examples 6.4 and 6.5
 - `Ex_6_6_1.m`--`Ex_6_6_9.m`: the nine paternity instances in Example 6.6
-- `Ex_6_7_1.m`--`Ex_6_7_3.m`: the first three LCM instances in Example 6.7
-- `Ex_6_7_4.m`: the non-saturated LCM instance and 100-start EM comparison
-- `Table_5.m`: the scaling experiment reported in Table 5
-- `Table_6.m`: the weight experiment reported in Table 6
-- `Table_7_SCIP.py`: the comparison reported in Table 7
-- `Section_5_rank2_LME.m`: the rank-two LME illustration in Section 5
-- `functions/`: extraction and Table 5 helper functions; these files are not run directly
+- `Ex_6_7_1.m`--`Ex_6_7_3.m`: the three LCM instances in Example 6.7
+- `Ex_6_7_1_data.m`--`Ex_6_7_3_data.m`: data loaded by the corresponding LCM scripts
+- `functions/`: extraction functions used by the example scripts; these files are not run directly
 
 The active coefficient vector in each `Ex_6_2` script reproduces Example
-6.2(i). To reproduce the five instances in Example 6.2(ii), uncomment one of
-the five alternative vectors in each script and leave only that assignment
-active.
+6.2(i). The five alternative vectors, in their listed order, correspond to
+instances #1--#5 in Example 6.2(ii). Uncomment one vector in each script and
+leave only that assignment active. In `Ex_6_2_standard.m`, use relaxation
+orders 4, 4, 5, 6, and 5 for instances #1--#5, respectively. In
+`Ex_6_2_LME.m`, use relaxation order 3 for all five instances.
 
-## SCIP comparison
-
-Run all four comparison cases from a terminal with
-
-```text
-python Table_7_SCIP.py --example all --time-limit 600 --relative-gap 1e-6
-```
-
-Wall-clock times, and the SCIP upper bound at the time limit, can vary with the
-computing environment.
+The extracted atoms, and hence gaps evaluated at those atoms, may vary
+slightly because they are obtained from a numerical eigendecomposition. The
+reported relaxation values, flat-truncation orders, and numerical ranks are
+the primary reproducible outputs.

@@ -13,7 +13,7 @@ eta_true = [0.5, 0.5];
 pi_true = [0.4, 0.6;  % Class 1: P(y=0), P(y=1)
            0.8, 0.2]; % Class 2: P(y=0), P(y=1)
 
-data_6_7_1
+Ex_6_7_1_data
 
 N(1) = 500-nnz(Y);
 N(2) = nnz(Y);
