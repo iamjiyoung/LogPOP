@@ -1,6 +1,3 @@
-%%% NEED TO FIX
-
-
 clear all, 
 clc
 

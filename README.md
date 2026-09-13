@@ -15,6 +15,8 @@ them.
 - [GloptiPoly 3](https://homepages.laas.fr/henrion/software/gloptipoly3/)
 - [YALMIP](https://yalmip.github.io/download/)
 - [SeDuMi](https://github.com/sqlp/sedumi)
+- [Python 3](https://www.python.org/downloads/)
+- [PySCIPOpt 6.2.1 with SCIP 10.0.2](https://pyscipopt.readthedocs.io/)
 
 ## MATLAB setup
 
@@ -34,6 +36,12 @@ Each experiment can then be reproduced by opening the corresponding script and
 clicking **Run**, or by entering its file name without `.m` in the Command
 Window.
 
+Run the SCIP comparison from a terminal with
+
+```bash
+python Table_4_SCIP.py --example all
+```
+
 ## Files
 
 - `Ex_5_3_standard.m`, `Ex_5_3_LME.m`: Example 5.3, standard and LME relaxations
@@ -44,6 +52,9 @@ Window.
 - `Ex_6_6_1.m`--`Ex_6_6_9.m`: the nine paternity instances in Example 6.6
 - `Ex_6_7_1.m`--`Ex_6_7_3.m`: the three LCM instances in Example 6.7
 - `Ex_6_7_1_data.m`--`Ex_6_7_3_data.m`: data loaded by the corresponding LCM scripts
+- `Table_2.m`: scaling experiment in Table 2
+- `Table_3.m`: weight experiment in Table 3
+- `Table_4_SCIP.py`: SCIP comparison in Table 4
 - `functions/`: extraction functions used by the example scripts; these files are not run directly
 
 The active coefficient vector in each `Ex_6_2` script reproduces Example
