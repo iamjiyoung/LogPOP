@@ -19,7 +19,6 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 PACKAGE_CANDIDATES = [
     SCRIPT_DIR / "python_packages",
     SCRIPT_DIR.parent / "python_packages",
-    Path.home() / "Desktop" / "MATLAB" / "26_LogPOP" / "python_packages",
 ]
 for package_dir in PACKAGE_CANDIDATES:
     if package_dir.is_dir():

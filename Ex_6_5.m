@@ -134,5 +134,4 @@ ext = value(mom_y(1:12))
 NN(1)*log(double(subs(p{1},x,ext))) + NN(2)*log(double(subs(p{2},x,ext))) + NN(3)*log(double(subs(p{3},x,ext))) + NN(4)*log(double(subs(p{4},x,ext))) + NN(5)*log(double(subs(p{5},x,ext))) + NN(6)*log(double(subs(p{6},x,ext))) + NN(7)*log(double(subs(p{7},x,ext))) + NN(8)*log(double(subs(p{8},x,ext))) + NN(9)*log(double(subs(p{9},x,ext))) + NN(10)*log(double(subs(p{10},x,ext)))
 
 xx = extractmin(moment, length(x), ord);
-xx{1};
 size(xx)
