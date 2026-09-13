@@ -55,7 +55,7 @@ python Table_4_SCIP.py --example all
 - `Table_2.m`: scaling experiment in Table 2
 - `Table_3.m`: weight experiment in Table 3
 - `Table_4_SCIP.py`: SCIP comparison in Table 4
-- `functions/`: extraction functions used by the example scripts; these files are not run directly
+- `functions/`: helper and extraction functions used by the experiment scripts; these files are not run directly
 
 The active coefficient vector in each `Ex_6_2` script reproduces Example
 6.2(i). The five alternative vectors, in their listed order, correspond to
