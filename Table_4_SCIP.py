@@ -87,8 +87,8 @@ def example_5_3(time_limit, relative_gap):
     ), -492.5353166834
 
 
-def example_5(time_limit, relative_gap):
-    model = new_model("example_5", time_limit, relative_gap)
+def example_6_1(time_limit, relative_gap):
+    model = new_model("example_6_1", time_limit, relative_gap)
     x = [model.addVar(lb=-1.0, ub=1.0, name=f"x_{i + 1}") for i in range(5)]
     model.addCons(quicksum(t * t for t in x) <= 1.0, name="unit_ball")
     p = [
@@ -114,106 +114,9 @@ def example_5(time_limit, relative_gap):
     return model, x, objective, 1.6292207561
 
 
-EXAMPLE_6_WEIGHTS = {
-    "6_i": [0.0968, 0.1419, 0.2194, 0.0839, 0.2839, 0.1742],
-    "6_ii_1": [0.7691, 0.6389, 0.8931, 0.0607, 0.1758, 0.4163],
-    "6_ii_2": [0.1774, 0.3959, 0.4922, 0.4379, 0.6354, 0.1527],
-    "6_ii_3": [0.2920, 0.4317, 0.0155, 0.9841, 0.1672, 0.1062],
-    "6_ii_4": [0.0835, 0.6260, 0.6609, 0.7298, 0.8908, 0.9823],
-    "6_ii_5": [0.3424, 0.7360, 0.7947, 0.5449, 0.6862, 0.8936],
-}
-EXAMPLE_6_REFERENCE = {
-    "6_i": None,
-    "6_ii_1": -4.6967648309,
-    "6_ii_2": -3.9657931018,
-    "6_ii_3": None,
-    "6_ii_4": -6.7017803712,
-    "6_ii_5": -7.0672207272,
-}
 
-
-def example_6(case, time_limit, relative_gap):
-    model, x = simplex_model(f"example_{case}", 3, time_limit, relative_gap)
-    model.addCons(quicksum(t * t for t in x) <= 1.0, name="redundant_ball")
-    p = [
-        x[0] ** 3 + 3 * x[0] ** 2 * x[1] + 3 * x[0] ** 2 * x[2],
-        3 * x[0] * x[1] ** 2 + 6 * x[0] * x[1] * x[2],
-        3 * x[0] * x[2] ** 2,
-        x[1] ** 3 + 3 * x[1] ** 2 * x[2],
-        3 * x[1] * x[2] ** 2,
-        x[2] ** 3,
-    ]
-    weights = EXAMPLE_6_WEIGHTS[case]
-    add_log_objective(model, p, weights, [1.0] * 6)
-
-    def objective(v):
-        values = [
-            v[0] ** 3 + 3 * v[0] ** 2 * v[1] + 3 * v[0] ** 2 * v[2],
-            3 * v[0] * v[1] ** 2 + 6 * v[0] * v[1] * v[2],
-            3 * v[0] * v[2] ** 2,
-            v[1] ** 3 + 3 * v[1] ** 2 * v[2],
-            3 * v[1] * v[2] ** 2,
-            v[2] ** 3,
-        ]
-        return sum(a * math.log(q) for a, q in zip(weights, values))
-
-    return model, x, objective, EXAMPLE_6_REFERENCE[case]
-
-
-def example_7(time_limit, relative_gap):
-    model = new_model("example_7", time_limit, relative_gap)
-    x = [model.addVar(lb=-1.0, ub=1.0, name="x_1")]
-    p = [2 + x[0] ** 2, 3 + x[0] ** 2]
-    add_log_objective(model, p, [1.0, 1.0], [3.0, 4.0])
-    return (
-        model,
-        x,
-        lambda v: math.log(2 + v[0] ** 2) + math.log(3 + v[0] ** 2),
-        math.log(12.0),
-    )
-
-
-def example_8(case, time_limit, relative_gap):
-    model = new_model(f"example_{case}", time_limit, relative_gap)
-    x = [model.addVar(lb=-2.0, ub=2.0, name=f"x_{i + 1}") for i in range(5)]
-    model.addCons(quicksum(t * t for t in x) <= 4.0, name="radius_two_ball")
-    p1 = (x[2] + x[3] + x[4]) ** 2 - x[0] * x[1]
-    delta = x[4] - x[1]
-    p2 = 8 - delta**2
-    model.addCons(p1 >= 0.0, name="p1_nonnegative")
-    model.addCons(p2 >= 0.0, name="p2_nonnegative")
-    if case == "8_i":
-        p = [p1, p2]
-        weights = [20.0, 25.0]
-        upper = [14.0, 8.0]
-
-        def objective(v):
-            q1 = (v[2] + v[3] + v[4]) ** 2 - v[0] * v[1]
-            q2 = 8 - (v[4] - v[1]) ** 2
-            return 20 * math.log(q1) + 25 * math.log(q2)
-
-    else:
-        p3 = math.sqrt(8.0) - delta
-        p4 = math.sqrt(8.0) + delta
-        p = [p1, p3, p4]
-        weights = [20.0, 25.0, 25.0]
-        upper = [14.0, 2 * math.sqrt(8.0), 2 * math.sqrt(8.0)]
-
-        def objective(v):
-            q1 = (v[2] + v[3] + v[4]) ** 2 - v[0] * v[1]
-            delta_v = v[4] - v[1]
-            return (
-                20 * math.log(q1)
-                + 25 * math.log(math.sqrt(8.0) - delta_v)
-                + 25 * math.log(math.sqrt(8.0) + delta_v)
-            )
-
-    add_log_objective(model, p, weights, upper)
-    return model, x, objective, 99.7251825577
-
-
-def example_9(time_limit, relative_gap):
-    model = new_model("example_9", time_limit, relative_gap)
+def example_6_4(time_limit, relative_gap):
+    model = new_model("example_6_4", time_limit, relative_gap)
     x = [model.addVar(lb=-10.0, ub=10.0, name=f"x_{i + 1}") for i in range(10)]
     p = [
         10 - (2 * (x[0] + 0.5) ** 2 + 3 * (x[1] + 0.5) ** 2
@@ -250,8 +153,8 @@ def example_9(time_limit, relative_gap):
     return model, x, objective, 36.3993754433
 
 
-def example_10(time_limit, relative_gap):
-    model = new_model("example_10", time_limit, relative_gap)
+def example_6_5(time_limit, relative_gap):
+    model = new_model("example_6_5", time_limit, relative_gap)
     radius = math.sqrt(20.0)
     x = [model.addVar(lb=-radius, ub=radius, name=f"x_{i + 1}") for i in range(12)]
     h = [
@@ -306,147 +209,12 @@ def example_10(time_limit, relative_gap):
     return model, x, objective, 30.2623752132
 
 
-PATERNITY_N = [
-    [77, 23], [63, 37], [49, 40, 11], [83, 2, 15], [63, 17, 20],
-    [59, 8, 16, 17], [7, 9, 4, 33, 47], [39, 38, 23], [29, 21, 88, 62],
-]
-PATERNITY_P = [
-    [[0.5, 1], [0.5, 0]],
-    [[0.5, 1], [0.5, 0]],
-    [[0.5, 0.875], [0.25, 0.125], [0.25, 0]],
-    [[0.5, 0.25], [0.5, 0.5], [0, 0.25]],
-    [[0.5, 0.25], [0.5, 0.5], [0, 0.25]],
-    [[0.25, 0.5], [0.25, 0.5], [0.25, 0], [0.25, 0]],
-    [[0.25, 0], [0.25, 0], [0.25, 0], [0.25, 0.5], [0, 0.5]],
-    [[0.5, 0, 0.875], [0.25, 0.75, 0.125], [0.25, 0.25, 0]],
-    [[0.5, 0, 0], [0.25, 0.75, 0.25], [0.25, 0.25, 0.5], [0, 0, 0.25]],
-]
-PATERNITY_REF = [
-    -53.9276341497, -65.8955680683, -104.3236621937,
-    -111.2570075021, -115.1463552694, -132.7325824971,
-    -128.8283619893, -107.2934733638, -265.7241438158,
-]
-
-
-def example_11(case_index, time_limit, relative_gap):
-    counts = PATERNITY_N[case_index]
-    probabilities = PATERNITY_P[case_index]
-    dimension = len(probabilities[0])
-    model, x = simplex_model(
-        f"example_11_{case_index + 1}", dimension, time_limit, relative_gap
-    )
-    model.addCons(quicksum(x) == 1.0, name="simplex_equality")
-    p = [
-        quicksum(row[j] * x[j] for j in range(dimension))
-        for row in probabilities
-    ]
-    add_log_objective(model, p, [float(v) for v in counts], [1.0] * len(p))
-
-    def objective(v):
-        return sum(
-            count * math.log(sum(row[j] * v[j] for j in range(dimension)))
-            for count, row in zip(counts, probabilities)
-        )
-
-    return model, x, objective, PATERNITY_REF[case_index]
-
-
-LCM_COUNTS = {
-    "12_i": [303, 197],
-    "12_ii": [227, 273],
-    "12_iii": [131, 174, 49, 146],
-    "12_iv": [30, 26, 39, 26, 27, 19, 28, 30, 24, 25, 39, 33, 45, 31, 35, 43],
-}
-LCM_REF = {
-    "12_i": -335.2518754137,
-    "12_ii": -344.4545954602,
-    "12_iii": -652.6718169656,
-    "12_iv": None,
-}
-
-
-def example_12(case, time_limit, relative_gap):
-    counts = LCM_COUNTS[case]
-    model = new_model(f"example_{case}", time_limit, relative_gap)
-    if case == "12_i":
-        x = [model.addVar(lb=0, ub=1, name=f"x_{i + 1}") for i in range(6)]
-        model.addCons(x[0] + x[1] == 1)
-        model.addCons(x[2] + x[3] == 1)
-        model.addCons(x[4] + x[5] == 1)
-        p = [x[0] * x[2] + x[1] * x[4], x[0] * x[3] + x[1] * x[5]]
-
-        def values(v):
-            return [v[0] * v[2] + v[1] * v[4], v[0] * v[3] + v[1] * v[5]]
-
-    elif case == "12_ii":
-        x = [model.addVar(lb=0, ub=1, name=f"x_{i + 1}") for i in range(9)]
-        model.addCons(x[0] + x[1] + x[2] == 1)
-        model.addCons(x[3] + x[4] == 1)
-        model.addCons(x[5] + x[6] == 1)
-        model.addCons(x[7] + x[8] == 1)
-        p = [
-            x[0] * x[3] + x[1] * x[5] + x[2] * x[7],
-            x[0] * x[4] + x[1] * x[6] + x[2] * x[8],
-        ]
-
-        def values(v):
-            return [
-                v[0] * v[3] + v[1] * v[5] + v[2] * v[7],
-                v[0] * v[4] + v[1] * v[6] + v[2] * v[8],
-            ]
-
-    elif case == "12_iii":
-        x = [model.addVar(lb=0, ub=1, name=f"x_{i + 1}") for i in range(10)]
-        for first in [0, 2, 4, 6, 8]:
-            model.addCons(x[first] + x[first + 1] == 1)
-        p = [
-            x[0] * x[2] * x[4] + x[1] * x[6] * x[8],
-            x[0] * x[2] * x[5] + x[1] * x[6] * x[9],
-            x[0] * x[3] * x[4] + x[1] * x[7] * x[8],
-            x[0] * x[3] * x[5] + x[1] * x[7] * x[9],
-        ]
-
-        def values(v):
-            return [
-                v[0] * v[2] * v[4] + v[1] * v[6] * v[8],
-                v[0] * v[2] * v[5] + v[1] * v[6] * v[9],
-                v[0] * v[3] * v[4] + v[1] * v[7] * v[8],
-                v[0] * v[3] * v[5] + v[1] * v[7] * v[9],
-            ]
-
-    else:
-        x = [model.addVar(lb=0, ub=1, name=f"x_{i + 1}") for i in range(9)]
-        patterns = [[(r >> (3 - j)) & 1 for j in range(4)] for r in range(16)]
-        p = []
-        for pattern in patterns:
-            component_1 = 1
-            component_2 = 1
-            for j, bit in enumerate(pattern):
-                component_1 *= x[1 + j] if bit else (1 - x[1 + j])
-                component_2 *= x[5 + j] if bit else (1 - x[5 + j])
-            p.append(x[0] * component_1 + (1 - x[0]) * component_2)
-
-        def values(v):
-            output = []
-            for pattern in patterns:
-                component_1 = math.prod(v[1 + j] if bit else 1 - v[1 + j] for j, bit in enumerate(pattern))
-                component_2 = math.prod(v[5 + j] if bit else 1 - v[5 + j] for j, bit in enumerate(pattern))
-                output.append(v[0] * component_1 + (1 - v[0]) * component_2)
-            return output
-
-    add_log_objective(model, p, [float(v) for v in counts], [1.0] * len(p))
-
-    def objective(v):
-        return sum(count * math.log(q) for count, q in zip(counts, values(v)))
-
-    return model, x, objective, LCM_REF[case]
-
 
 BUILDERS = {
     "5.3": example_5_3,
-    "6.1": example_5,
-    "6.4": example_9,
-    "6.5": example_10,
+    "6.1": example_6_1,
+    "6.4": example_6_4,
+    "6.5": example_6_5,
 }
 
 
