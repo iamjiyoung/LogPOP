@@ -10,11 +10,11 @@ them.
 
 ## Requirements
 
-- MATLAB R2025b
-- MOSEK 10.0
-- GloptiPoly 3
-- YALMIP
-- SeDuMi
+- [MATLAB R2025b](https://www.mathworks.com/products/matlab.html)
+- [MOSEK 10.0](https://docs.mosek.com/10.0/toolbox/index.html)
+- [GloptiPoly 3](https://homepages.laas.fr/henrion/software/gloptipoly3/)
+- [YALMIP](https://yalmip.github.io/download/)
+- [SeDuMi](https://github.com/sqlp/sedumi)
 
 ## MATLAB setup
 
